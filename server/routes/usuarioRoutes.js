@@ -24,8 +24,22 @@ function verifyJWT(req, res, next) {
   });
 }
 
+usuarioRoutes.get("/", (req, res, next) => {
+  db.knex
+    .select()
+    .from("usuario")
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: "Erro ao buscar usuarios - " + err.message,
+      });
+    });
+});
+
 usuarioRoutes.post("/register", (req, res, next) => {
-  const { nome, login, senha, senha2 } = req.body;
+  const { nome, login, senha, senha2, administrador } = req.body;
 
   if (senha != senha2) {
     res.status(200).json("As senhas não conferem");
@@ -33,10 +47,10 @@ usuarioRoutes.post("/register", (req, res, next) => {
     db.knex("usuario")
       .insert(
         {
+          nome: nome,
           login: login,
           senha: bcrypt.hashSync(senha, 8),
-          ativo: 1,
-          tipo: 2,
+          administrador: administrador,
         },
         ["usuarioid"]
       )

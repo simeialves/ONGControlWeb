@@ -3,14 +3,12 @@ const cors = require("cors");
 const clientRoutes = require("./routes/clienteRoutes");
 const loginRoutes = require("./routes/loginRoutes");
 const userRoutes = require("./routes/usuarioRoutes");
+const parteRoutes = require("./routes/parteRoutes");
 const app = express();
 require("dotenv").config();
 
 app.use(express.json());
 app.use(cors());
-// app.use(clientRoutes);
-// app.use(loginRoutes);
-// app.use(userRoutes);
 
 app.get("/", (req, res) => {
   return res.status(200).json("Página Inicial");
@@ -20,6 +18,7 @@ app.get("/", (req, res) => {
 app.use("/clientes", clientRoutes);
 app.use("/auth", loginRoutes);
 app.use("/user", userRoutes);
+app.use("/cadastros/parte", parteRoutes);
 //#endregion
 
 //#region Outros

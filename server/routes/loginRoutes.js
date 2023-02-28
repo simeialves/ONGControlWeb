@@ -6,6 +6,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 loginRoutes.post("/loginAuth", (req, res) => {
+  console.log(req.body);
+
   db.knex
     .select("*")
     .from("usuario")

@@ -117,8 +117,8 @@ clientRoutes.get("/:nome", verifyJWT, async (req, res, next) => {
 });
 
 //UPDATE
-clientRoutes.put("/", verifyJWT, async (req, res) => {
-  const id = Number.parseInt(req.body.id);
+clientRoutes.put("/:id", verifyJWT, async (req, res) => {
+  const id = Number.parseInt(req.params.id);
   const {
     nome,
     documento,

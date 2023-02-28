@@ -11,6 +11,7 @@ import { AuthContext } from "../../shared/contexts/auth";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
 import { IoPeopleSharp } from "react-icons/io5";
 import { RxExit, RxHome } from "react-icons/rx";
 import { AiOutlineCloudSync } from "react-icons/ai";
@@ -41,23 +42,28 @@ const Headers = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="/clientes">
+              {/* <Nav.Link href="/clientes">
                 <div className="box">
                   <IoPeopleSharp size={"24px"} />
                   Clientes
                 </div>
-              </Nav.Link>
-              {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown> */}
+              </Nav.Link> */}
+              <div className="box">
+                <IoPeopleSharp size={"24px"} />
+                <NavDropdown title="Cadastros" id="basic-nav-dropdown">
+                  <NavDropdown.Item href="/pessoas">Pessoas</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.3">
+                    Tipo de Doações
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.3">
+                    Tipo de Colaborador
+                  </NavDropdown.Item>
+                  {/* <NavDropdown.Divider />
+                  <NavDropdown.Item href="#action/3.4">
+                    Separated link
+                  </NavDropdown.Item> */}
+                </NavDropdown>
+              </div>
             </Nav>
             <Nav>
               <Nav.Link eventKey={2} onClick={handleLogout}>

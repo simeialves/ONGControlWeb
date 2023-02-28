@@ -68,7 +68,7 @@ const LoginPage = () => {
                     <Form.Control
                       type="email"
                       placeholder="name@example.com"
-                      value={email}
+                      value={login}
                       onChange={(event) => {
                         setEmail(event.target.value);
                       }}
