@@ -24,18 +24,6 @@ function verifyJWT(req, res, next) {
   });
 }
 
-usuarioRoutes.get("/", (req, res) => {
-  db.knex
-    .select()
-    .table("usuario")
-    .then((usuarios) => {
-      res.json(usuarios);
-    })
-    .catch((err) => {
-      res.json(err);
-    });
-});
-
 usuarioRoutes.post("/register", (req, res, next) => {
   const { nome, login, senha, senha2 } = req.body;
 
