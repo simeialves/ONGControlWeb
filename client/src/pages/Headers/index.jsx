@@ -47,12 +47,6 @@ const Headers = () => {
                   Clientes
                 </div>
               </Nav.Link>
-              <Nav.Link href="/controlequalidade">
-                <div className="box">
-                  <AiOutlineCloudSync size={"24px"} />
-                  Controle Qualidade
-                </div>
-              </Nav.Link>
               {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">

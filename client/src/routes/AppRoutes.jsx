@@ -10,8 +10,6 @@ import LoginPage from "../pages/LoginPage";
 import ClientePage from "../pages/ClientePage";
 import NewClientePage from "../pages/ClientePage/newCliente";
 import EditClientePage from "../pages/ClientePage/editCliente";
-import ControleQualidade from "../pages/ControleQualidade";
-import Pacotes from "../pages/PacotesPage";
 
 import { AuthProvider, AuthContext } from "../shared/contexts/auth";
 import React, { useContext } from "react";
@@ -58,24 +56,6 @@ const AppRouters = () => {
             element={
               <Private>
                 <EditClientePage />
-              </Private>
-            }
-          />
-          <Route
-            exact
-            path="/controlequalidade"
-            element={
-              <Private>
-                <ControleQualidade />
-              </Private>
-            }
-          />
-          <Route
-            exact
-            path="/pacotes"
-            element={
-              <Private>
-                <Pacotes />
               </Private>
             }
           />

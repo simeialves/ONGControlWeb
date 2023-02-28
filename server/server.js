@@ -3,8 +3,6 @@ const cors = require("cors");
 const clientRoutes = require("./routes/clienteRoutes");
 const loginRoutes = require("./routes/loginRoutes");
 const userRoutes = require("./routes/usuarioRoutes");
-const controlqualidadeRoutes = require("./routes/controlequalidateRoutes");
-const pacotesRouter = require("./routes/pacotesRoutes");
 const app = express();
 require("dotenv").config();
 
@@ -22,8 +20,6 @@ app.get("/", (req, res) => {
 app.use("/clientes", clientRoutes);
 app.use("/auth", loginRoutes);
 app.use("/user", userRoutes);
-app.use("/controlequalidade", controlqualidadeRoutes);
-app.use("/pacotes", pacotesRouter);
 //#endregion
 
 //#region Outros
