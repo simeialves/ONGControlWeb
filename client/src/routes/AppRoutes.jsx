@@ -1,0 +1,97 @@
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+
+import HomePage from "../pages/HomePage";
+import LoginPage from "../pages/LoginPage";
+import ClientePage from "../pages/ClientePage";
+import NewClientePage from "../pages/ClientePage/newCliente";
+import EditClientePage from "../pages/ClientePage/editCliente";
+import ControleQualidade from "../pages/ControleQualidade";
+import Pacotes from "../pages/PacotesPage";
+
+import { AuthProvider, AuthContext } from "../shared/contexts/auth";
+import React, { useContext } from "react";
+
+const AppRouters = () => {
+  const Private = ({ children }) => {
+    const { authenticated, loading } = useContext(AuthContext);
+    if (loading) {
+      return <div className="loading">Carregando...</div>;
+    }
+
+    if (!authenticated) {
+      return <Navigate to="/login" />;
+    } else {
+      return children;
+    }
+  };
+  return (
+    <Router>
+      <AuthProvider>
+        <Routes>
+          <Route exact path="/login" element={<LoginPage />} />
+          <Route
+            exact
+            path="/clientes"
+            element={
+              <Private>
+                <ClientePage />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/newcliente"
+            element={
+              <Private>
+                <NewClientePage />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/clientes/editcliente/:id"
+            element={
+              <Private>
+                <EditClientePage />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/controlequalidade"
+            element={
+              <Private>
+                <ControleQualidade />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/pacotes"
+            element={
+              <Private>
+                <Pacotes />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/"
+            element={
+              <Private>
+                <HomePage />
+              </Private>
+            }
+          />
+        </Routes>
+      </AuthProvider>
+    </Router>
+  );
+};
+
+export default AppRouters;

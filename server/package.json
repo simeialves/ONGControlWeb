@@ -1,0 +1,32 @@
+{
+  "name": "lyoncloudcontrolweb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@chakra-ui/react": "^2.4.2",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "bcryptjs": "^2.4.3",
+    "body": "^5.1.0",
+    "bootstrap": "^5.2.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "framer-motion": "^7.6.18",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^2.3.0",
+    "mysql2": "^2.3.3",
+    "parser": "^0.1.4",
+    "pm2": "^5.2.2",
+    "react-bootstrap": "^2.6.0",
+    "react-router-dom": "^6.4.4"
+  }
+}
