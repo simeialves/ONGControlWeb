@@ -46,14 +46,15 @@ const LoginPage = () => {
                     borderRadius="full"
                     objectFit="cover"
                     boxSize="250px"
-                    src="http://www.lyon.com.br/img/produtos/lyonControl_redmine.png"
+                    //src="http://www.lyon.com.br/img/produtos/lyonControl_redmine.png"
+                    src="https://simeialves.com.br/images/logo_ongcontrol.png"
                     alt="Dan Abramov"
                     padding={50}
                   />
                 </div>
 
                 <h2 className="fw-bold mb-2 text-center">
-                  Sign in to LyonControl
+                  Sign in to ONGControl
                 </h2>
                 <p className="text-white-50 mb-3">
                   Please enter your login and password!
