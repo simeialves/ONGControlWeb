@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 
 appRoutes.use(bodyParser.json());
 
+//#region Methods
 function verifyJWT(req, res, next) {
   var token = req.headers["x-access-token"];
 
@@ -25,8 +26,9 @@ function verifyJWT(req, res, next) {
     next();
   });
 }
+//#endregion
 
-//CREATE
+//#region CREATE
 appRoutes.post("/", (req, res) => {
   const { descricao, ativo } = req.body;
 
@@ -36,9 +38,8 @@ appRoutes.post("/", (req, res) => {
       ativo: ativo,
     })
     .then((result) => {
-      let tipodoacao = result[0];
-      console.log(result[0]);
-      res.status(200).json({ tipodoacaoid: tipodoacao.tipodoacaoid });
+      let resultInsert = result[0];
+      res.status(200).json({ tipodoacaoid: resultInsert });
     })
     .catch((err) => {
       res.status(500).json({
@@ -46,14 +47,21 @@ appRoutes.post("/", (req, res) => {
       });
     });
 });
+//#endregion
 
-//READ
+//#region READ
 appRoutes.get("/", async (req, res, next) => {
   await db.knex
     .select("*")
     .from("tipodoacao")
     .then(function (results) {
-      return res.status(201).json(results);
+      if (results.length) {
+        return res.status(201).json(results);
+      } else {
+        res.status(404).json({
+          message: "Nenhum tipo de doação cadastrada",
+        });
+      }
     })
     .catch((err) => {
       console.log(err);
@@ -67,14 +75,21 @@ appRoutes.get("/:id", async (req, res, next) => {
     .from("tipodoacao")
     .where({ tipodoacaoid: id })
     .then(function (result) {
-      return res.status(201).json(result);
+      if (result.length) {
+        return res.status(201).json(result);
+      } else {
+        res.status(404).json({
+          message: "Tipo de Doação não encontrada",
+        });
+      }
     })
     .catch((err) => {
       console.log(err);
     });
 });
+//#endregion
 
-//UPDATE
+//#region UPDATE
 appRoutes.put("/:id", async (req, res) => {
   const id = Number.parseInt(req.params.id);
   const { descricao, ativo } = req.body;
@@ -112,8 +127,9 @@ appRoutes.put("/:id", async (req, res) => {
       console.log(err);
     });
 });
+//#endregion
 
-//DELETE
+//#region DELETE
 appRoutes.delete("/:id", async (req, res) => {
   let id = Number.parseInt(req.params.id);
   await db.knex
@@ -146,4 +162,6 @@ appRoutes.delete("/:id", async (req, res) => {
       console.log(err);
     });
 });
+//#endregion
+
 module.exports = appRoutes;

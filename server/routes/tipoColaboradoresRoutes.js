@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 
 appRoutes.use(bodyParser.json());
 
+//#region Methods
 function verifyJWT(req, res, next) {
   var token = req.headers["x-access-token"];
 
@@ -25,63 +26,42 @@ function verifyJWT(req, res, next) {
     next();
   });
 }
+//#endregion
 
-//CREATE
+//#region CREATE
 appRoutes.post("/", (req, res) => {
-  const {
-    nome,
-    documento,
-    sexo,
-    dtnascimento,
-    telefone,
-    email,
-    cep,
-    logradouro,
-    numero,
-    complemento,
-    bairro,
-    cidade,
-    uf,
-    pais,
-    tipo,
-  } = req.body;
+  const { descricao, ativo } = req.body;
 
-  db.knex("pessoa")
+  db.knex("tipocolaborador")
     .insert({
-      nome: nome,
-      documento: documento,
-      sexo: sexo,
-      dtnascimento: dtnascimento,
-      telefone: telefone,
-      email: email,
-      cep: cep,
-      logradouro: logradouro,
-      numero: numero,
-      complemento: complemento,
-      bairro: bairro,
-      cidade: cidade,
-      uf: uf,
-      pais: pais,
-      tipo: tipo,
+      descricao: descricao,
+      ativo: ativo,
     })
     .then((result) => {
-      let pessoa = result[0];
-      res.status(200).json({ pessoaid: pessoa.clienteid });
+      let resultInsert = result[0];
+      res.status(200).json({ tipocolaboradorid: resultInsert });
     })
     .catch((err) => {
       res.status(500).json({
-        message: "Erro ao cadastrar pessoa - " + err.message,
+        message: "Erro ao cadastrar tipo de colaborador - " + err.message,
       });
     });
 });
+//#endregion
 
-//READ
-appRoutes.get("/", verifyJWT, async (req, res, next) => {
+//#region READ
+appRoutes.get("/", async (req, res, next) => {
   await db.knex
     .select("*")
-    .from("pessoa")
-    .then(function (pessoas) {
-      return res.status(201).json(pessoas);
+    .from("tipocolaborador")
+    .then(function (results) {
+      if (results.length) {
+        return res.status(201).json(results);
+      } else {
+        return res
+          .status(404)
+          .json({ message: "Nenhum tipo de colaborador encontrado" });
+      }
     })
     .catch((err) => {
       console.log(err);
@@ -89,79 +69,57 @@ appRoutes.get("/", verifyJWT, async (req, res, next) => {
 });
 
 appRoutes.get("/:id", async (req, res, next) => {
-  let pessoaid = Number.parseInt(req.params.id);
+  let id = Number.parseInt(req.params.id);
   await db.knex
     .select("*")
-    .from("pessoa")
-    .where({ pessoaid: pessoaid })
-    .then(function (pessoas) {
-      return res.status(201).json(pessoas);
+    .from("tipocolaborador")
+    .where({ tipocolaboradorid: id })
+    .then(function (result) {
+      if (result.length) {
+        return res.status(201).json(result);
+      } else {
+        return res
+          .status(404)
+          .json({ message: "Tipo de Colaborador não encontrado" });
+      }
     })
     .catch((err) => {
       console.log(err);
     });
 });
+//#endregion
 
-//UPDATE
+//#region UPDATE
 appRoutes.put("/:id", async (req, res) => {
   const id = Number.parseInt(req.params.id);
-  const {
-    nome,
-    documento,
-    sexo,
-    dtnascimento,
-    telefone,
-    email,
-    cep,
-    logradouro,
-    numero,
-    complemento,
-    bairro,
-    cidade,
-    uf,
-    pais,
-    tipo,
-  } = req.body;
+  const { descricao, ativo } = req.body;
 
   await db.knex
     .select("*")
-    .from("pessoa")
-    .where({ pessoaid: id })
-    .then(function (pessoas) {
-      if (pessoas.length) {
+    .from("tipocolaborador")
+    .where({ tipocolaboradorid: id })
+    .then(function (result) {
+      if (result.length) {
         knex
-          .where({ pessoaid: id })
+          .where({ tipocolaboradorid: id })
           .update({
-            nome: nome,
-            documento: documento,
-            sexo: sexo,
-            dtnascimento: dtnascimento,
-            telefone: telefone,
-            email: email,
-            cep: cep,
-            logradouro: logradouro,
-            numero: numero,
-            complemento: complemento,
-            bairro: bairro,
-            cidade: cidade,
-            uf: uf,
-            pais: pais,
-            tipo: tipo,
+            descricao: descricao,
+            ativo: ativo,
           })
-          .table("pessoa")
-          .then((pessoas) => {
-            console.log(pessoas);
+          .table("tipocolaborador")
+          .then((result) => {
+            console.log(result);
           })
           .catch((err) => {
             console.log(err);
           });
 
         res.status(200).json({
-          message: "Pessoa alterada com sucesso",
+          message: "Tipo de Colaborador alterado com sucesso",
         });
       } else {
         res.status(404).json({
-          message: "Pessoa não encontrada",
+          message: "Tipo de Colaborador não encontrado",
         });
       }
     })
@@ -169,33 +127,34 @@ appRoutes.put("/:id", async (req, res) => {
       console.log(err);
     });
 });
+//#endregion
 
-//DELETE
+//#region DELETE
 appRoutes.delete("/:id", async (req, res) => {
   let id = Number.parseInt(req.params.id);
   await db.knex
     .select("*")
-    .from("pessoa")
-    .where({ pessoaid: id })
-    .then(function (pessoas) {
-      if (pessoas.length) {
+    .from("tipocolaborador")
+    .where({ tipocolaboradorid: id })
+    .then(function (result) {
+      if (result.length) {
         knex
-          .where({ pessoaid: id })
+          .where({ tipocolaboradorid: id })
           .delete()
-          .table("pessoa")
-          .then((pessoas) => {
-            console.log(pessoas);
+          .table("tipocolaborador")
+          .then((result) => {
+            console.log(result);
           })
           .catch((err) => {
             console.log(err);
           });
 
         res.status(200).json({
-          message: "Pessoa excluída com sucesso",
+          message: "Tipo de Colaborador excluído com sucesso",
         });
       } else {
         res.status(404).json({
-          message: "Pessoa não encontrada",
+          message: "Tipo de Colaborador não encontrado",
         });
       }
     })
@@ -203,4 +162,6 @@ appRoutes.delete("/:id", async (req, res) => {
       console.log(err);
     });
 });
+//#endregion
+
 module.exports = appRoutes;

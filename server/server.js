@@ -5,6 +5,7 @@ const loginRoutes = require("./routes/loginRoutes");
 const userRoutes = require("./routes/usuarioRoutes");
 const pessoasRoutes = require("./routes/pessoaRoutes");
 const tipoDoacaoRoutes = require("./routes/tipoDoacoesRoutes");
+const tipoColaboradorRoutes = require("./routes/tipoColaboradoresRoutes");
 const app = express();
 require("dotenv").config();
 
@@ -21,6 +22,7 @@ app.use("/auth", loginRoutes);
 app.use("/user", userRoutes);
 app.use("/pessoas", pessoasRoutes);
 app.use("/tipodoacoes", tipoDoacaoRoutes);
+app.use("/tipocolaboradores", tipoColaboradorRoutes);
 //#endregion
 
 //#region Outros

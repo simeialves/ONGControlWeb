@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 
 appRoutes.use(bodyParser.json());
 
+//#region Methods
 function verifyJWT(req, res, next) {
   var token = req.headers["x-access-token"];
 
@@ -25,8 +26,9 @@ function verifyJWT(req, res, next) {
     next();
   });
 }
+//#endregion
 
-//CREATE
+//#region CREATE
 appRoutes.post("/", (req, res) => {
   const {
     nome,
@@ -65,8 +67,8 @@ appRoutes.post("/", (req, res) => {
       tipo: tipo,
     })
     .then((result) => {
-      let pessoa = result[0];
-      res.status(200).json({ pessoaid: pessoa.clienteid });
+      let resultInsert = result[0];
+      res.status(200).json({ pessoaid: resultInsert });
     })
     .catch((err) => {
       res.status(500).json({
@@ -74,14 +76,19 @@ appRoutes.post("/", (req, res) => {
       });
     });
 });
+//#endregion
 
-//READ
+//#region READ
 appRoutes.get("/", verifyJWT, async (req, res, next) => {
   await db.knex
     .select("*")
     .from("pessoa")
-    .then(function (pessoas) {
-      return res.status(201).json(pessoas);
+    .then(function (results) {
+      if (results.length) {
+        return res.status(201).json(results);
+      } else {
+        return res.status(404).json({ message: "Nenhuma pessoa encontrada" });
+      }
     })
     .catch((err) => {
       console.log(err);
@@ -94,15 +101,21 @@ appRoutes.get("/:id", async (req, res, next) => {
     .select("*")
     .from("pessoa")
     .where({ pessoaid: pessoaid })
-    .then(function (pessoas) {
-      return res.status(201).json(pessoas);
+    .then(function (result) {
+      if (result.length) {
+        return res.status(201).json(result);
+      } else {
+        return res.status(404).json({ message: "Pessoa não encontrada" });
+      }
     })
     .catch((err) => {
       console.log(err);
     });
 });
+//#endregion
 
-//UPDATE
+//#region UPDATE
+
 appRoutes.put("/:id", async (req, res) => {
   const id = Number.parseInt(req.params.id);
   const {
@@ -169,8 +182,9 @@ appRoutes.put("/:id", async (req, res) => {
       console.log(err);
     });
 });
+//#endregion
 
-//DELETE
+//#region DELETE
 appRoutes.delete("/:id", async (req, res) => {
   let id = Number.parseInt(req.params.id);
   await db.knex
@@ -203,4 +217,6 @@ appRoutes.delete("/:id", async (req, res) => {
       console.log(err);
     });
 });
+//#endregion
+
 module.exports = appRoutes;

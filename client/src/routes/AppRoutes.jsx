@@ -9,6 +9,7 @@ import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import PessoaPage from "../pages/PessoasPage";
 import TipoDoacaoPage from "../pages/TipoDoacaoPage";
+import TipoColaboradorPage from "../pages/TipoColaboradorPage";
 import ClientePage from "../pages/ClientePage";
 import NewClientePage from "../pages/ClientePage/newCliente";
 import EditClientePage from "../pages/ClientePage/editCliente";
@@ -66,7 +67,7 @@ const AppRouters = () => {
             path="/tipocolaboradores"
             element={
               <Private>
-                <PessoaPage />
+                <TipoColaboradorPage />
               </Private>
             }
           />

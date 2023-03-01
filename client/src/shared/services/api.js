@@ -24,6 +24,10 @@ export const getTipoDoacoes = async () => {
   return api.get("/tipodoacoes");
 };
 
+export const getTipoColaboradores = async () => {
+  return api.get("/tipocolaboradores");
+};
+
 export const getClienteByNome = async (nome) => {
   return api.get(`/clientes/${nome}`);
 };
