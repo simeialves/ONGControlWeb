@@ -14,6 +14,7 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { IoPeopleSharp } from "react-icons/io5";
 import { RxExit, RxHome } from "react-icons/rx";
+import { RiCalendarEventFill } from "react-icons/ri";
 import { AiOutlineCloudSync } from "react-icons/ai";
 import "./styles.css";
 
@@ -62,6 +63,15 @@ const Headers = () => {
                   <NavDropdown.Item href="#action/3.4">
                     Separated link
                   </NavDropdown.Item> */}
+                </NavDropdown>
+              </div>
+              <div className="box">
+                <RiCalendarEventFill size={"24px"} />
+                <NavDropdown title="Eventos" id="basic-nav-dropdown">
+                  <NavDropdown.Item href="/eventos">Eventos</NavDropdown.Item>
+                  <NavDropdown.Item href="/localeventos">
+                    Local Eventos
+                  </NavDropdown.Item>
                 </NavDropdown>
               </div>
             </Nav>

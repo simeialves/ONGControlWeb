@@ -28,6 +28,10 @@ export const getTipoColaboradores = async () => {
   return api.get("/tipocolaboradores");
 };
 
+export const getEventos = async () => {
+  return api.get("/eventos");
+};
+
 export const getClienteByNome = async (nome) => {
   return api.get(`/clientes/${nome}`);
 };
