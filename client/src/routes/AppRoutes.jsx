@@ -7,6 +7,7 @@ import {
 
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
+import PessoaPage from "../pages/PessoasPage";
 import ClientePage from "../pages/ClientePage";
 import NewClientePage from "../pages/ClientePage/newCliente";
 import EditClientePage from "../pages/ClientePage/editCliente";
@@ -38,6 +39,15 @@ const AppRouters = () => {
             element={
               <Private>
                 <ClientePage />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/pessoas"
+            element={
+              <Private>
+                <PessoaPage />
               </Private>
             }
           />

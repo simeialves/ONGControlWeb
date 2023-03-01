@@ -3,7 +3,7 @@ const cors = require("cors");
 const clientRoutes = require("./routes/clienteRoutes");
 const loginRoutes = require("./routes/loginRoutes");
 const userRoutes = require("./routes/usuarioRoutes");
-const parteRoutes = require("./routes/parteRoutes");
+const pessoasRoutes = require("./routes/pessoaRoutes");
 const app = express();
 require("dotenv").config();
 
@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
 app.use("/clientes", clientRoutes);
 app.use("/auth", loginRoutes);
 app.use("/user", userRoutes);
-app.use("/cadastros/parte", parteRoutes);
+app.use("/pessoas", pessoasRoutes);
 //#endregion
 
 //#region Outros

@@ -1,11 +1,11 @@
 const express = require("express");
 const { knex } = require("../config/db");
 const db = require("../config/db");
-const parteRoutes = express.Router();
+const pessoaRoutes = express.Router();
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 
-parteRoutes.use(bodyParser.json());
+pessoaRoutes.use(bodyParser.json());
 
 function verifyJWT(req, res, next) {
   var token = req.headers["x-access-token"];
@@ -27,7 +27,7 @@ function verifyJWT(req, res, next) {
 }
 
 //CREATE
-parteRoutes.post("/", (req, res) => {
+pessoaRoutes.post("/", (req, res) => {
   const {
     nome,
     documento,
@@ -46,7 +46,7 @@ parteRoutes.post("/", (req, res) => {
     tipo,
   } = req.body;
 
-  db.knex("parte")
+  db.knex("pessoa")
     .insert({
       nome: nome,
       documento: documento,
@@ -65,50 +65,50 @@ parteRoutes.post("/", (req, res) => {
       tipo: tipo,
     })
     .then((result) => {
-      let parte = result[0];
-      res.status(200).json({ parteid: parte.clienteid });
+      let pessoa = result[0];
+      res.status(200).json({ pessoaid: pessoa.clienteid });
     })
     .catch((err) => {
       res.status(500).json({
-        message: "Erro ao cadastrar parte - " + err.message,
+        message: "Erro ao cadastrar pessoa - " + err.message,
       });
     });
 });
 
 //READ
-parteRoutes.get("/", async (req, res, next) => {
+pessoaRoutes.get("/", async (req, res, next) => {
   await db.knex
     .select("*")
-    .from("parte")
-    .then(function (partes) {
-      return res.status(201).json(partes);
+    .from("pessoa")
+    .then(function (pessoas) {
+      return res.status(201).json(pessoas);
     })
     .catch((err) => {
       console.log(err);
     });
 });
 
-parteRoutes.get("/:id", async (req, res, next) => {
-  let parteid = Number.parseInt(req.params.id);
+pessoaRoutes.get("/:id", async (req, res, next) => {
+  let pessoaid = Number.parseInt(req.params.id);
   await db.knex
     .select("*")
-    .from("parte")
-    .where({ parteid: parteid })
-    .then(function (partes) {
-      return res.status(201).json(partes);
+    .from("pessoa")
+    .where({ pessoaid: pessoaid })
+    .then(function (pessoas) {
+      return res.status(201).json(pessoas);
     })
     .catch((err) => {
       console.log(err);
     });
 });
 
-// parteRoutes.get("/:nome", async (req, res, next) => {
+// pessoaRoutes.get("/:nome", async (req, res, next) => {
 //   await db.knex
 //     .select("*")
-//     .from("parte")
+//     .from("pessoa")
 //     .where(nome, like, req.params.nome)
-//     .then(function (partes) {
-//       return res.status(200).json(partes);
+//     .then(function (pessoas) {
+//       return res.status(200).json(pessoas);
 //     })
 //     .catch((err) => {
 //       console.log(err);
@@ -116,7 +116,7 @@ parteRoutes.get("/:id", async (req, res, next) => {
 // });
 
 //UPDATE
-parteRoutes.put("/:id", async (req, res) => {
+pessoaRoutes.put("/:id", async (req, res) => {
   const id = Number.parseInt(req.params.id);
   const {
     nome,
@@ -138,12 +138,12 @@ parteRoutes.put("/:id", async (req, res) => {
 
   await db.knex
     .select("*")
-    .from("parte")
-    .where({ parteid: id })
-    .then(function (partes) {
-      if (partes.length) {
+    .from("pessoa")
+    .where({ pessoaid: id })
+    .then(function (pessoas) {
+      if (pessoas.length) {
         knex
-          .where({ parteid: id })
+          .where({ pessoaid: id })
           .update({
             nome: nome,
             documento: documento,
@@ -161,20 +161,20 @@ parteRoutes.put("/:id", async (req, res) => {
             pais: pais,
             tipo: tipo,
           })
-          .table("parte")
-          .then((partes) => {
-            console.log(partes);
+          .table("pessoa")
+          .then((pessoas) => {
+            console.log(pessoas);
           })
           .catch((err) => {
             console.log(err);
           });
 
         res.status(200).json({
-          message: "Parte alterada com sucesso",
+          message: "Pessoa alterada com sucesso",
         });
       } else {
         res.status(404).json({
-          message: "Parte não encontrada",
+          message: "Pessoa não encontrada",
         });
       }
     })
@@ -184,31 +184,31 @@ parteRoutes.put("/:id", async (req, res) => {
 });
 
 //DELETE
-parteRoutes.delete("/:id", async (req, res) => {
+pessoaRoutes.delete("/:id", async (req, res) => {
   let id = Number.parseInt(req.params.id);
   await db.knex
     .select("*")
-    .from("parte")
-    .where({ parteid: id })
-    .then(function (partes) {
-      if (partes.length) {
+    .from("pessoa")
+    .where({ pessoaid: id })
+    .then(function (pessoas) {
+      if (pessoas.length) {
         knex
-          .where({ parteid: id })
+          .where({ pessoaid: id })
           .delete()
-          .table("parte")
-          .then((partes) => {
-            console.log(partes);
+          .table("pessoa")
+          .then((pessoas) => {
+            console.log(pessoas);
           })
           .catch((err) => {
             console.log(err);
           });
 
         res.status(200).json({
-          message: "Parte excluída com sucesso",
+          message: "Pessoa excluída com sucesso",
         });
       } else {
         res.status(404).json({
-          message: "Parte não encontrada",
+          message: "Pessoa não encontrada",
         });
       }
     })
@@ -216,4 +216,4 @@ parteRoutes.delete("/:id", async (req, res) => {
       console.log(err);
     });
 });
-module.exports = parteRoutes;
+module.exports = pessoaRoutes;

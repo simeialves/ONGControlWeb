@@ -16,6 +16,10 @@ export const getUsers = async () => {
   return api.get("/clientes");
 };
 
+export const getPessoas = async () => {
+  return api.get("/pessoas");
+};
+
 export const getClienteByNome = async (nome) => {
   return api.get(`/clientes/${nome}`);
 };
