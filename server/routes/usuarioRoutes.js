@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
+//#region Methods
 function verifyJWT(req, res, next) {
   var token = req.headers["x-access-token"];
 
@@ -37,7 +38,9 @@ usuarioRoutes.get("/", (req, res, next) => {
       });
     });
 });
+//#endregion
 
+//#region CREATE
 usuarioRoutes.post("/register", (req, res, next) => {
   const { nome, login, senha, senha2, administrador } = req.body;
 
@@ -66,5 +69,6 @@ usuarioRoutes.post("/register", (req, res, next) => {
       });
   }
 });
+//#endregion
 
 module.exports = usuarioRoutes;
