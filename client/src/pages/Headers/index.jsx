@@ -52,10 +52,10 @@ const Headers = () => {
                 <IoPeopleSharp size={"24px"} />
                 <NavDropdown title="Cadastros" id="basic-nav-dropdown">
                   <NavDropdown.Item href="/pessoas">Pessoas</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.3">
+                  <NavDropdown.Item href="/tipodoacoes">
                     Tipo de Doações
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.3">
+                  <NavDropdown.Item href="/tipocolaboradores">
                     Tipo de Colaborador
                   </NavDropdown.Item>
                   {/* <NavDropdown.Divider />

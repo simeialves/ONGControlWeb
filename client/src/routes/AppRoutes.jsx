@@ -8,6 +8,7 @@ import {
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import PessoaPage from "../pages/PessoasPage";
+import TipoDoacaoPage from "../pages/TipoDoacaoPage";
 import ClientePage from "../pages/ClientePage";
 import NewClientePage from "../pages/ClientePage/newCliente";
 import EditClientePage from "../pages/ClientePage/editCliente";
@@ -45,6 +46,24 @@ const AppRouters = () => {
           <Route
             exact
             path="/pessoas"
+            element={
+              <Private>
+                <PessoaPage />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/tipodoacoes"
+            element={
+              <Private>
+                <TipoDoacaoPage />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/tipocolaboradores"
             element={
               <Private>
                 <PessoaPage />

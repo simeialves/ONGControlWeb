@@ -20,12 +20,12 @@ export const getPessoas = async () => {
   return api.get("/pessoas");
 };
 
-export const getClienteByNome = async (nome) => {
-  return api.get(`/clientes/${nome}`);
+export const getTipoDoacoes = async () => {
+  return api.get("/tipodoacoes");
 };
 
-export const getPacotes = async (dataInicial, dataFinal) => {
-  return api.post(`/controlequalidade/`, { dataInicial, dataFinal });
+export const getClienteByNome = async (nome) => {
+  return api.get(`/clientes/${nome}`);
 };
 
 export const getPacoteLogByPacoteId = async (id) => {
