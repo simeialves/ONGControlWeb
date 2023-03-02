@@ -6,7 +6,7 @@ const HomePage = () => {
   return (
     <>
       <Headers />
-      <DashBoard/>
+      <DashBoard />
     </>
   );
 };

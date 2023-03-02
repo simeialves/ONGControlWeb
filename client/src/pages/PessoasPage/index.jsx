@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import Table from "react-bootstrap/Table";
+import { useNavigate } from "react-router-dom";
+import { getPessoas } from "../../shared/services/api";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
-import { getPessoas } from "../../shared/services/api";
-import { useNavigate } from "react-router-dom";
-import Table from "react-bootstrap/Table";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 
-import { Button, Modal } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
-import { Input, Label } from "reactstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const Pessoa = () => {
   const [pessoas, setPessoas] = useState([]);

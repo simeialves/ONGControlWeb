@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import {
   Carousel,
-  CarouselItem,
+  CarouselCaption,
   CarouselControl,
   CarouselIndicators,
-  CarouselCaption,
+  CarouselItem,
   Container,
 } from "reactstrap";
-import Spinner from "../Uteis/progress";
 
 const items = [
   {

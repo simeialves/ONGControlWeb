@@ -2,21 +2,19 @@ import React from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import Headers from "../Headers";
 import {
-  Flex,
   Box,
+  Button,
   Center,
+  Flex,
   FormControl,
-  Input,
   FormLabel,
   HStack,
-  RadioGroup,
-  Radio,
-  Button,
+  Input,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import axios from "axios";
+import { useState } from "react";
+import Headers from "../Headers";
 
 const NewClientePage = () => {
   const handleSubmit = (e) => {
@@ -60,11 +58,12 @@ const NewClientePage = () => {
         oficio: inputOficio,
         telefone: inputTelefone,
         observacao: inputObservacao,
-        servidordedicado: "1",//inputServidorDedicado,
-        expedhorinicial: "08:00:00",//inputExpedHorInicial,
+        servidordedicado: "1", //inputServidorDedicado,
+        expedhorinicial: "08:00:00", //inputExpedHorInicial,
         expedhorfinal: "18:00:00", //inputExpedHorFinal,
         expedintinicial: "12:00:00", //inputExpedIntInicial,
-        expedintfinal: "13:00:00", inputExpedIntFinal,
+        expedintfinal: "13:00:00",
+        inputExpedIntFinal,
         ativo: "1", //inputAtivo,
       })
       .then(() => {

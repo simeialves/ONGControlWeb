@@ -1,22 +1,13 @@
-import React, { useState, useContext } from "react";
-// import {
-//   Collapse,
-//   Navbar,
-//   NavbarToggler,
-//   NavbarBrand,
-//   NavItem,
-//   NavLink,
-// } from "reactstrap";
-import { AuthContext } from "../../shared/contexts/auth";
+import React, { useContext, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { IoPeopleSharp } from "react-icons/io5";
-import { RxExit, RxHome } from "react-icons/rx";
-import { RiCalendarEventFill } from "react-icons/ri";
-import { AiOutlineCloudSync } from "react-icons/ai";
 import { FcSettings } from "react-icons/fc";
+import { IoPeopleSharp } from "react-icons/io5";
+import { RiCalendarEventFill } from "react-icons/ri";
+import { RxExit, RxHome } from "react-icons/rx";
+import { AuthContext } from "../../shared/contexts/auth";
 import "./styles.css";
 
 const Headers = () => {
@@ -44,12 +35,6 @@ const Headers = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              {/* <Nav.Link href="/clientes">
-                <div className="box">
-                  <IoPeopleSharp size={"24px"} />
-                  Clientes
-                </div>
-              </Nav.Link> */}
               <div className="box">
                 <RiCalendarEventFill size={"24px"} />
                 <NavDropdown title="Eventos" id="basic-nav-dropdown">
