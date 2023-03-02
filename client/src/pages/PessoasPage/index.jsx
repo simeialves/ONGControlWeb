@@ -120,14 +120,14 @@ const Pessoa = () => {
                       Editar
                     </button>
                   </td>
-                  {/* <td>
+                  <td>
                     <button
                       class="btn btn-danger"
-                      onClick={(e) => deletePessoa(user.PESSOAID, e)}
+                      onClick={(e) => deletePessoa(pessoa.pessoaid, e)}
                     >
                       Excluir
                     </button>
-                  </td> */}
+                  </td>
                 </tr>
               ))}
             </tbody>

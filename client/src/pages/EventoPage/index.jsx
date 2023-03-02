@@ -103,16 +103,14 @@ const Evento = () => {
                       Editar
                     </button>
                   </td>
-                  {/* <td>
+                  <td>
                     <button
                       class="btn btn-danger"
-                      onClick={(e) =>
-                        deleteEvento(evento.eventoid, e)
-                      }
+                      onClick={(e) => deleteEvento(evento.eventoid, e)}
                     >
                       Excluir
                     </button>
-                  </td> */}
+                  </td>
                 </tr>
               ))}
             </tbody>

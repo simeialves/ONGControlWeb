@@ -96,11 +96,11 @@ appRoutes.get("/", verifyJWT, async (req, res, next) => {
 });
 
 appRoutes.get("/:id", async (req, res, next) => {
-  let pessoaid = Number.parseInt(req.params.id);
+  let id = Number.parseInt(req.params.id);
   await db.knex
     .select("*")
     .from("pessoa")
-    .where({ pessoaid: pessoaid })
+    .where({ pessoaid: id })
     .then(function (result) {
       if (result.length) {
         return res.status(201).json(result);
@@ -140,8 +140,8 @@ appRoutes.put("/:id", async (req, res) => {
     .select("*")
     .from("pessoa")
     .where({ pessoaid: id })
-    .then(function (pessoas) {
-      if (pessoas.length) {
+    .then(function (result) {
+      if (result.length) {
         knex
           .where({ pessoaid: id })
           .update({
@@ -162,8 +162,8 @@ appRoutes.put("/:id", async (req, res) => {
             tipo: tipo,
           })
           .table("pessoa")
-          .then((pessoas) => {
-            console.log(pessoas);
+          .then((result) => {
+            console.log(result);
           })
           .catch((err) => {
             console.log(err);
@@ -191,14 +191,14 @@ appRoutes.delete("/:id", async (req, res) => {
     .select("*")
     .from("pessoa")
     .where({ pessoaid: id })
-    .then(function (pessoas) {
-      if (pessoas.length) {
+    .then(function (result) {
+      if (result.length) {
         knex
           .where({ pessoaid: id })
           .delete()
           .table("pessoa")
-          .then((pessoas) => {
-            console.log(pessoas);
+          .then((result) => {
+            console.log(result);
           })
           .catch((err) => {
             console.log(err);

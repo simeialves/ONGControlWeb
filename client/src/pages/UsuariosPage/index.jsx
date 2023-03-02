@@ -94,6 +94,9 @@ const Usuario = () => {
       <Headers />
       <br></br>
       <Container fluid="md">
+        <Button>Novo</Button>
+        <br />
+        <br />
         <Row>
           <Table striped bordered hover size="sm">
             <thead>

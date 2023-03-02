@@ -1,27 +1,30 @@
-require("dotenv").config();
 const express = require("express");
+const { knex } = require("../config/db");
 const db = require("../config/db");
-const loginRoutes = express.Router();
+const appRoutes = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const bodyParser = require("body-parser");
 
-loginRoutes.post("/loginAuth", (req, res) => {
-  console.log(req.body);
+require("dotenv").config();
+appRoutes.use(bodyParser.json());
 
+//#region Auth
+appRoutes.post("/loginAuth", (req, res) => {
   db.knex
     .select("*")
     .from("usuario")
     .where({ login: req.body.email })
-    .then(async (usuarios) => {
-      if (usuarios.length) {
-        let usuario = usuarios[0];
+    .then(async (results) => {
+      if (results.length) {
+        let usuario = results[0];
         let checkSenha = await bcrypt.compare(req.body.password, usuario.senha);
         if (checkSenha) {
           var tokenJWT = jwt.sign(
             { id: usuario.usuarioid },
             process.env.SECRET_KEY,
             {
-              expiresIn: 3600,
+              expiresIn: 86400,
             }
           );
           res.status(200).json({
@@ -49,5 +52,6 @@ loginRoutes.post("/loginAuth", (req, res) => {
       });
     });
 });
+//#endregion
 
-module.exports = loginRoutes;
+module.exports = appRoutes;

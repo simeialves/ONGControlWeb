@@ -123,16 +123,19 @@ const TipoColaborador = () => {
                       Editar
                     </button>
                   </td>
-                  {/* <td>
+                  <td>
                     <button
                       class="btn btn-danger"
                       onClick={(e) =>
-                        deleteTipoColaborador(tipocolaborador.tipocolaboradorid, e)
+                        deleteTipoColaborador(
+                          tipocolaborador.tipocolaboradorid,
+                          e
+                        )
                       }
                     >
                       Excluir
                     </button>
-                  </td> */}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -140,70 +143,6 @@ const TipoColaborador = () => {
         </Row>
         <label>Quantidade: {tipocolaboradores.length}</label>
       </Container>
-
-      {/* <ul>
-        <br></br>
-
-        <div className="container-sm title_container">
-          <Button className="btn btn-primary" href="/newtipocolaborador">
-            Novo TipoColaborador
-          </Button>
-          <br></br>
-          <br></br>
-          <label>Nome:</label>
-          <Input
-            type="text"
-            className="inputNome"
-            name="nome"
-            id="nome"
-            value={inputNome}
-            onChange={(event) => {
-              setInputNome(event.target.value);
-            }}
-          />
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nome</th>
-                <th scope="col">Documento</th>
-                <th scope="col">Telefone</th>
-                <th scope="col">Versão</th>
-                <th colspan="2">Ação</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tipocolaboradores.map((user) => (
-                <tr>
-                  <td>{user.tipocolaboradorid}</td>
-                  <td>{user.NOME}</td>
-                  <td>{user.DOCUMENTO}</td>
-                  <td>{user.TELEFONE}</td>
-                  <td>{user.VERSAOATUAL}</td>
-                  <td>
-                    <button
-                      class="btn btn-primary"
-                      onClick={(e) => editTipoColaborador(user.tipocolaboradorid, e)}
-                    >
-                      Editar
-                    </button>
-                  </td>
-
-                  <td>
-                    <button
-                      class="btn btn-danger"
-                      onClick={(e) => deleteTipoColaborador(user.tipocolaboradorid, e)}
-                    >
-                      Excluir
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <label>Quantidade: {tipocolaboradores.length}</label>
-        </div>
-      </ul> */}
     </>
   );
 };

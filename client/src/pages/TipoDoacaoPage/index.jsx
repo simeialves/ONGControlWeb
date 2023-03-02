@@ -120,7 +120,7 @@ const TipoDoacao = () => {
                       Editar
                     </button>
                   </td>
-                  {/* <td>
+                  <td>
                     <button
                       class="btn btn-danger"
                       onClick={(e) =>
@@ -129,7 +129,7 @@ const TipoDoacao = () => {
                     >
                       Excluir
                     </button>
-                  </td> */}
+                  </td>
                 </tr>
               ))}
             </tbody>
