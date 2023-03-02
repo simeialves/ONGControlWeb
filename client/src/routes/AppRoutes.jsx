@@ -11,7 +11,8 @@ import PessoaPage from "../pages/PessoasPage";
 import TipoDoacaoPage from "../pages/TipoDoacaoPage";
 import TipoColaboradorPage from "../pages/TipoColaboradorPage";
 import Evento from "../pages/EventoPage";
-import ClientePage from "../pages/ClientePage";
+import LocalEvento from "../pages/LocalEventoPage";
+import UsuarioPage from "../pages/UsuariosPage";
 import NewClientePage from "../pages/ClientePage/newCliente";
 import EditClientePage from "../pages/ClientePage/editCliente";
 
@@ -38,10 +39,10 @@ const AppRouters = () => {
           <Route exact path="/login" element={<LoginPage />} />
           <Route
             exact
-            path="/clientes"
+            path="/usuarios"
             element={
               <Private>
-                <ClientePage />
+                <UsuarioPage />
               </Private>
             }
           />
@@ -78,6 +79,15 @@ const AppRouters = () => {
             element={
               <Private>
                 <Evento />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/localeventos"
+            element={
+              <Private>
+                <LocalEvento />
               </Private>
             }
           />

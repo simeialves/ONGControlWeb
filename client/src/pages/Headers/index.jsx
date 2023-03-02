@@ -16,6 +16,7 @@ import { IoPeopleSharp } from "react-icons/io5";
 import { RxExit, RxHome } from "react-icons/rx";
 import { RiCalendarEventFill } from "react-icons/ri";
 import { AiOutlineCloudSync } from "react-icons/ai";
+import { FcSettings } from "react-icons/fc";
 import "./styles.css";
 
 const Headers = () => {
@@ -70,8 +71,17 @@ const Headers = () => {
                 <NavDropdown title="Eventos" id="basic-nav-dropdown">
                   <NavDropdown.Item href="/eventos">Eventos</NavDropdown.Item>
                   <NavDropdown.Item href="/localeventos">
-                    Local Eventos
+                    Local de Eventos
                   </NavDropdown.Item>
+                </NavDropdown>
+              </div>
+              <div className="box">
+                <FcSettings size={"24px"} />
+                <NavDropdown title="Configurações" id="basic-nav-dropdown">
+                  <NavDropdown.Item href="/parametros">
+                    Parâmetros
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/usuarios">Usuários</NavDropdown.Item>
                 </NavDropdown>
               </div>
             </Nav>

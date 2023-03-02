@@ -12,8 +12,8 @@ export const createSession = async (email, password) => {
   return api.post("/auth/loginAuth", { email, password });
 };
 
-export const getUsers = async () => {
-  return api.get("/clientes");
+export const getUsuarios = async () => {
+  return api.get("/usuarios");
 };
 
 export const getPessoas = async () => {
@@ -30,6 +30,10 @@ export const getTipoColaboradores = async () => {
 
 export const getEventos = async () => {
   return api.get("/eventos");
+};
+
+export const getLocalEventos = async () => {
+  return api.get("/localeventos");
 };
 
 export const getClienteByNome = async (nome) => {
