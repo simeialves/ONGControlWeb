@@ -51,6 +51,16 @@ const Headers = () => {
                 </div>
               </Nav.Link> */}
               <div className="box">
+                <RiCalendarEventFill size={"24px"} />
+                <NavDropdown title="Eventos" id="basic-nav-dropdown">
+                  <NavDropdown.Item href="/eventos">Eventos</NavDropdown.Item>
+                  <NavDropdown.Item href="/localeventos">
+                    Local de Eventos
+                  </NavDropdown.Item>
+                </NavDropdown>
+              </div>
+
+              <div className="box">
                 <IoPeopleSharp size={"24px"} />
                 <NavDropdown title="Cadastros" id="basic-nav-dropdown">
                   <NavDropdown.Item href="/pessoas">Pessoas</NavDropdown.Item>
@@ -66,15 +76,7 @@ const Headers = () => {
                   </NavDropdown.Item> */}
                 </NavDropdown>
               </div>
-              <div className="box">
-                <RiCalendarEventFill size={"24px"} />
-                <NavDropdown title="Eventos" id="basic-nav-dropdown">
-                  <NavDropdown.Item href="/eventos">Eventos</NavDropdown.Item>
-                  <NavDropdown.Item href="/localeventos">
-                    Local de Eventos
-                  </NavDropdown.Item>
-                </NavDropdown>
-              </div>
+
               <div className="box">
                 <FcSettings size={"24px"} />
                 <NavDropdown title="Configurações" id="basic-nav-dropdown">
