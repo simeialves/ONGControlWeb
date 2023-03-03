@@ -2,21 +2,19 @@ import React from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import Headers from "../Headers";
 import {
-  Flex,
   Box,
+  Button,
   Center,
+  Flex,
   FormControl,
-  Input,
   FormLabel,
   HStack,
-  RadioGroup,
-  Radio,
-  Button,
+  Input,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import axios from "axios";
+import { useState } from "react";
+import Headers from "../Headers";
 
 const NewClientePage = () => {
   const handleSubmit = (e) => {
@@ -26,18 +24,18 @@ const NewClientePage = () => {
 
   const [inputNome, setInputNome] = useState("");
   const [inputDocumento, setInputDocumento] = useState("");
-  const [inputUF, setInputUF] = useState("");
-  const [inputCidade, setInputCidade] = useState("");
-  const [inputAtribuicao, setInputAtribuicao] = useState("");
-  const [inputOficio, setInputOficio] = useState("");
-  const [inputTelefone, setInputTelefone] = useState("");
-  const [inputObservacao, setInputObservacao] = useState("");
-  const [inputServidorDedicado, setInputServidorDedicado] = useState("");
-  const [inputExpedHorInicial, setInputExpedHorInicial] = useState("");
-  const [inputExpedHorFinal, setInputExpedHorFinal] = useState("");
-  const [inputExpedIntInicial, setInputExpedIntInicial] = useState("");
-  const [inputExpedIntFinal, setInputExpedIntFinal] = useState("");
-  const [inputAtivo, setInputAtivo] = useState("");
+  // const [inputUF, setInputUF] = useState("");
+  // const [inputCidade, setInputCidade] = useState("");
+  // const [inputAtribuicao, setInputAtribuicao] = useState("");
+  // const [inputOficio, setInputOficio] = useState("");
+  // const [inputTelefone, setInputTelefone] = useState("");
+  // const [inputObservacao, setInputObservacao] = useState("");
+  // const [inputServidorDedicado, setInputServidorDedicado] = useState("");
+  // const [inputExpedHorInicial, setInputExpedHorInicial] = useState("");
+  // const [inputExpedHorFinal, setInputExpedHorFinal] = useState("");
+  // const [inputExpedIntInicial, setInputExpedIntInicial] = useState("");
+  // const [inputExpedIntFinal, setInputExpedIntFinal] = useState("");
+  // const [inputAtivo, setInputAtivo] = useState("");
 
   const navigate = useNavigate();
 
@@ -51,24 +49,25 @@ const NewClientePage = () => {
 
   const handleNewCliente = async () => {
     return api
-      .post("/clientes/", {
+      .post("/pessoas/", {
         nome: inputNome,
         documento: inputDocumento,
-        uf: inputUF,
-        cidade: inputCidade,
-        atribuicao: inputAtribuicao,
-        oficio: inputOficio,
-        telefone: inputTelefone,
-        observacao: inputObservacao,
-        servidordedicado: "1",//inputServidorDedicado,
-        expedhorinicial: "08:00:00",//inputExpedHorInicial,
-        expedhorfinal: "18:00:00", //inputExpedHorFinal,
-        expedintinicial: "12:00:00", //inputExpedIntInicial,
-        expedintfinal: "13:00:00", inputExpedIntFinal,
-        ativo: "1", //inputAtivo,
+        // uf: inputUF,
+        // cidade: inputCidade,
+        // atribuicao: inputAtribuicao,
+        // oficio: inputOficio,
+        // telefone: inputTelefone,
+        // observacao: inputObservacao,
+        // servidordedicado: "1", //inputServidorDedicado,
+        // expedhorinicial: "08:00:00", //inputExpedHorInicial,
+        // expedhorfinal: "18:00:00", //inputExpedHorFinal,
+        // expedintinicial: "12:00:00", //inputExpedIntInicial,
+        // expedintfinal: "13:00:00",
+        // inputExpedIntFinal,
+        // ativo: "1", //inputAtivo,
       })
       .then(() => {
-        navigate("/clientes");
+        navigate("/pessoas");
       })
       .catch((err) => {
         console.log(err);
@@ -76,7 +75,7 @@ const NewClientePage = () => {
   };
 
   async function handleVoltar() {
-    navigate("/clientes");
+    navigate("/pessoas");
   }
 
   return (
@@ -134,7 +133,7 @@ const NewClientePage = () => {
                     }}
                   />
                 </Box>
-                <Box w="100%">
+                {/* <Box w="100%">
                   <FormLabel htmlFor="atribuicao">Atribuição</FormLabel>
                   <Input
                     id="atribuicao"
@@ -190,7 +189,7 @@ const NewClientePage = () => {
                       setInputObservacao(event.target.value);
                     }}
                   />
-                </Box>
+                </Box> */}
               </HStack>
               {/* <HStack spacing="4">
                 <Box w="100%">

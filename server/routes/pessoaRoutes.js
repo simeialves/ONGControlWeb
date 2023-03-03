@@ -83,6 +83,7 @@ appRoutes.get("/", verifyJWT, async (req, res, next) => {
   await db.knex
     .select("*")
     .from("pessoa")
+    .orderBy("nome")
     .then(function (results) {
       if (results.length) {
         return res.status(201).json(results);

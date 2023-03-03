@@ -10,6 +10,7 @@ import Row from "react-bootstrap/Row";
 
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Button } from "react-bootstrap";
 
 const Pessoa = () => {
   const [pessoas, setPessoas] = useState([]);
@@ -91,6 +92,7 @@ const Pessoa = () => {
       <Headers />
       <br></br>
       <Container fluid="md">
+        <Button href="/pessoas/newPessoa">Nova</Button>
         <Row>
           <Table striped bordered hover size="sm">
             <thead>

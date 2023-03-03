@@ -29,7 +29,7 @@ function verifyJWT(req, res, next) {
 //#endregion
 
 //#region CREATE
-appRoutes.post("/", (req, res) => {
+appRoutes.post("/", verifyJWT, (req, res) => {
   const {
     projetoid,
     descricao,
@@ -67,7 +67,7 @@ appRoutes.post("/", (req, res) => {
 //#endregion
 
 //#region READ
-appRoutes.get("/", async (req, res, next) => {
+appRoutes.get("/", verifyJWT, async (req, res, next) => {
   await db.knex
     .select("*")
     .from("evento")
@@ -85,7 +85,7 @@ appRoutes.get("/", async (req, res, next) => {
     });
 });
 
-appRoutes.get("/:id", async (req, res, next) => {
+appRoutes.get("/:id", verifyJWT, async (req, res, next) => {
   let id = Number.parseInt(req.params.id);
   await db.knex
     .select("*")
@@ -107,7 +107,7 @@ appRoutes.get("/:id", async (req, res, next) => {
 //#endregion
 
 //#region UPDATE
-appRoutes.put("/:id", async (req, res) => {
+appRoutes.put("/:id", verifyJWT, async (req, res) => {
   const id = Number.parseInt(req.params.id);
   const {
     projetoid,
@@ -164,7 +164,7 @@ appRoutes.put("/:id", async (req, res) => {
 //#endregion
 
 //#region DELETE
-appRoutes.delete("/:id", async (req, res) => {
+appRoutes.delete("/:id", verifyJWT, async (req, res) => {
   let id = Number.parseInt(req.params.id);
   await db.knex
     .select("*")

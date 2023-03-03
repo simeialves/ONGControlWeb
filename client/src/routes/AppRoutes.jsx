@@ -1,23 +1,24 @@
 import {
   BrowserRouter as Router,
+  Navigate,
   Route,
   Routes,
-  Navigate,
 } from "react-router-dom";
 
+import EditClientePage from "../pages/ClientePage/editCliente";
+import NewClientePage from "../pages/ClientePage/newCliente";
+import Evento from "../pages/EventoPage";
 import HomePage from "../pages/HomePage";
+import LocalEvento from "../pages/LocalEventoPage";
 import LoginPage from "../pages/LoginPage";
 import PessoaPage from "../pages/PessoasPage";
-import TipoDoacaoPage from "../pages/TipoDoacaoPage";
+import NewPessoaPage from "../pages/PessoasPage/newPessoa";
 import TipoColaboradorPage from "../pages/TipoColaboradorPage";
-import Evento from "../pages/EventoPage";
-import LocalEvento from "../pages/LocalEventoPage";
+import TipoDoacaoPage from "../pages/TipoDoacaoPage";
 import UsuarioPage from "../pages/UsuariosPage";
-import NewClientePage from "../pages/ClientePage/newCliente";
-import EditClientePage from "../pages/ClientePage/editCliente";
 
-import { AuthProvider, AuthContext } from "../shared/contexts/auth";
 import React, { useContext } from "react";
+import { AuthContext, AuthProvider } from "../shared/contexts/auth";
 
 const AppRouters = () => {
   const Private = ({ children }) => {
@@ -52,6 +53,15 @@ const AppRouters = () => {
             element={
               <Private>
                 <PessoaPage />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/pessoas/newPessoa"
+            element={
+              <Private>
+                <NewPessoaPage />
               </Private>
             }
           />

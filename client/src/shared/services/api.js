@@ -47,3 +47,7 @@ export const getPacoteLogByPacoteId = async (id) => {
 export const newUser = async (nome, documento) => {
   return api.post("/user/register", {});
 };
+
+// export const newPessoa = async (nome, documento) => {
+//   return api.post("/pessoas/newPessoa", {});
+// };
