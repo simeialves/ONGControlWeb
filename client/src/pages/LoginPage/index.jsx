@@ -1,21 +1,20 @@
-import React, { useState, useContext } from "react";
-import { AuthContext } from "../../shared/contexts/auth";
-import { Image, Box } from "@chakra-ui/react";
-import Headers from "../Headers";
+import { Image } from "@chakra-ui/react";
+import React, { useContext, useState } from "react";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
+import { AuthContext } from "../../shared/contexts/auth";
+import Headers from "../Headers";
 
 import "./styles.css";
 
 import {
-  MDBContainer,
   MDBBtn,
-  MDBInput,
-  MDBCheckbox,
-  MDBRow,
-  MDBCol,
   MDBCard,
   MDBCardBody,
+  MDBCheckbox,
+  MDBCol,
+  MDBContainer,
+  MDBRow,
 } from "mdb-react-ui-kit";
 
 const LoginPage = () => {

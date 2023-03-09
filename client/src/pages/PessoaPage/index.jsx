@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { useNavigate } from "react-router-dom";
-import { getPessoas } from "../../shared/services/api";
+import { api, getPessoas } from "../../shared/services/api";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 
-import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "react-bootstrap";
 
@@ -16,9 +15,6 @@ const Pessoa = () => {
   const [pessoas, setPessoas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [ModalPessoa, setModalPessoa] = useState(false);
-
-  const [inputNome, setInputNome] = useState("");
-  console.log(inputNome);
 
   const navigate = useNavigate();
   const token = localStorage.getItem("access_token");
@@ -43,21 +39,13 @@ const Pessoa = () => {
     setModalPessoa(false);
   }
 
-  const api = axios.create({
-    //baseURL: "http://186.248.86.194:4444",
-    baseURL: "http://localhost:5000",
-    headers: { "x-access-token": token },
-  });
-
-  function editPessoa(PESSOAID) {
-    console.log("Edit Pessoa: " + PESSOAID);
-    navigate(`/pessoas/editpessoa/${PESSOAID}`);
+  function handleEdit(id) {
+    navigate(`/pessoas/edit/${id}`);
   }
 
-  function deletePessoa(PESSOAID) {
-    console.log("Delete Pessoa: " + PESSOAID);
+  function handleDelete(id) {
     api
-      .delete("/pessoas/" + PESSOAID, {})
+      .delete(`/pessoas/${id}`, {})
       .then(() => {
         navigate("/pessoas");
         window.location.reload(false);
@@ -67,32 +55,14 @@ const Pessoa = () => {
       });
   }
 
-  function getPessoaByNome(nome) {
-    const response = getPessoas(nome);
-    setPessoas(response.data);
-    setLoading(false);
-  }
-
-  // function App() {
-  //   return (
-  //     <div className="App">
-  //       <ul>
-  //         {userFiltrado.map((result) => (
-  //           <li key={result}>{result}</li>
-  //         ))}
-  //       </ul>
-  //     </div>
-  //   );
-  // }
-
-  //const userFiltrado = pessoas.filter((user) => user.start(inputNome));
-
   return (
     <>
       <Headers />
       <br></br>
       <Container fluid="md">
-        <Button href="/pessoas/newPessoa">Nova</Button>
+        <Button href="/pessoas/new">Nova</Button>
+        <br />
+        <br />
         <Row>
           <Table striped bordered hover size="sm">
             <thead>
@@ -112,7 +82,7 @@ const Pessoa = () => {
                   <td>
                     <button
                       class="btn btn-primary"
-                      onClick={(e) => editPessoa(pessoa.pessoaid, e)}
+                      onClick={(e) => handleEdit(pessoa.pessoaid, e)}
                     >
                       Editar
                     </button>
@@ -120,7 +90,7 @@ const Pessoa = () => {
                   <td>
                     <button
                       class="btn btn-danger"
-                      onClick={(e) => deletePessoa(pessoa.pessoaid, e)}
+                      onClick={(e) => handleDelete(pessoa.pessoaid, e)}
                     >
                       Excluir
                     </button>

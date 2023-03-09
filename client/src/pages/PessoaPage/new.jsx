@@ -1,74 +1,34 @@
 import React from "react";
-
 import { useNavigate } from "react-router-dom";
+import { api } from "../../shared/services/api";
 
-import Headers from "../Headers";
 import {
-  Flex,
   Box,
+  Button,
   Center,
+  Flex,
   FormControl,
-  Input,
   FormLabel,
   HStack,
-  RadioGroup,
-  Radio,
-  Button,
+  Input,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import axios from "axios";
+import Headers from "../Headers";
 
-const NewClientePage = () => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("submit");
-  };
-
+const NewPessoaPage = () => {
   const [inputNome, setInputNome] = useState("");
   const [inputDocumento, setInputDocumento] = useState("");
-  const [inputUF, setInputUF] = useState("");
-  const [inputCidade, setInputCidade] = useState("");
-  const [inputAtribuicao, setInputAtribuicao] = useState("");
-  const [inputOficio, setInputOficio] = useState("");
-  const [inputTelefone, setInputTelefone] = useState("");
-  const [inputObservacao, setInputObservacao] = useState("");
-  const [inputServidorDedicado, setInputServidorDedicado] = useState("");
-  const [inputExpedHorInicial, setInputExpedHorInicial] = useState("");
-  const [inputExpedHorFinal, setInputExpedHorFinal] = useState("");
-  const [inputExpedIntInicial, setInputExpedIntInicial] = useState("");
-  const [inputExpedIntFinal, setInputExpedIntFinal] = useState("");
-  const [inputAtivo, setInputAtivo] = useState("");
 
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("access_token");
-
-  const api = axios.create({
-    //baseURL: "http://186.248.86.194:4444",
-    baseURL: "http://localhost:5000",
-    headers: { "x-access-token": token },
-  });
-
-  const handleNewCliente = async () => {
+  const handleSubmit = async () => {
     return api
-      .post("/clientes/", {
+      .post(`/pessoas/`, {
         nome: inputNome,
         documento: inputDocumento,
-        uf: inputUF,
-        cidade: inputCidade,
-        atribuicao: inputAtribuicao,
-        oficio: inputOficio,
-        telefone: inputTelefone,
-        observacao: inputObservacao,
-        servidordedicado: "1",//inputServidorDedicado,
-        expedhorinicial: "08:00:00",//inputExpedHorInicial,
-        expedhorfinal: "18:00:00", //inputExpedHorFinal,
-        expedintinicial: "12:00:00", //inputExpedIntInicial,
-        expedintfinal: "13:00:00", inputExpedIntFinal,
-        ativo: "1", //inputAtivo,
       })
       .then(() => {
-        navigate("/clientes");
+        navigate("/pessoas");
       })
       .catch((err) => {
         console.log(err);
@@ -76,7 +36,7 @@ const NewClientePage = () => {
   };
 
   async function handleVoltar() {
-    navigate("/clientes");
+    navigate(`/pessoas`);
   }
 
   return (
@@ -134,7 +94,7 @@ const NewClientePage = () => {
                     }}
                   />
                 </Box>
-                <Box w="100%">
+                {/* <Box w="100%">
                   <FormLabel htmlFor="atribuicao">Atribuição</FormLabel>
                   <Input
                     id="atribuicao"
@@ -190,7 +150,7 @@ const NewClientePage = () => {
                       setInputObservacao(event.target.value);
                     }}
                   />
-                </Box>
+                </Box> */}
               </HStack>
               {/* <HStack spacing="4">
                 <Box w="100%">
@@ -234,7 +194,7 @@ const NewClientePage = () => {
                   fontWeight="bold"
                   fontSize="x1"
                   _hover={{ bg: "blue.800" }}
-                  onClick={handleNewCliente}
+                  onClick={handleSubmit}
                 >
                   Salvar
                 </Button>
@@ -260,4 +220,4 @@ const NewClientePage = () => {
   );
 };
 
-export default NewClientePage;
+export default NewPessoaPage;

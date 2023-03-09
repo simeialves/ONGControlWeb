@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import Table from "react-bootstrap/Table";
+import { useNavigate } from "react-router-dom";
+import { api, getUsuarios } from "../../shared/services/api";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
-import { getUsuarios } from "../../shared/services/api";
-import { useNavigate } from "react-router-dom";
-import Table from "react-bootstrap/Table";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 
-import { Button, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import axios from "axios";
-import { Input, Label } from "reactstrap";
+import { Button } from "react-bootstrap";
 
 const Usuario = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -45,21 +42,13 @@ const Usuario = () => {
     setModalUsuario(false);
   }
 
-  const api = axios.create({
-    //baseURL: "http://186.248.86.194:4444",
-    baseURL: "http://localhost:5000",
-    headers: { "x-access-token": token },
-  });
-
-  function editUsuario(UsuarioID) {
-    console.log("Edit Usuario: " + UsuarioID);
-    navigate(`/usuarios/editUsuario/${UsuarioID}`);
+  function editUsuario(usuarioId) {
+    navigate(`/usuarios/edit/${usuarioId}`);
   }
 
-  function deleteUsuario(UsuarioID) {
-    console.log("Delete Usuario: " + UsuarioID);
+  function deleteUsuario(usuarioId) {
     api
-      .delete("/usuarios/" + UsuarioID, {})
+      .delete("/usuarios/" + usuarioId, {})
       .then(() => {
         navigate("/usuarios");
         window.location.reload(false);
@@ -94,7 +83,7 @@ const Usuario = () => {
       <Headers />
       <br></br>
       <Container fluid="md">
-        <Button>Novo</Button>
+        <Button href="/usuarios/new">Novo</Button>
         <br />
         <br />
         <Row>
@@ -118,7 +107,7 @@ const Usuario = () => {
                   <td>
                     <button
                       class="btn btn-primary"
-                      onClick={(e) => editUsuario(usuario.Usuarioid, e)}
+                      onClick={(e) => editUsuario(usuario.usuarioid, e)}
                     >
                       Editar
                     </button>

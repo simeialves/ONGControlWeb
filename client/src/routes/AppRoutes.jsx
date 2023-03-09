@@ -5,17 +5,21 @@ import {
   Routes,
 } from "react-router-dom";
 
-import EditClientePage from "../pages/ClientePage/editCliente";
-import NewClientePage from "../pages/ClientePage/newCliente";
 import Evento from "../pages/EventoPage";
 import HomePage from "../pages/HomePage";
 import LocalEvento from "../pages/LocalEventoPage";
 import LoginPage from "../pages/LoginPage";
+
 import PessoaPage from "../pages/PessoaPage";
-import NewPessoaPage from "../pages/PessoaPage/newPessoa";
+import EditPessoaPage from "../pages/PessoaPage/edit";
+import NewPessoaPage from "../pages/PessoaPage/new";
+
 import TipoColaboradorPage from "../pages/TipoColaboradorPage";
 import TipoDoacaoPage from "../pages/TipoDoacaoPage";
+
 import UsuarioPage from "../pages/UsuariosPage";
+import EditUsuarioPage from "../pages/UsuariosPage/edit";
+import NewUsuarioPage from "../pages/UsuariosPage/new";
 
 import React, { useContext } from "react";
 import { AuthContext, AuthProvider } from "../shared/contexts/auth";
@@ -49,6 +53,24 @@ const AppRouters = () => {
           />
           <Route
             exact
+            path="/usuarios/new"
+            element={
+              <Private>
+                <NewUsuarioPage />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/usuarios/edit"
+            element={
+              <Private>
+                <EditUsuarioPage />
+              </Private>
+            }
+          />
+          <Route
+            exact
             path="/pessoas"
             element={
               <Private>
@@ -58,10 +80,19 @@ const AppRouters = () => {
           />
           <Route
             exact
-            path="/pessoas/newPessoa"
+            path="/pessoas/new"
             element={
               <Private>
                 <NewPessoaPage />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/pessoas/edit/:id"
+            element={
+              <Private>
+                <EditPessoaPage />
               </Private>
             }
           />
@@ -98,24 +129,6 @@ const AppRouters = () => {
             element={
               <Private>
                 <LocalEvento />
-              </Private>
-            }
-          />
-          <Route
-            exact
-            path="/newcliente"
-            element={
-              <Private>
-                <NewClientePage />
-              </Private>
-            }
-          />
-          <Route
-            exact
-            path="/clientes/editcliente/:id"
-            element={
-              <Private>
-                <EditClientePage />
               </Private>
             }
           />

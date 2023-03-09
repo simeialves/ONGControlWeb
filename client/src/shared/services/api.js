@@ -1,9 +1,8 @@
 import axios from "axios";
 
-const token = localStorage.getItem("access_token");
+export const token = localStorage.getItem("access_token");
 
 export const api = axios.create({
-  //baseURL: "http://186.248.86.194:4444",
   baseURL: "http://localhost:5000",
   headers: { "x-access-token": token },
 });
@@ -47,7 +46,3 @@ export const getPacoteLogByPacoteId = async (id) => {
 export const newUser = async (nome, documento) => {
   return api.post("/user/register", {});
 };
-
-// export const newPessoa = async (nome, documento) => {
-//   return api.post("/pessoas/newPessoa", {});
-// };
