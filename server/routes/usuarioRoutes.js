@@ -62,7 +62,7 @@ appRoutes.post("/register", (req, res, next) => {
 //#endregion
 
 //#region READ
-appRoutes.get("/", (req, res, next) => {
+appRoutes.get("/", verifyJWT, (req, res, next) => {
   db.knex
     .select()
     .from("usuario")
@@ -76,7 +76,7 @@ appRoutes.get("/", (req, res, next) => {
     });
 });
 
-appRoutes.get("/:id", async (req, res, next) => {
+appRoutes.get("/:id", verifyJWT, async (req, res, next) => {
   let id = Number.parseInt(req.params.id);
   await db.knex
     .select("*")
@@ -97,7 +97,7 @@ appRoutes.get("/:id", async (req, res, next) => {
 
 //#region UPDATE
 
-appRoutes.put("/:id", async (req, res) => {
+appRoutes.put("/:id", verifyJWT, async (req, res) => {
   const id = Number.parseInt(req.params.id);
   const { nome, login, senha, senha2, administrador } = req.body;
 
@@ -139,7 +139,7 @@ appRoutes.put("/:id", async (req, res) => {
 //#endregion
 
 //#region DELETE
-appRoutes.delete("/:id", async (req, res) => {
+appRoutes.delete("/:id", verifyJWT, async (req, res) => {
   let id = Number.parseInt(req.params.id);
   await db.knex
     .select("*")
