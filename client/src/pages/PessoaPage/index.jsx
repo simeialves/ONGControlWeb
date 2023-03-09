@@ -97,7 +97,6 @@ const Pessoa = () => {
           <Table striped bordered hover size="sm">
             <thead>
               <tr>
-                <th scope="col">#</th>
                 <th scope="col">Nome</th>
                 <th scope="col">Documento</th>
                 <th scope="col">Telefone</th>
@@ -107,7 +106,6 @@ const Pessoa = () => {
             <tbody>
               {pessoas.map((pessoa) => (
                 <tr>
-                  <td>{pessoa.pessoaid}</td>
                   <td>{pessoa.nome}</td>
                   <td>{pessoa.documento}</td>
                   <td>{pessoa.telefone}</td>
