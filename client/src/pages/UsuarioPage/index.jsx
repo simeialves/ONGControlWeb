@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { useNavigate } from "react-router-dom";
-import { api, getEventos } from "../../shared/services/api";
+import { api, getUsuarios } from "../../shared/services/api";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 
@@ -11,7 +11,7 @@ import Row from "react-bootstrap/Row";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "react-bootstrap";
 
-const Evento = () => {
+const Usuario = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -19,7 +19,7 @@ const Evento = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await getEventos();
+      const response = await getUsuarios();
       setResults(response.data);
       setLoading(false);
     })();
@@ -30,14 +30,14 @@ const Evento = () => {
   }
 
   function handleEdit(id) {
-    navigate(`/eventos/edit/${id}`);
+    navigate(`/usuarios/edit/${id}`);
   }
 
   function handleDelete(id) {
     api
-      .delete(`/eventos/${id}`, {})
+      .delete(`/usuarios/${id}`, {})
       .then(() => {
-        navigate("/eventos");
+        navigate("/usuarios");
         window.location.reload(false);
       })
       .catch((err) => {
@@ -49,27 +49,29 @@ const Evento = () => {
       <Headers />
       <br></br>
       <Container fluid="md">
-        <Button href="/eventos/new">Novo</Button>
+        <Button href="/usuarios/new">Novo</Button>
         <br />
         <br />
         <Row>
           <Table striped bordered hover size="sm">
             <thead>
               <tr>
-                <th scope="col">Descrição</th>
-                <th scope="col">Ativo</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Login</th>
+                <th scope="col">Administrador</th>
                 <th colspan="2">Ação</th>
               </tr>
             </thead>
             <tbody>
               {results.map((result) => (
                 <tr>
-                  <td>{result.descricao}</td>
-                  <td>{result.ativo}</td>
+                  <td>{result.nome}</td>
+                  <td>{result.login}</td>
+                  <td>{result.administrador}</td>
                   <td>
                     <button
                       class="btn btn-primary"
-                      onClick={(e) => handleEdit(result.eventoid, e)}
+                      onClick={(e) => handleEdit(result.usuarioid, e)}
                     >
                       Editar
                     </button>
@@ -77,7 +79,7 @@ const Evento = () => {
                   <td>
                     <button
                       class="btn btn-danger"
-                      onClick={(e) => handleDelete(result.eventoid, e)}
+                      onClick={(e) => handleDelete(result.usuarioid, e)}
                     >
                       Excluir
                     </button>
@@ -93,4 +95,4 @@ const Evento = () => {
   );
 };
 
-export default Evento;
+export default Usuario;

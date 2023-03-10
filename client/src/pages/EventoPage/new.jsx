@@ -15,20 +15,18 @@ import {
 import { useState } from "react";
 import Headers from "../Headers";
 
-const New = () => {
-  const [inputNome, setInputNome] = useState("");
-  const [inputDocumento, setInputDocumento] = useState("");
+const NewPessoaPage = () => {
+  const [inputDescricao, setInputDescricao] = useState("");
 
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
     return api
-      .post(`/pessoas/`, {
-        nome: inputNome,
-        documento: inputDocumento,
+      .post(`/eventos/`, {
+        descricao: inputDescricao,
       })
       .then(() => {
-        navigate("/pessoas");
+        navigate("/eventos");
       })
       .catch((err) => {
         console.log(err);
@@ -36,7 +34,7 @@ const New = () => {
   };
 
   async function handleVoltar() {
-    navigate(`/pessoas`);
+    navigate(`/eventos`);
   }
 
   return (
@@ -52,7 +50,7 @@ const New = () => {
           fontSize={"4x1"}
           pb="8"
         >
-          Cadastro de Clientes
+          Cadastro de Eventos
         </Center>
         <Flex
           align="center"
@@ -73,28 +71,17 @@ const New = () => {
             <FormControl display="flex" flexDir="column" gap="4">
               <HStack spacing={4}>
                 <Box w="100%">
-                  <FormLabel htmlFor="nome">Nome</FormLabel>
+                  <FormLabel htmlFor="descricao">Descrição</FormLabel>
                   <Input
-                    id="nome"
-                    value={inputNome}
+                    id="descricao"
+                    value={inputDescricao}
                     onChange={(event) => {
-                      setInputNome(event.target.value);
+                      setInputDescricao(event.target.value);
                     }}
                   />
                 </Box>
               </HStack>
-              <HStack>
-                <Box w="100%">
-                  <FormLabel htmlFor="documento">Documento</FormLabel>
-                  <Input
-                    id="documento"
-                    value={inputDocumento}
-                    onChange={(event) => {
-                      setInputDocumento(event.target.value);
-                    }}
-                  />
-                </Box>
-              </HStack>
+
               <HStack spacing="4" justify={"right"}>
                 <Button
                   w={240}
@@ -131,4 +118,4 @@ const New = () => {
   );
 };
 
-export default New;
+export default NewPessoaPage;

@@ -1,7 +1,3 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { api } from "../../shared/services/api";
-
 import {
   Box,
   Button,
@@ -12,32 +8,38 @@ import {
   HStack,
   Input,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { api } from "../../shared/services/api";
 import Headers from "../Headers";
 
-const New = () => {
-  const [inputNome, setInputNome] = useState("");
-  const [inputDocumento, setInputDocumento] = useState("");
-
+const Edit = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
+
+  const [inputDescricao, setInputDescricao] = useState("");
 
   const handleSubmit = async () => {
     return api
-      .post(`/pessoas/`, {
-        nome: inputNome,
-        documento: inputDocumento,
+      .put(`/eventos/${id}`, {
+        descricao: inputDescricao,
       })
       .then(() => {
-        navigate("/pessoas");
+        navigate("/eventos");
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
-  async function handleVoltar() {
-    navigate(`/pessoas`);
-  }
+  const handleVoltar = async () => {
+    navigate("/eventos");
+  };
+  useEffect(() => {
+    (async () => {
+      const response = await api.get(`/eventos/${id}`);
+      setInputDescricao(response.data[0].descricao);
+    })();
+  }, []);
 
   return (
     <>
@@ -52,7 +54,7 @@ const New = () => {
           fontSize={"4x1"}
           pb="8"
         >
-          Cadastro de Clientes
+          Cadastro de Eventos
         </Center>
         <Flex
           align="center"
@@ -73,28 +75,17 @@ const New = () => {
             <FormControl display="flex" flexDir="column" gap="4">
               <HStack spacing={4}>
                 <Box w="100%">
-                  <FormLabel htmlFor="nome">Nome</FormLabel>
+                  <FormLabel htmlFor="descricao">Descrição</FormLabel>
                   <Input
-                    id="nome"
-                    value={inputNome}
+                    id="descricao"
+                    value={inputDescricao}
                     onChange={(event) => {
-                      setInputNome(event.target.value);
+                      setInputDescricao(event.target.value);
                     }}
                   />
                 </Box>
               </HStack>
-              <HStack>
-                <Box w="100%">
-                  <FormLabel htmlFor="documento">Documento</FormLabel>
-                  <Input
-                    id="documento"
-                    value={inputDocumento}
-                    onChange={(event) => {
-                      setInputDocumento(event.target.value);
-                    }}
-                  />
-                </Box>
-              </HStack>
+
               <HStack spacing="4" justify={"right"}>
                 <Button
                   w={240}
@@ -131,4 +122,4 @@ const New = () => {
   );
 };
 
-export default New;
+export default Edit;

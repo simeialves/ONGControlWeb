@@ -1,28 +1,41 @@
+import React, { useContext } from "react";
 import {
   BrowserRouter as Router,
   Navigate,
   Route,
   Routes,
 } from "react-router-dom";
+import { AuthContext, AuthProvider } from "../shared/contexts/auth";
 
 import Evento from "../pages/EventoPage";
+import EditEventoPage from "../pages/EventoPage/edit";
+import NewEventoPage from "../pages/EventoPage/new";
+
 import HomePage from "../pages/HomePage";
+
 import LocalEvento from "../pages/LocalEventoPage";
+import EditLocalEventoPage from "../pages/LocalEventoPage/edit";
+import NewLocalEventoPage from "../pages/LocalEventoPage/new";
+
 import LoginPage from "../pages/LoginPage";
+
+import ParametroPage from "../pages/ParametroPage";
 
 import PessoaPage from "../pages/PessoaPage";
 import EditPessoaPage from "../pages/PessoaPage/edit";
 import NewPessoaPage from "../pages/PessoaPage/new";
 
 import TipoColaboradorPage from "../pages/TipoColaboradorPage";
+import EditTipoColaboradorPage from "../pages/TipoColaboradorPage/edit";
+import NewTipoColaboradorPage from "../pages/TipoColaboradorPage/new";
+
 import TipoDoacaoPage from "../pages/TipoDoacaoPage";
+import EditTipoDoacaoPage from "../pages/TipoDoacaoPage/edit";
+import NewTipoDoacaoPage from "../pages/TipoDoacaoPage/new";
 
 import UsuarioPage from "../pages/UsuariosPage";
 import EditUsuarioPage from "../pages/UsuariosPage/edit";
 import NewUsuarioPage from "../pages/UsuariosPage/new";
-
-import React, { useContext } from "react";
-import { AuthContext, AuthProvider } from "../shared/contexts/auth";
 
 const AppRouters = () => {
   const Private = ({ children }) => {
@@ -62,7 +75,7 @@ const AppRouters = () => {
           />
           <Route
             exact
-            path="/usuarios/edit"
+            path="/usuarios/edit/:id"
             element={
               <Private>
                 <EditUsuarioPage />
@@ -98,10 +111,37 @@ const AppRouters = () => {
           />
           <Route
             exact
+            path="/parametros"
+            element={
+              <Private>
+                <ParametroPage />
+              </Private>
+            }
+          />
+          <Route
+            exact
             path="/tipodoacoes"
             element={
               <Private>
                 <TipoDoacaoPage />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/tipodoacoes/new"
+            element={
+              <Private>
+                <NewTipoDoacaoPage />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/tipodoacoes/edit/:id"
+            element={
+              <Private>
+                <EditTipoDoacaoPage />
               </Private>
             }
           />
@@ -116,6 +156,24 @@ const AppRouters = () => {
           />
           <Route
             exact
+            path="/tipocolaboradores/new"
+            element={
+              <Private>
+                <NewTipoColaboradorPage />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/tipocolaboradores/edit/:id"
+            element={
+              <Private>
+                <EditTipoColaboradorPage />
+              </Private>
+            }
+          />
+          <Route
+            exact
             path="/eventos"
             element={
               <Private>
@@ -125,10 +183,46 @@ const AppRouters = () => {
           />
           <Route
             exact
+            path="/eventos/new"
+            element={
+              <Private>
+                <NewEventoPage />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/eventos/edit/:id"
+            element={
+              <Private>
+                <EditEventoPage />
+              </Private>
+            }
+          />
+          <Route
+            exact
             path="/localeventos"
             element={
               <Private>
                 <LocalEvento />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/localeventos/new"
+            element={
+              <Private>
+                <NewLocalEventoPage />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/localeventos/edit/:id"
+            element={
+              <Private>
+                <EditLocalEventoPage />
               </Private>
             }
           />

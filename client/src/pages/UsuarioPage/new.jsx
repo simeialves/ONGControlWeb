@@ -30,7 +30,7 @@ const NewUsuarioPage = () => {
 
   const handleSubmit = async () => {
     return api
-      .post(`/usuarios/register`, {
+      .post("/usuarios/register", {
         nome: inputNome,
         login: inputEmail,
         senha: inputSenha,

@@ -52,9 +52,9 @@ const Edit = () => {
       setInputNome(response.data[0].nome);
       setInputEmail(response.data[0].login);
       setInputSenha(response.data[0].senha);
-      setInputSenha2(response.data[0].senha2);
+      setInputSenha2(response.data[0].senha);
     })();
-  }, []);
+  }, [id]);
 
   return (
     <>
