@@ -100,41 +100,45 @@ appRoutes.get("/:id", verifyJWT, async (req, res, next) => {
 appRoutes.put("/:id", verifyJWT, async (req, res) => {
   const id = Number.parseInt(req.params.id);
   const { nome, login, senha, senha2, administrador } = req.body;
+  console.log(req.body);
+  if (senha != senha2) {
+    res.status(200).json("As senhas não conferem");
+  } else {
+    await db.knex
+      .select("*")
+      .from("usuario")
+      .where({ usuarioid: id })
+      .then(function (result) {
+        if (result.length) {
+          knex
+            .where({ usuarioid: id })
+            .update({
+              nome: nome,
+              login: login,
+              senha: bcrypt.hashSync(senha, 8),
+              administrador: administrador,
+            })
+            .table("usuario")
+            .then((result) => {
+              console.log(result);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
 
-  await db.knex
-    .select("*")
-    .from("usuario")
-    .where({ usuarioid: id })
-    .then(function (result) {
-      if (result.length) {
-        knex
-          .where({ usuarioid: id })
-          .update({
-            nome: nome,
-            login: login,
-            senha: bcrypt.hashSync(senha, 8),
-            administrador: administrador,
-          })
-          .table("usuario")
-          .then((result) => {
-            console.log(result);
-          })
-          .catch((err) => {
-            console.log(err);
+          res.status(200).json({
+            message: "Usuário alterado com sucesso",
           });
-
-        res.status(200).json({
-          message: "Usuário alterado com sucesso",
-        });
-      } else {
-        res.status(404).json({
-          message: "Usuário não encontrado",
-        });
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+        } else {
+          res.status(404).json({
+            message: "Usuário não encontrado",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 });
 //#endregion
 

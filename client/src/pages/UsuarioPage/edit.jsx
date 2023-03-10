@@ -27,6 +27,27 @@ const Edit = () => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
 
+  async function AlterarSenha() {
+    const response = await api.get(`/usuarios/${id}`);
+    if (
+      response.data[0].senha !== inputSenha &&
+      response.data[0].senha2 !== inputSenha2
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  useEffect(() => {
+    (async () => {
+      const response = await api.get(`/usuarios/${id}`);
+      setInputNome(response.data[0].nome);
+      setInputEmail(response.data[0].login);
+      setInputSenha(response.data[0].senha);
+      setInputSenha2(response.data[0].senha);
+    })();
+  }, [id]);
+
   const handleSubmit = async () => {
     return api
       .put(`/usuarios/${id}`, {
@@ -45,16 +66,6 @@ const Edit = () => {
   const handleVoltar = async () => {
     navigate("/usuarios");
   };
-  useEffect(() => {
-    (async () => {
-      const response = await api.get(`/usuarios/${id}`);
-      console.log(response);
-      setInputNome(response.data[0].nome);
-      setInputEmail(response.data[0].login);
-      setInputSenha(response.data[0].senha);
-      setInputSenha2(response.data[0].senha);
-    })();
-  }, [id]);
 
   return (
     <>
