@@ -49,19 +49,33 @@ const Edit = () => {
   }, [id]);
 
   const handleSubmit = async () => {
-    return api
-      .put(`/usuarios/${id}`, {
-        nome: inputNome,
-        login: inputEmail,
-        senha: inputSenha,
-        senha2: inputSenha2,
-      })
-      .then(() => {
-        navigate("/usuarios");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (AlterarSenha) {
+      return api
+        .put(`/usuarios/${id}`, {
+          nome: inputNome,
+          login: inputEmail,
+          senha: inputSenha,
+          senha2: inputSenha2,
+        })
+        .then(() => {
+          navigate("/usuarios");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      return api
+        .put(`/usuarios/${id}`, {
+          nome: inputNome,
+          login: inputEmail,
+        })
+        .then(() => {
+          navigate("/usuarios");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
   const handleVoltar = async () => {
     navigate("/usuarios");
