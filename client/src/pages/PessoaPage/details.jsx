@@ -11,6 +11,9 @@ import {
   FormLabel,
   HStack,
   Input,
+  Radio,
+  RadioGroup,
+  Stack,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import Headers from "../Headers";
@@ -170,7 +173,7 @@ const New = () => {
                 </Box>
               </HStack>
               <HStack>
-                <Box w="50%">
+                <Box w="30%">
                   <FormLabel htmlFor="documento">Documento</FormLabel>
                   <Input
                     id="documento"
@@ -180,17 +183,24 @@ const New = () => {
                     }}
                   />
                 </Box>
-                <Box w="20%">
+
+                <Box w="30%">
                   <FormLabel htmlFor="sexo">Sexo</FormLabel>
-                  <Input
+                  <RadioGroup onChange={setInputSexo} value={inputSexo}>
+                    <Stack direction="row">
+                      <Radio value="1">Masculino</Radio>
+                      <Radio value="2">Feminino</Radio>
+                    </Stack>
+                  </RadioGroup>
+                  {/* <Input
                     id="sexo"
                     value={inputSexo}
                     onChange={(event) => {
                       setInputSexo(event.target.value);
                     }}
-                  />
+                  /> */}
                 </Box>
-                <Box w="30%">
+                <Box w="40%">
                   <FormLabel htmlFor="dtnascimento">
                     Data de Nascimento
                   </FormLabel>
