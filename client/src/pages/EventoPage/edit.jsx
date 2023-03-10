@@ -17,12 +17,29 @@ const Edit = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const [inputProjetoId, setInputProjetoId] = useState("");
   const [inputDescricao, setInputDescricao] = useState("");
+  const [inputDataInicio, setInputDataInicio] = useState("");
+  const [inputDataFim, setInputDataFim] = useState("");
+  const [inputNivel, setInputNivel] = useState("");
+  const [inputTipo, setInputTipo] = useState("");
+  const [inputFormularioNivelamento, setInputFormularioNivelamento] =
+    useState("");
+  const [inputLocalEventoId, setInputLocalEventoId] = useState("");
+  const [inputAtivo, setInputAtivo] = useState("");
 
   const handleSubmit = async () => {
     return api
       .put(`/eventos/${id}`, {
+        projetoid: inputProjetoId,
         descricao: inputDescricao,
+        datainicio: inputDataInicio,
+        datafim: inputDataFim,
+        nivel: inputNivel,
+        tipo: inputTipo,
+        formularionivelamento: inputFormularioNivelamento,
+        localeventoid: inputLocalEventoId,
+        ativo: inputAtivo,
       })
       .then(() => {
         navigate("/eventos");
@@ -37,7 +54,15 @@ const Edit = () => {
   useEffect(() => {
     (async () => {
       const response = await api.get(`/eventos/${id}`);
+      setInputProjetoId(response.data[0].projetoid);
       setInputDescricao(response.data[0].descricao);
+      setInputDataInicio(response.data[0].datainicio);
+      setInputDataFim(response.data[0].datafim);
+      setInputNivel(response.data[0].nivel);
+      setInputTipo(response.data[0].tipo);
+      setInputFormularioNivelamento(response.data[0].formularionivelamento);
+      setInputLocalEventoId(response.data[0].localeventoid);
+      setInputAtivo(response.data[0].ativo);
     })();
   }, []);
 
@@ -81,6 +106,78 @@ const Edit = () => {
                     value={inputDescricao}
                     onChange={(event) => {
                       setInputDescricao(event.target.value);
+                    }}
+                  />
+                </Box>
+              </HStack>
+
+              <HStack spacing={4}>
+                <Box w="40%">
+                  <FormLabel htmlFor="projetoid">Projeto</FormLabel>
+                  <Input
+                    id="projetoid"
+                    value={inputProjetoId}
+                    onChange={(event) => {
+                      setInputProjetoId(event.target.value);
+                    }}
+                  />
+                </Box>
+                <Box w="30%">
+                  <FormLabel htmlFor="datainicio">Data de Início</FormLabel>
+                  <Input
+                    id="datainicio"
+                    value={inputDataInicio}
+                    onChange={(event) => {
+                      setInputDataInicio(event.target.value);
+                    }}
+                  />
+                </Box>
+                <Box w="30%">
+                  <FormLabel htmlFor="datafim">Data de Término</FormLabel>
+                  <Input
+                    id="datafim"
+                    value={inputDataFim}
+                    onChange={(event) => {
+                      setInputDataFim(event.target.value);
+                    }}
+                  />
+                </Box>
+              </HStack>
+
+              <HStack spacing={4}>
+                <Box w="20%">
+                  <FormLabel htmlFor="nivel">Nível</FormLabel>
+                  <Input
+                    id="nivel"
+                    value={inputNivel}
+                    onChange={(event) => {
+                      setInputNivel(event.target.value);
+                    }}
+                  />
+                </Box>
+
+                <Box w="80%">
+                  <FormLabel htmlFor="localeventoid">Local do Evento</FormLabel>
+                  <Input
+                    id="localeventoid"
+                    value={inputLocalEventoId}
+                    onChange={(event) => {
+                      setInputLocalEventoId(event.target.value);
+                    }}
+                  />
+                </Box>
+              </HStack>
+
+              <HStack spacing={4}>
+                <Box w="100%">
+                  <FormLabel htmlFor="formularionivelamento">
+                    Formulário Nivelamento
+                  </FormLabel>
+                  <Input
+                    id="formularionivelamento"
+                    value={inputFormularioNivelamento}
+                    onChange={(event) => {
+                      setInputFormularioNivelamento(event.target.value);
                     }}
                   />
                 </Box>

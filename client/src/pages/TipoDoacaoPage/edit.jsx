@@ -1,63 +1,45 @@
-import React, { useEffect } from "react";
-
-import { useNavigate } from "react-router-dom";
-
-import Headers from "../Headers";
 import {
-  Flex,
   Box,
+  Button,
   Center,
+  Flex,
   FormControl,
-  Input,
   FormLabel,
   HStack,
-  RadioGroup,
-  Radio,
-  Button,
+  Input,
 } from "@chakra-ui/react";
-import { useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { api } from "../../shared/services/api";
+import Headers from "../Headers";
 
-const NewClientePage = () => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("submit");
-  };
-
-  const [inputNome, setInputNome] = useState("");
-  const [inputDocumento, setInputDocumento] = useState("");
-  const [inputUF, setInputUF] = useState("");
-  const [inputCidade, setInputCidade] = useState("");
-  const [inputAtribuicao, setInputAtribuicao] = useState("");
-  const [inputOficio, setInputOficio] = useState("");
-  const [inputTelefone, setInputTelefone] = useState("");
-  const [inputObservacao, setInputObservacao] = useState("");
-  const [inputServidorDedicado, setInputServidorDedicado] = useState("");
-  const [inputExpedHorInicial, setInputExpedHorInicial] = useState("");
-  const [inputExpedHorFinal, setInputExpedHorFinal] = useState("");
-  const [inputExpedIntInicial, setInputExpedIntInicial] = useState("");
-  const [inputExpedIntFinal, setInputExpedIntFinal] = useState("");
-  const [inputAtivo, setInputAtivo] = useState("");
-
+const Edit = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("access_token");
+  const [inputDescricao, setInputDescricao] = useState("");
 
+  const handleSubmit = async () => {
+    return api
+      .put(`/tipodoacoes/${id}`, {
+        descricao: inputDescricao,
+      })
+      .then(() => {
+        navigate("/tipodoacoes");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleVoltar = async () => {
+    navigate("/tipodoacoes");
+  };
   useEffect(() => {
     (async () => {
-      const api = axios.create({
-        //baseURL: "http://186.248.86.194:4444",
-        baseURL: "http://localhost:5000",
-        headers: { "x-access-token": token },
-      });
-      const response = await api.get("/clientes/" + 158);
-      console.log(response.data);
+      const response = await api.get(`/tipodoacoes/${id}`);
+      setInputDescricao(response.data[0].descricao);
     })();
   }, []);
-
-    async function handleVoltar() {
-    navigate("/clientes");
-  }
 
   return (
     <>
@@ -72,7 +54,7 @@ const NewClientePage = () => {
           fontSize={"4x1"}
           pb="8"
         >
-          Cadastro de Clientes
+          Cadastro de Tipo de Doações
         </Center>
         <Flex
           align="center"
@@ -93,117 +75,17 @@ const NewClientePage = () => {
             <FormControl display="flex" flexDir="column" gap="4">
               <HStack spacing={4}>
                 <Box w="100%">
-                  <FormLabel htmlFor="nome">Nome</FormLabel>
+                  <FormLabel htmlFor="nome">Descrição</FormLabel>
                   <Input
                     id="nome"
-                    value={inputNome}
+                    value={inputDescricao}
                     onChange={(event) => {
-                      setInputNome(event.target.value);
+                      setInputDescricao(event.target.value);
                     }}
                   />
                 </Box>
               </HStack>
-              <HStack>
-                <Box w="100%">
-                  <FormLabel htmlFor="documento">Documento</FormLabel>
-                  <Input
-                    id="documento"
-                    value={inputDocumento}
-                    onChange={(event) => {
-                      setInputDocumento(event.target.value);
-                    }}
-                  />
-                </Box>
-                <Box w="100%">
-                  <FormLabel htmlFor="atribuicao">Atribuição</FormLabel>
-                  <Input
-                    id="atribuicao"
-                    value={inputAtribuicao}
-                    onChange={(event) => {
-                      setInputAtribuicao(event.target.value);
-                    }}
-                  />
-                </Box>
-              </HStack>
-              <HStack spacing={4}>
-                <Box w="77%">
-                  <FormLabel htmlFor="cidade">Cidade</FormLabel>
-                  <Input
-                    id="cidade"
-                    value={inputCidade}
-                    onChange={(event) => {
-                      setInputCidade(event.target.value);
-                    }}
-                  />
-                </Box>
-                <Box w="20%">
-                  <FormLabel htmlFor="uf">UF</FormLabel>
-                  <Input
-                    id="uf"
-                    value={inputUF}
-                    onChange={(event) => {
-                      setInputUF(event.target.value);
-                    }}
-                  />
-                </Box>
-              </HStack>
-              <HStack>
-                <Box w="100%">
-                  <FormLabel htmlFor="telefone">Telefone</FormLabel>
-                  <Input
-                    id="telefone"
-                    value={inputTelefone}
-                    onChange={(event) => {
-                      setInputTelefone(event.target.value);
-                    }}
-                  />
-                </Box>
-              </HStack>
-              <HStack spacing={4}>
-                <Box w="100%">
-                  <FormLabel htmlFor="nasc">Observação</FormLabel>
-                  <Input
-                    id="nasc"
-                    type="textarea"
-                    value={inputObservacao}
-                    onChange={(event) => {
-                      setInputObservacao(event.target.value);
-                    }}
-                  />
-                </Box>
-              </HStack>
-              {/* <HStack spacing="4">
-                <Box w="100%">
-                  <FormLabel htmlFor="cel">Celular</FormLabel>
-                  <Input id="cel" type="number" />
-                </Box>
-                <Box w="100%">
-                  <FormLabel htmlFor="telefone">Telefone</FormLabel>
-                  <Input id="telefone" type="number" />
-                </Box>
-              </HStack>
-              <HStack spacing={4}>
-                <Box w="100%">
-                  <FormLabel htmlFor="endereco">Endereço</FormLabel>
-                  <Input id="endereco" />
-                </Box>
-                <Box w="100%">
-                  <FormLabel htmlFor="cidade">Cidade</FormLabel>
-                  <Input id="cidade" />
-                </Box>
-              </HStack>
-              <HStack spacing={4}>
-                <Box w="100%">
-                  <FormLabel>Sexo</FormLabel>
-                  <RadioGroup defaultValue="Masculino">
-                    <HStack spacing="24px">
-                      <Radio value="Masculino">Masculino</Radio>
-                      <Radio value="Feminino">Feminino</Radio>
-                      <Radio value="Outros">Outros</Radio>
-                    </HStack>
-                  </RadioGroup>
-                </Box>
-              </HStack> */}
+
               <HStack spacing="4" justify={"right"}>
                 <Button
                   w={240}
@@ -214,6 +96,7 @@ const NewClientePage = () => {
                   fontWeight="bold"
                   fontSize="x1"
                   _hover={{ bg: "blue.800" }}
+                  onClick={handleSubmit}
                 >
                   Salvar
                 </Button>
@@ -239,4 +122,4 @@ const NewClientePage = () => {
   );
 };
 
-export default NewClientePage;
+export default Edit;

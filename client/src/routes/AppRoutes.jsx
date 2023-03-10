@@ -36,12 +36,13 @@ import NewTipoDoacaoPage from "../pages/TipoDoacaoPage/new";
 import UsuarioPage from "../pages/UsuarioPage";
 import EditUsuarioPage from "../pages/UsuarioPage/edit";
 import NewUsuarioPage from "../pages/UsuarioPage/new";
+import SpinnerUtil from "../pages/Uteis/progress";
 
 const AppRouters = () => {
   const Private = ({ children }) => {
     const { authenticated, loading } = useContext(AuthContext);
     if (loading) {
-      return <div className="loading">Carregando...</div>;
+      return <SpinnerUtil />;
     }
 
     if (!authenticated) {

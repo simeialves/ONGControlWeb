@@ -1,6 +1,6 @@
 apps:
   - script: server.js
-    name: 'LyonControl'
+    name: "ONGControl"
     instances: 1
     exec_mode: cluster
     max_memory_restart: 500M
