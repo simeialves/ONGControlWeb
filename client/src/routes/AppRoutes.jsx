@@ -33,9 +33,9 @@ import TipoDoacaoPage from "../pages/TipoDoacaoPage";
 import EditTipoDoacaoPage from "../pages/TipoDoacaoPage/edit";
 import NewTipoDoacaoPage from "../pages/TipoDoacaoPage/new";
 
-import UsuarioPage from "../pages/UsuariosPage";
-import EditUsuarioPage from "../pages/UsuariosPage/edit";
-import NewUsuarioPage from "../pages/UsuariosPage/new";
+import UsuarioPage from "../pages/UsuarioPage";
+import EditUsuarioPage from "../pages/UsuarioPage/edit";
+import NewUsuarioPage from "../pages/UsuarioPage/new";
 
 const AppRouters = () => {
   const Private = ({ children }) => {
