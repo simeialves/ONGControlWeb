@@ -1,3 +1,7 @@
+import React, { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { api } from "../../shared/services/api";
+
 import {
   Box,
   Button,
@@ -8,14 +12,15 @@ import {
   HStack,
   Input,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { api } from "../../shared/services/api";
+import { useState } from "react";
 import Headers from "../Headers";
+import SpinnerUtil from "../Uteis/progress";
 
-const Edit = () => {
+const New = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(true);
 
   const [inputNome, setInputNome] = useState("");
   const [inputCep, setInputCep] = useState("");
@@ -28,45 +33,77 @@ const Edit = () => {
   const [inputPais, setInputPais] = useState("");
   const [inputLink, setInputLink] = useState("");
 
-  const handleSubmit = async () => {
-    return api
-      .put(`/localeventos/${id}`, {
-        nome: inputNome,
-        cep: inputCep,
-        logradouro: inputLogradouro,
-        numero: inputNumero,
-        complemento: inputComplemento,
-        bairro: inputBairro,
-        cidade: inputCidade,
-        uf: inputUF,
-        pais: inputPais,
-        link: inputLink,
-      })
-      .then(() => {
-        navigate("/localeventos");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  const handleVoltar = async () => {
-    navigate("/localeventos");
-  };
   useEffect(() => {
-    (async () => {
-      const response = await api.get(`/localeventos/${id}`);
-      setInputNome(response.data[0].nome);
-      setInputCep(response.data[0].cep);
-      setInputLogradouro(response.data[0].logradouro);
-      setInputNumero(response.data[0].numero);
-      setInputComplemento(response.data[0].complemento);
-      setInputBairro(response.data[0].bairro);
-      setInputCidade(response.data[0].cidade);
-      setInputUF(response.data[0].uf);
-      setInputPais(response.data[0].pais);
-      setInputLink(response.data[0].link);
-    })();
+    if (id != undefined) {
+      setLoading(true);
+      (async () => {
+        const response = await api.get(`/localeventos/${id}`);
+        setInputNome(response.data[0].nome);
+        setInputCep(response.data[0].cep);
+        setInputLogradouro(response.data[0].logradouro);
+        setInputNumero(response.data[0].numero);
+        setInputComplemento(response.data[0].complemento);
+        setInputBairro(response.data[0].bairro);
+        setInputCidade(response.data[0].cidade);
+        setInputUF(response.data[0].uf);
+        setInputPais(response.data[0].pais);
+        setInputLink(response.data[0].link);
+      })();
+      setLoading(false);
+    }
   }, []);
+
+  if (loading) {
+    <SpinnerUtil />;
+  }
+
+  const handleSubmit = async () => {
+    if (id == undefined) {
+      return api
+        .post(`/localeventos/`, {
+          nome: inputNome,
+          cep: inputCep,
+          logradouro: inputLogradouro,
+          numero: inputNumero,
+          complemento: inputComplemento,
+          bairro: inputBairro,
+          cidade: inputCidade,
+          uf: inputUF,
+          pais: inputPais,
+          link: inputLink,
+        })
+        .then(() => {
+          navigate("/localeventos");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      return api
+        .put(`/localeventos/${id}`, {
+          nome: inputNome,
+          cep: inputCep,
+          logradouro: inputLogradouro,
+          numero: inputNumero,
+          complemento: inputComplemento,
+          bairro: inputBairro,
+          cidade: inputCidade,
+          uf: inputUF,
+          pais: inputPais,
+          link: inputLink,
+        })
+        .then(() => {
+          navigate("/localeventos");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  async function handleVoltar() {
+    navigate(`/localeventos`);
+  }
 
   return (
     <>
@@ -239,4 +276,4 @@ const Edit = () => {
   );
 };
 
-export default Edit;
+export default New;

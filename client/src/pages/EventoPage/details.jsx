@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../shared/services/api";
 
 import {
@@ -19,8 +19,14 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import Headers from "../Headers";
+import SpinnerUtil from "../Uteis/progress";
 
 const NewPessoaPage = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(true);
+
   const [inputProjetoId, setInputProjetoId] = useState("");
   const [inputDescricao, setInputDescricao] = useState("");
   const [inputDataInicio, setInputDataInicio] = useState("");
@@ -32,27 +38,69 @@ const NewPessoaPage = () => {
   const [inputLocalEventoId, setInputLocalEventoId] = useState("");
   const [inputAtivo, setInputAtivo] = useState("");
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (id != undefined) {
+      setLoading(true);
+      (async () => {
+        const response = await api.get(`/eventos/${id}`);
+        setInputProjetoId(response.data[0].projetoid);
+        setInputDescricao(response.data[0].descricao);
+        setInputDataInicio(response.data[0].datainicio);
+        setInputDataFim(response.data[0].datafim);
+        setInputNivel(response.data[0].nivel);
+        setInputTipo(response.data[0].tipo);
+        setInputFormularioNivelamento(response.data[0].formularionivelamento);
+        setInputLocalEventoId(response.data[0].localeventoid);
+        setInputAtivo(response.data[0].ativo);
+      })();
+      setLoading(false);
+    }
+  }, []);
+
+  if (loading) {
+    <SpinnerUtil />;
+  }
 
   const handleSubmit = async () => {
-    return api
-      .post(`/eventos/`, {
-        projetoid: inputProjetoId,
-        descricao: inputDescricao,
-        datainicio: inputDataInicio,
-        datafim: inputDataFim,
-        nivel: inputNivel,
-        tipo: inputTipo,
-        formularionivelamento: inputFormularioNivelamento,
-        localeventoid: inputLocalEventoId,
-        ativo: inputAtivo,
-      })
-      .then(() => {
-        navigate("/eventos");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (id == undefined) {
+      return api
+        .post(`/eventos/`, {
+          projetoid: inputProjetoId,
+          descricao: inputDescricao,
+          datainicio: inputDataInicio,
+          datafim: inputDataFim,
+          nivel: inputNivel,
+          tipo: inputTipo,
+          formularionivelamento: inputFormularioNivelamento,
+          localeventoid: inputLocalEventoId,
+          ativo: inputAtivo,
+        })
+        .then(() => {
+          navigate("/eventos");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      return api
+        .put(`/eventos/${id}`, {
+          projetoid: inputProjetoId,
+          descricao: inputDescricao,
+          datainicio: inputDataInicio,
+          datafim: inputDataFim,
+          nivel: inputNivel,
+          tipo: inputTipo,
+          formularionivelamento: inputFormularioNivelamento,
+          localeventoid: inputLocalEventoId,
+          ativo: inputAtivo,
+        })
+        .then(() => {
+          navigate("/eventos");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   async function handleVoltar() {

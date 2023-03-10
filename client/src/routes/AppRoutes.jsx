@@ -8,30 +8,40 @@ import {
 import { AuthContext, AuthProvider } from "../shared/contexts/auth";
 
 import Evento from "../pages/EventoPage";
-import EditEventoPage from "../pages/EventoPage/edit";
-import NewEventoPage from "../pages/EventoPage/new";
+import {
+  default as EditEventoPage,
+  default as NewEventoPage,
+} from "../pages/EventoPage/details";
 
 import HomePage from "../pages/HomePage";
 
 import LocalEvento from "../pages/LocalEventoPage";
-import EditLocalEventoPage from "../pages/LocalEventoPage/edit";
-import NewLocalEventoPage from "../pages/LocalEventoPage/new";
+import {
+  default as EditLocalEventoPage,
+  default as NewLocalEventoPage,
+} from "../pages/LocalEventoPage/details";
 
 import LoginPage from "../pages/LoginPage";
 
 import ParametroPage from "../pages/ParametroPage";
 
 import PessoaPage from "../pages/PessoaPage";
-import EditPessoaPage from "../pages/PessoaPage/edit";
-import NewPessoaPage from "../pages/PessoaPage/new";
+import {
+  default as EditPessoaPage,
+  default as NewPessoaPage,
+} from "../pages/PessoaPage/details";
 
 import TipoColaboradorPage from "../pages/TipoColaboradorPage";
-import EditTipoColaboradorPage from "../pages/TipoColaboradorPage/edit";
-import NewTipoColaboradorPage from "../pages/TipoColaboradorPage/new";
+import {
+  default as EditTipoColaboradorPage,
+  default as NewTipoColaboradorPage,
+} from "../pages/TipoColaboradorPage/details";
 
 import TipoDoacaoPage from "../pages/TipoDoacaoPage";
-import EditTipoDoacaoPage from "../pages/TipoDoacaoPage/edit";
-import NewTipoDoacaoPage from "../pages/TipoDoacaoPage/new";
+import {
+  default as EditTipoDoacaoPage,
+  default as NewTipoDoacaoPage,
+} from "../pages/TipoDoacaoPage/details";
 
 import UsuarioPage from "../pages/UsuarioPage";
 import EditUsuarioPage from "../pages/UsuarioPage/edit";

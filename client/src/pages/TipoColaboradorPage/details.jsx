@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../shared/services/api";
 
 import {
@@ -14,29 +14,64 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import Headers from "../Headers";
+import SpinnerUtil from "../Uteis/progress";
 
 const New = () => {
-  const [inputNome, setInputNome] = useState("");
-  const [inputDocumento, setInputDocumento] = useState("");
-
+  const { id } = useParams();
   const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(true);
+
+  const [inputDescricao, setInputDescricao] = useState("");
+  const [inputAtivo, setInputAtivo] = useState("");
+
+  useEffect(() => {
+    if (id != undefined) {
+      setLoading(true);
+      (async () => {
+        const response = await api.get(`/tipocolaboradores/${id}`);
+        console.log(response);
+        setInputDescricao(response.data[0].descricao);
+        setInputAtivo(response.data[0].ativo);
+      })();
+      setLoading(false);
+    }
+  }, []);
+
+  if (loading) {
+    <SpinnerUtil />;
+  }
+
   const handleSubmit = async () => {
-    return api
-      .post(`/pessoas/`, {
-        nome: inputNome,
-        documento: inputDocumento,
-      })
-      .then(() => {
-        navigate("/pessoas");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (id == undefined) {
+      return api
+        .post(`/tipocolaboradores/`, {
+          descricao: inputDescricao,
+          ativo: inputAtivo,
+        })
+        .then(() => {
+          navigate("/tipocolaboradores");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      return api
+        .put(`/tipocolaboradores/${id}`, {
+          descricao: inputDescricao,
+          ativo: inputAtivo,
+        })
+        .then(() => {
+          navigate("/tipocolaboradores");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   async function handleVoltar() {
-    navigate(`/pessoas`);
+    navigate(`/tipocolaboradores`);
   }
 
   return (
@@ -52,7 +87,7 @@ const New = () => {
           fontSize={"4x1"}
           pb="8"
         >
-          Cadastro de Clientes
+          Cadastro de Tipo de Colaboradores
         </Center>
         <Flex
           align="center"
@@ -73,28 +108,17 @@ const New = () => {
             <FormControl display="flex" flexDir="column" gap="4">
               <HStack spacing={4}>
                 <Box w="100%">
-                  <FormLabel htmlFor="nome">Nome</FormLabel>
+                  <FormLabel htmlFor="nome">Descrição</FormLabel>
                   <Input
                     id="nome"
-                    value={inputNome}
+                    value={inputDescricao}
                     onChange={(event) => {
-                      setInputNome(event.target.value);
+                      setInputDescricao(event.target.value);
                     }}
                   />
                 </Box>
               </HStack>
-              <HStack>
-                <Box w="100%">
-                  <FormLabel htmlFor="documento">Documento</FormLabel>
-                  <Input
-                    id="documento"
-                    value={inputDocumento}
-                    onChange={(event) => {
-                      setInputDocumento(event.target.value);
-                    }}
-                  />
-                </Box>
-              </HStack>
+
               <HStack spacing="4" justify={"right"}>
                 <Button
                   w={240}

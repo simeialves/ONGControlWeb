@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../shared/services/api";
 
 import {
@@ -14,23 +14,56 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import Headers from "../Headers";
+import SpinnerUtil from "../Uteis/progress";
 
 const New = () => {
-  const [inputDescricao, setInputDescricao] = useState("");
-
+  const { id } = useParams();
   const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(true);
+
+  const [inputDescricao, setInputDescricao] = useState("");
+  const [inputAtivo, setInputAtivo] = useState("");
+
+  useEffect(() => {
+    if (id != undefined) {
+      (async () => {
+        const response = await api.get(`/tipodoacoes/${id}`);
+        setInputDescricao(response.data[0].descricao);
+        setInputAtivo(response.data[0].ativo);
+      })();
+      setLoading(false);
+    }
+  }, []);
+
+  if (loading) {
+    <SpinnerUtil />;
+  }
+
   const handleSubmit = async () => {
-    return api
-      .post(`/tipodoacoes/`, {
-        descricao: inputDescricao,
-      })
-      .then(() => {
-        navigate("/tipodoacoes");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (id == undefined) {
+      return api
+        .post(`/tipodoacoes/`, {
+          descricao: inputDescricao,
+        })
+        .then(() => {
+          navigate("/tipodoacoes");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      return api
+        .put(`/tipodoacoes/${id}`, {
+          descricao: inputDescricao,
+        })
+        .then(() => {
+          navigate("/tipodoacoes");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   async function handleVoltar() {
