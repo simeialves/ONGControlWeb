@@ -12,6 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getEventos } from "../../shared/services/api";
+import { formatDate } from "../Uteis/Uteis";
 
 export const CardEvento = () => {
   const [results, setResults] = useState([]);
@@ -28,9 +29,13 @@ export const CardEvento = () => {
     })();
   }, []);
 
-  //   function handleClick(id) {
-  //     navigate(`/eventos/edit/${id}`);
-  //   }
+  // function formatDate(dataInput) {
+  //   return new Date(dataInput).toLocaleString().replace(", 00:00:00", "");
+  // }
+
+  function handleClick(id) {
+    navigate(`/eventos/edit/${id}`);
+  }
 
   return (
     <Container gap={4}>
@@ -46,8 +51,9 @@ export const CardEvento = () => {
               <Heading size="md">{result.descricao}</Heading>
               <Text>{result.descricao}</Text>
               <Text color="blue.600" fontSize="2xl">
-                Data de Início: {result.datainicio}
-                Data de Término: {result.datafim}
+                Data de Início: {formatDate(result.datainicio)}
+                <br />
+                Data de Término: {formatDate(result.datafim)}
               </Text>
             </Stack>
           </CardBody>
@@ -58,6 +64,7 @@ export const CardEvento = () => {
                 variant="solid"
                 colorScheme="blue"
                 href={`/eventos/edit/${result.eventoid}`}
+                className="btn btn-primary"
               >
                 Ver Evento
               </a>

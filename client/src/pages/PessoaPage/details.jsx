@@ -18,6 +18,7 @@ import {
 import { useState } from "react";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
+import { formatDate } from "../Uteis/Uteis";
 
 const New = () => {
   const { id } = useParams();
@@ -49,7 +50,7 @@ const New = () => {
         setInputNome(response.data[0].nome);
         setInputDocumento(response.data[0].documento);
         setInputSexo(response.data[0].sexo);
-        setInputDtNascimento(response.data[0].dtnascimento);
+        setInputDtNascimento(formatDate(response.data[0].dtnascimento));
         setInputTelefone(response.data[0].telefone);
         setInputEmail(response.data[0].email);
         setInputCEP(response.data[0].cep);
@@ -124,6 +125,24 @@ const New = () => {
     }
   };
 
+  const checkCEP = (e) => {
+    const cep = e.target.value.replace(/\D/g, "");
+    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+      .then((res) => res.json())
+      .then((response) => {
+        if (response.erro != "true") {
+          setInputLogradouro(response.logradouro);
+          setInputBairro(response.bairro);
+          setInputCidade(response.localidade);
+          setInputUF(response.uf);
+          setInputPais("Brasil");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   async function handleVoltar() {
     navigate(`/pessoas`);
   }
@@ -141,7 +160,7 @@ const New = () => {
           fontSize={"4x1"}
           pb="8"
         >
-          Cadastro de Clientes
+          Cadastro de Pessoas
         </Center>
         <Flex
           align="center"
@@ -172,7 +191,7 @@ const New = () => {
                   />
                 </Box>
               </HStack>
-              <HStack>
+              <HStack spacing={4}>
                 <Box w="30%">
                   <FormLabel htmlFor="documento">Documento</FormLabel>
                   <Input
@@ -192,13 +211,6 @@ const New = () => {
                       <Radio value="2">Feminino</Radio>
                     </Stack>
                   </RadioGroup>
-                  {/* <Input
-                    id="sexo"
-                    value={inputSexo}
-                    onChange={(event) => {
-                      setInputSexo(event.target.value);
-                    }}
-                  /> */}
                 </Box>
                 <Box w="40%">
                   <FormLabel htmlFor="dtnascimento">
@@ -214,7 +226,85 @@ const New = () => {
                 </Box>
               </HStack>
               <HStack spacing={4}>
-                <Box w="77%">
+                <Box w="30%">
+                  <FormLabel htmlFor="telefone">Telefone</FormLabel>
+                  <Input
+                    id="telefone"
+                    value={inputTelefone}
+                    onChange={(event) => {
+                      setInputTelefone(event.target.value);
+                    }}
+                  />
+                </Box>
+                <Box w="70%">
+                  <FormLabel htmlFor="email">E-mail</FormLabel>
+                  <Input
+                    id="email"
+                    value={inputEmail}
+                    onChange={(event) => {
+                      setInputEmail(event.target.value);
+                    }}
+                  />
+                </Box>
+              </HStack>
+
+              <HStack spacing={4}>
+                <Box w="15%">
+                  <FormLabel htmlFor="cep">Cep</FormLabel>
+                  <Input
+                    id="cep"
+                    value={inputCEP}
+                    onChange={(event) => {
+                      setInputCEP(event.target.value);
+                    }}
+                    onBlur={checkCEP}
+                  />
+                </Box>
+                <Box w="50%">
+                  <FormLabel htmlFor="logradouro">Logradouro</FormLabel>
+                  <Input
+                    id="logradouro"
+                    value={inputLogradouro}
+                    onChange={(event) => {
+                      setInputLogradouro(event.target.value);
+                    }}
+                  />
+                </Box>
+                <Box w="15%">
+                  <FormLabel htmlFor="numero">Número</FormLabel>
+                  <Input
+                    id="numero"
+                    value={inputNumero}
+                    onChange={(event) => {
+                      setInputNumero(event.target.value);
+                    }}
+                  />
+                </Box>
+                <Box w="20%">
+                  <FormLabel htmlFor="complemento">Complemento</FormLabel>
+                  <Input
+                    id="complemento"
+                    value={inputComplemento}
+                    onChange={(event) => {
+                      setInputComplemento(event.target.value);
+                    }}
+                  />
+                </Box>
+              </HStack>
+
+              <HStack>
+                <Box w="30%">
+                  <FormLabel htmlFor="bairro">Bairro</FormLabel>
+                  <Input
+                    id="bairro"
+                    value={inputBairro}
+                    onChange={(event) => {
+                      setInputBairro(event.target.value);
+                    }}
+                  />
+                </Box>
+
+                <Box w="50%">
                   <FormLabel htmlFor="cidade">Cidade</FormLabel>
                   <Input
                     id="cidade"
@@ -224,6 +314,7 @@ const New = () => {
                     }}
                   />
                 </Box>
+
                 <Box w="20%">
                   <FormLabel htmlFor="uf">UF</FormLabel>
                   <Input
@@ -231,18 +322,6 @@ const New = () => {
                     value={inputUF}
                     onChange={(event) => {
                       setInputUF(event.target.value);
-                    }}
-                  />
-                </Box>
-              </HStack>
-              <HStack>
-                <Box w="100%">
-                  <FormLabel htmlFor="telefone">Telefone</FormLabel>
-                  <Input
-                    id="telefone"
-                    value={inputTelefone}
-                    onChange={(event) => {
-                      setInputTelefone(event.target.value);
                     }}
                   />
                 </Box>
