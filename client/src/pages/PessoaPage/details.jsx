@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../shared/services/api";
+import { formateDateNoTime } from "../Uteis/Uteis";
 
 import {
   Box,
@@ -18,7 +19,6 @@ import {
 import { useState } from "react";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
-import { formatDate } from "../Uteis/Uteis";
 
 const New = () => {
   const { id } = useParams();
@@ -50,7 +50,7 @@ const New = () => {
         setInputNome(response.data[0].nome);
         setInputDocumento(response.data[0].documento);
         setInputSexo(response.data[0].sexo);
-        setInputDtNascimento(formatDate(response.data[0].dtnascimento));
+        setInputDtNascimento(formateDateNoTime(response.data[0].dtnascimento));
         setInputTelefone(response.data[0].telefone);
         setInputEmail(response.data[0].email);
         setInputCEP(response.data[0].cep);
@@ -222,6 +222,8 @@ const New = () => {
                     onChange={(event) => {
                       setInputDtNascimento(event.target.value);
                     }}
+                    size="md"
+                    type="date"
                   />
                 </Box>
               </HStack>
