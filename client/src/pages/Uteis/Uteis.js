@@ -2,7 +2,7 @@ export function formatDate(dataInput) {
   return new Date(dataInput).toLocaleString().replace(", 00:00:00", "");
 }
 
-export function formateDateNoTime(dateInput) {
+export function formatDateNoTime(dateInput) {
   let data = new Date(dateInput),
     dia = data.getDate().toString(),
     diaF = dia.length == 1 ? "0" + dia : dia,
@@ -11,4 +11,8 @@ export function formateDateNoTime(dateInput) {
     anoF = data.getFullYear();
 
   return anoF + "-" + mesF + "-" + diaF;
+}
+
+export function removeCaracter(valor) {
+  return valor.replace(/\D/g, "");
 }

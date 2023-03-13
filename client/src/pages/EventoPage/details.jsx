@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../shared/services/api";
+import { formatDateNoTime } from "../Uteis/Uteis";
 
 import {
   Box,
@@ -45,8 +46,8 @@ const NewPessoaPage = () => {
         const response = await api.get(`/eventos/${id}`);
         setInputProjetoId(response.data[0].projetoid);
         setInputDescricao(response.data[0].descricao);
-        setInputDataInicio(response.data[0].datainicio);
-        setInputDataFim(response.data[0].datafim);
+        setInputDataInicio(formatDateNoTime(response.data[0].datainicio));
+        setInputDataFim(formatDateNoTime(response.data[0].datafim));
         setInputNivel(response.data[0].nivel);
         setInputTipo(response.data[0].tipo);
         setInputFormularioNivelamento(response.data[0].formularionivelamento);
@@ -181,6 +182,7 @@ const NewPessoaPage = () => {
                           onChange={(event) => {
                             setInputDataInicio(event.target.value);
                           }}
+                          type="date"
                         />
                       </Box>
                       <Box w="30%">
@@ -191,6 +193,7 @@ const NewPessoaPage = () => {
                           onChange={(event) => {
                             setInputDataFim(event.target.value);
                           }}
+                          type="date"
                         />
                       </Box>
                     </HStack>

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { api } from "../../shared/services/api";
-import { formateDateNoTime } from "../Uteis/Uteis";
+import { api, getCEP } from "../../shared/services/api";
+import { formatDateNoTime } from "../Uteis/Uteis";
 
 import {
   Box,
@@ -50,7 +50,7 @@ const New = () => {
         setInputNome(response.data[0].nome);
         setInputDocumento(response.data[0].documento);
         setInputSexo(response.data[0].sexo);
-        setInputDtNascimento(formateDateNoTime(response.data[0].dtnascimento));
+        setInputDtNascimento(formatDateNoTime(response.data[0].dtnascimento));
         setInputTelefone(response.data[0].telefone);
         setInputEmail(response.data[0].email);
         setInputCEP(response.data[0].cep);
@@ -125,22 +125,18 @@ const New = () => {
     }
   };
 
-  const checkCEP = (e) => {
-    const cep = e.target.value.replace(/\D/g, "");
-    fetch(`https://viacep.com.br/ws/${cep}/json/`)
-      .then((res) => res.json())
-      .then((response) => {
-        if (response.erro != "true") {
-          setInputLogradouro(response.logradouro);
-          setInputBairro(response.bairro);
-          setInputCidade(response.localidade);
-          setInputUF(response.uf);
-          setInputPais("Brasil");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const checkCEP = async (cep) => {
+    const response = await getCEP(cep);
+
+    if (response.data.erro === undefined) {
+      setInputLogradouro(response.data.logradouro);
+      setInputBairro(response.data.bairro);
+      setInputCidade(response.data.localidade);
+      setInputUF(response.data.uf);
+      setInputPais("Brasil");
+    } else {
+      alert("CEP não encontrado!");
+    }
   };
 
   async function handleVoltar() {
@@ -259,7 +255,9 @@ const New = () => {
                     onChange={(event) => {
                       setInputCEP(event.target.value);
                     }}
-                    onBlur={checkCEP}
+                    onBlur={(event) => {
+                      checkCEP(event.target.value);
+                    }}
                   />
                 </Box>
                 <Box w="50%">
