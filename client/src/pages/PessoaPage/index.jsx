@@ -8,13 +8,14 @@ import SpinnerUtil from "../Uteis/progress";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 
-import { Alert, AlertIcon, Input, Stack } from "@chakra-ui/react";
+import { Input } from "@chakra-ui/react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "react-bootstrap";
 
 const Pessoa = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState(false);
   const [inputNome, setInputNome] = useState("");
 
   const navigate = useNavigate();
@@ -58,9 +59,16 @@ const Pessoa = () => {
         setLoading(false);
       })
       .catch(() => {
-        alert("Nenhuma pessoa encontrada");
         setLoading(false);
       });
+  }
+
+  async function handleClear() {
+    setLoading(true);
+    setInputNome("");
+    const response = await getPessoas();
+    setResults(response.data);
+    setLoading(false);
   }
   return (
     <>
@@ -70,12 +78,23 @@ const Pessoa = () => {
         <Button href="/pessoas/new">Nova</Button>
         <br />
         <br />
-        <Stack spacing={3}>
-          <Alert status="error">
-            <AlertIcon />
-            There was an error processing your request
-          </Alert>
-        </Stack>
+        {/* {message && (
+          <Stack spacing={3}>
+            <Alert status="error">
+              <AlertIcon />
+              Pessoa não encontrada
+            </Alert>
+          </Stack>
+        )} */}
+
+        {/* {message &&
+          Toast({
+            title: `Pessoa não encontrada`,
+            position: "top",
+            duration: 0,
+            isClosable: true,
+          })} */}
+
         <Input
           onChange={(event) => {
             setInputNome(event.target.value);
@@ -83,8 +102,7 @@ const Pessoa = () => {
           placeholder="Nome"
         />
         <Button onClick={handleClick}>Pesquisar</Button>
-        <br />
-        <br />
+        <Button onClick={handleClear}>Limpar</Button>
         <Row>
           <Table striped bordered hover size="sm">
             <thead>
