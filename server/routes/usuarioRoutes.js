@@ -100,7 +100,6 @@ appRoutes.get("/:id", verifyJWT, async (req, res, next) => {
 appRoutes.put("/:id", verifyJWT, (req, res) => {
   const id = Number.parseInt(req.params.id);
   const { nome, login, senha, senha2, administrador } = req.body;
-  console.log(req.body);
   if (senha != senha2) {
     res.status(200).json("As senhas não conferem");
   } else {

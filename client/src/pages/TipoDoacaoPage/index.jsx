@@ -5,6 +5,7 @@ import { api, getTipoDoacoes } from "../../shared/services/api";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 
+import { Checkbox } from "@chakra-ui/react";
 import { Button } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -64,7 +65,12 @@ const TipoDoacao = () => {
               {results.map((result) => (
                 <tr>
                   <td>{result.descricao}</td>
-                  <td>{result.ativo}</td>
+                  <td>
+                    <Checkbox
+                      isChecked={result.ativo == 1 ? true : false}
+                      isDisabled
+                    />
+                  </td>
                   <td>
                     <button
                       class="btn btn-primary"

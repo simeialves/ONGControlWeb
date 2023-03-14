@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   Center,
+  Checkbox,
   Flex,
   FormControl,
   FormLabel,
@@ -45,6 +46,7 @@ const New = () => {
       return api
         .post(`/tipodoacoes/`, {
           descricao: inputDescricao,
+          ativo: inputAtivo,
         })
         .then(() => {
           navigate("/tipodoacoes");
@@ -53,9 +55,11 @@ const New = () => {
           console.log(err);
         });
     } else {
+      console.log(inputDescricao + " - " + inputAtivo);
       return api
         .put(`/tipodoacoes/${id}`, {
           descricao: inputDescricao,
+          ativo: inputAtivo,
         })
         .then(() => {
           navigate("/tipodoacoes");
@@ -68,6 +72,14 @@ const New = () => {
 
   async function handleVoltar() {
     navigate(`/tipodoacoes`);
+  }
+
+  async function aoTrocarValor() {
+    if (inputAtivo == 0) {
+      setInputAtivo(1);
+    } else {
+      setInputAtivo(0);
+    }
   }
 
   return (
@@ -103,7 +115,7 @@ const New = () => {
           >
             <FormControl display="flex" flexDir="column" gap="4">
               <HStack spacing={4}>
-                <Box w="100%">
+                <Box w="90%">
                   <FormLabel htmlFor="nome">Descrição</FormLabel>
                   <Input
                     id="nome"
@@ -112,6 +124,15 @@ const New = () => {
                       setInputDescricao(event.target.value);
                     }}
                   />
+                </Box>
+                <Box w="10%">
+                  <FormLabel htmlFor="ativo"></FormLabel>
+                  <Checkbox
+                    onChange={aoTrocarValor}
+                    isChecked={inputAtivo == 1 ? true : false}
+                  >
+                    Ativo
+                  </Checkbox>
                 </Box>
               </HStack>
 

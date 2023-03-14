@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { api } from "../../shared/services/api";
+import { api, getCEP } from "../../shared/services/api";
 
 import {
   Box,
@@ -101,6 +101,20 @@ const New = () => {
     }
   };
 
+  const checkCEP = async (cep) => {
+    const response = await getCEP(cep);
+
+    if (response.data.erro === undefined) {
+      setInputLogradouro(response.data.logradouro);
+      setInputBairro(response.data.bairro);
+      setInputCidade(response.data.localidade);
+      setInputUF(response.data.uf);
+      setInputPais("Brasil");
+    } else {
+      alert("CEP não encontrado!");
+    }
+  };
+
   async function handleVoltar() {
     navigate(`/localeventos`);
   }
@@ -157,6 +171,9 @@ const New = () => {
                     value={inputCep}
                     onChange={(event) => {
                       setInputCep(event.target.value);
+                    }}
+                    onBlur={(event) => {
+                      checkCEP(event.target.value);
                     }}
                   />
                 </Box>

@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Center,
+  Checkbox,
   Flex,
   FormControl,
   FormLabel,
@@ -23,6 +24,7 @@ const Edit = () => {
   const [inputEmail, setInputEmail] = useState("");
   const [inputSenha, setInputSenha] = useState("");
   const [inputSenha2, setInputSenha2] = useState("");
+  const [inputAdministrador, setInputAdministrador] = useState("");
 
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
@@ -45,6 +47,7 @@ const Edit = () => {
       setInputEmail(response.data[0].login);
       setInputSenha(response.data[0].senha);
       setInputSenha2(response.data[0].senha);
+      setInputAdministrador(response.data[0].administrador);
     })();
   }, [id]);
 
@@ -56,6 +59,7 @@ const Edit = () => {
           login: inputEmail,
           senha: inputSenha,
           senha2: inputSenha2,
+          administrador: inputAdministrador,
         })
         .then(() => {
           navigate("/usuarios");
@@ -80,6 +84,14 @@ const Edit = () => {
   const handleVoltar = async () => {
     navigate("/usuarios");
   };
+
+  async function aoTrocarValor() {
+    if (inputAdministrador == 0) {
+      setInputAdministrador(1);
+    } else {
+      setInputAdministrador(0);
+    }
+  }
 
   return (
     <>
@@ -114,7 +126,7 @@ const Edit = () => {
           >
             <FormControl display="flex" flexDir="column" gap="4">
               <HStack spacing={4}>
-                <Box w="100%">
+                <Box w="80%">
                   <FormLabel htmlFor="nome">Nome</FormLabel>
                   <Input
                     id="nome"
@@ -124,6 +136,15 @@ const Edit = () => {
                       setInputNome(event.target.value);
                     }}
                   />
+                </Box>
+                <Box w="20%">
+                  <FormLabel htmlFor="ativo"></FormLabel>
+                  <Checkbox
+                    onChange={aoTrocarValor}
+                    isChecked={inputAdministrador == 1 ? true : false}
+                  >
+                    Administrador
+                  </Checkbox>
                 </Box>
               </HStack>
               <HStack>
