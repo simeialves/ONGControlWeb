@@ -28,7 +28,7 @@ const New = () => {
   const [inputAtivo, setInputAtivo] = useState("");
 
   useEffect(() => {
-    if (id != undefined) {
+    if (id !== undefined) {
       setLoading(true);
       (async () => {
         const response = await api.get(`/tipocolaboradores/${id}`);
@@ -37,14 +37,14 @@ const New = () => {
       })();
       setLoading(false);
     }
-  }, []);
+  }, [id]);
 
   if (loading) {
     <SpinnerUtil />;
   }
 
   const handleSubmit = async () => {
-    if (id == undefined) {
+    if (id === undefined) {
       return api
         .post(`/tipocolaboradores/`, {
           descricao: inputDescricao,
@@ -74,7 +74,9 @@ const New = () => {
     navigate(`/tipocolaboradores`);
   }
   async function handleClick() {
-    setInputAtivo(inputAtivo == STATUS_INATIVO ? STATUS_ATIVO : STATUS_INATIVO);
+    setInputAtivo(
+      inputAtivo === STATUS_INATIVO ? STATUS_ATIVO : STATUS_INATIVO
+    );
   }
 
   return (
@@ -124,7 +126,7 @@ const New = () => {
                   <FormLabel htmlFor="ativo"></FormLabel>
                   <Checkbox
                     onChange={handleClick}
-                    isChecked={inputAtivo == STATUS_ATIVO ? true : false}
+                    isChecked={inputAtivo === STATUS_ATIVO ? true : false}
                   >
                     Ativo
                   </Checkbox>

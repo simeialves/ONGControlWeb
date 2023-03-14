@@ -72,7 +72,7 @@ const Usuario = () => {
                   <td>
                     <Checkbox
                       isChecked={
-                        result.administrador == ADMINISTRADOR ? true : false
+                        result.administrador === ADMINISTRADOR ? true : false
                       }
                       isDisabled
                     />

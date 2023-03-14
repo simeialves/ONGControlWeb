@@ -42,7 +42,7 @@ const NewPessoaPage = () => {
   const [inputAtivo, setInputAtivo] = useState("");
 
   useEffect(() => {
-    if (id != undefined) {
+    if (id !== undefined) {
       setLoading(true);
       (async () => {
         const response = await api.get(`/eventos/${id}`);
@@ -58,14 +58,14 @@ const NewPessoaPage = () => {
       })();
       setLoading(false);
     }
-  }, []);
+  }, [id]);
 
   if (loading) {
     <SpinnerUtil />;
   }
 
   const handleSubmit = async () => {
-    if (id == undefined) {
+    if (id === undefined) {
       return api
         .post(`/eventos/`, {
           projetoid: inputProjetoId,
@@ -109,7 +109,9 @@ const NewPessoaPage = () => {
     navigate(`/eventos`);
   }
   async function handleClick() {
-    setInputAtivo(inputAtivo == STATUS_INATIVO ? STATUS_ATIVO : STATUS_INATIVO);
+    setInputAtivo(
+      inputAtivo === STATUS_INATIVO ? STATUS_ATIVO : STATUS_INATIVO
+    );
   }
 
   return (
@@ -167,7 +169,7 @@ const NewPessoaPage = () => {
                         <FormLabel htmlFor="ativo"></FormLabel>
                         <Checkbox
                           onChange={handleClick}
-                          isChecked={inputAtivo == STATUS_ATIVO ? true : false}
+                          isChecked={inputAtivo === STATUS_ATIVO ? true : false}
                         >
                           Ativo
                         </Checkbox>

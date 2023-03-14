@@ -8,7 +8,7 @@ import SpinnerUtil from "../Uteis/progress";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 
-import { Input } from "@chakra-ui/react";
+import { Alert, AlertIcon, Input, Stack } from "@chakra-ui/react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "react-bootstrap";
 
@@ -25,6 +25,7 @@ const Pessoa = () => {
       const response = await getPessoas();
       setResults(response.data);
       setLoading(false);
+      setMessage(false);
     })();
   }, []);
 
@@ -56,9 +57,12 @@ const Pessoa = () => {
       })
       .then((response) => {
         setResults(response.data);
+        setMessage(false);
         setLoading(false);
+        setInputNome("");
       })
       .catch(() => {
+        setMessage(true);
         setLoading(false);
       });
   }
@@ -78,14 +82,14 @@ const Pessoa = () => {
         <Button href="/pessoas/new">Nova</Button>
         <br />
         <br />
-        {/* {message && (
+        {message && (
           <Stack spacing={3}>
             <Alert status="error">
               <AlertIcon />
               Pessoa não encontrada
             </Alert>
           </Stack>
-        )} */}
+        )}
 
         {/* {message &&
           Toast({

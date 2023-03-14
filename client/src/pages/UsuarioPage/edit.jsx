@@ -88,7 +88,7 @@ const Edit = () => {
 
   async function handleClick() {
     setInputAdministrador(
-      inputAdministrador == STATUS_INATIVO ? ADMINISTRADOR : STATUS_INATIVO
+      inputAdministrador === STATUS_INATIVO ? ADMINISTRADOR : STATUS_INATIVO
     );
   }
 
@@ -141,7 +141,7 @@ const Edit = () => {
                   <Checkbox
                     onChange={handleClick}
                     isChecked={
-                      inputAdministrador == ADMINISTRADOR ? true : false
+                      inputAdministrador === ADMINISTRADOR ? true : false
                     }
                   >
                     Administrador

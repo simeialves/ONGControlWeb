@@ -68,7 +68,7 @@ const TipoColaborador = () => {
                   <td>{result.descricao}</td>
                   <td>
                     <Checkbox
-                      isChecked={result.ativo == STATUS_ATIVO ? true : false}
+                      isChecked={result.ativo === STATUS_ATIVO ? true : false}
                       isDisabled
                     />
                   </td>
