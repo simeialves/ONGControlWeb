@@ -8,8 +8,10 @@ import SpinnerUtil from "../Uteis/progress";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 
+import { Checkbox } from "@chakra-ui/react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "react-bootstrap";
+import { ADMINISTRADOR } from "../../includes/const";
 
 const Usuario = () => {
   const [results, setResults] = useState([]);
@@ -67,7 +69,14 @@ const Usuario = () => {
                 <tr>
                   <td>{result.nome}</td>
                   <td>{result.login}</td>
-                  <td>{result.administrador}</td>
+                  <td>
+                    <Checkbox
+                      isChecked={
+                        result.administrador == ADMINISTRADOR ? true : false
+                      }
+                      isDisabled
+                    />
+                  </td>
                   <td>
                     <button
                       class="btn btn-primary"

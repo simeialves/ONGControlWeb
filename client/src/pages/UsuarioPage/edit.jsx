@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { ADMINISTRADOR, STATUS_INATIVO } from "../../includes/const";
 import { api } from "../../shared/services/api";
 import Headers from "../Headers";
 
@@ -27,7 +28,7 @@ const Edit = () => {
   const [inputAdministrador, setInputAdministrador] = useState("");
 
   const [show, setShow] = React.useState(false);
-  const handleClick = () => setShow(!show);
+  const handleClickPassword = () => setShow(!show);
 
   async function AlterarSenha() {
     const response = await api.get(`/usuarios/${id}`);
@@ -81,16 +82,14 @@ const Edit = () => {
         });
     }
   };
-  const handleVoltar = async () => {
-    navigate("/usuarios");
-  };
+  async function handleVoltar() {
+    navigate(`/usuarios`);
+  }
 
-  async function aoTrocarValor() {
-    if (inputAdministrador == 0) {
-      setInputAdministrador(1);
-    } else {
-      setInputAdministrador(0);
-    }
+  async function handleClick() {
+    setInputAdministrador(
+      inputAdministrador == STATUS_INATIVO ? ADMINISTRADOR : STATUS_INATIVO
+    );
   }
 
   return (
@@ -138,10 +137,12 @@ const Edit = () => {
                   />
                 </Box>
                 <Box w="20%">
-                  <FormLabel htmlFor="ativo"></FormLabel>
+                  <FormLabel htmlFor="administrador"></FormLabel>
                   <Checkbox
-                    onChange={aoTrocarValor}
-                    isChecked={inputAdministrador == 1 ? true : false}
+                    onChange={handleClick}
+                    isChecked={
+                      inputAdministrador == ADMINISTRADOR ? true : false
+                    }
                   >
                     Administrador
                   </Checkbox>
@@ -175,7 +176,11 @@ const Edit = () => {
                       }}
                     />
                     <InputRightElement width="4.5rem">
-                      <Button h="1.75rem" size="sm" onClick={handleClick}>
+                      <Button
+                        h="1.75rem"
+                        size="sm"
+                        onClick={handleClickPassword}
+                      >
                         {show ? "Hide" : "Show"}
                       </Button>
                     </InputRightElement>
@@ -197,7 +202,11 @@ const Edit = () => {
                       }}
                     />
                     <InputRightElement width="4.5rem">
-                      <Button h="1.75rem" size="sm" onClick={handleClick}>
+                      <Button
+                        h="1.75rem"
+                        size="sm"
+                        onClick={handleClickPassword}
+                      >
                         {show ? "Hide" : "Show"}
                       </Button>
                     </InputRightElement>

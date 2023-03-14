@@ -14,6 +14,7 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { STATUS_ATIVO, STATUS_INATIVO } from "../../includes/const";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 
@@ -28,6 +29,7 @@ const New = () => {
 
   useEffect(() => {
     if (id != undefined) {
+      setLoading(true);
       (async () => {
         const response = await api.get(`/tipodoacoes/${id}`);
         setInputDescricao(response.data[0].descricao);
@@ -69,17 +71,11 @@ const New = () => {
         });
     }
   };
-
   async function handleVoltar() {
     navigate(`/tipodoacoes`);
   }
-
-  async function aoTrocarValor() {
-    if (inputAtivo == 0) {
-      setInputAtivo(1);
-    } else {
-      setInputAtivo(0);
-    }
+  async function handleClick() {
+    setInputAtivo(inputAtivo == STATUS_INATIVO ? STATUS_ATIVO : STATUS_INATIVO);
   }
 
   return (
@@ -128,8 +124,8 @@ const New = () => {
                 <Box w="10%">
                   <FormLabel htmlFor="ativo"></FormLabel>
                   <Checkbox
-                    onChange={aoTrocarValor}
-                    isChecked={inputAtivo == 1 ? true : false}
+                    onChange={handleClick}
+                    isChecked={inputAtivo == STATUS_ATIVO ? true : false}
                   >
                     Ativo
                   </Checkbox>

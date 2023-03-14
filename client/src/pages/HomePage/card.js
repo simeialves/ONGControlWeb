@@ -11,7 +11,8 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getEventos } from "../../shared/services/api";
+import { STATUS_ATIVO } from "../../includes/const";
+import { api } from "../../shared/services/api";
 import { formatDate } from "../Uteis/Uteis";
 
 export const CardEvento = () => {
@@ -22,16 +23,16 @@ export const CardEvento = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await getEventos();
-      setResults(response.data);
-      setLoading(false);
-      console.log(response);
+      await api
+        .post(`/eventos/filter`, {
+          ativo: STATUS_ATIVO,
+        })
+        .then((response) => {
+          setResults(response.data);
+          setLoading(false);
+        });
     })();
   }, []);
-
-  // function formatDate(dataInput) {
-  //   return new Date(dataInput).toLocaleString().replace(", 00:00:00", "");
-  // }
 
   function handleClick(id) {
     navigate(`/eventos/edit/${id}`);

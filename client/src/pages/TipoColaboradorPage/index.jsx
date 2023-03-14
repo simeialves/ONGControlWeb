@@ -5,9 +5,11 @@ import { api, getTipoColaboradores } from "../../shared/services/api";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 
+import { Checkbox } from "@chakra-ui/react";
 import { Button } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import { STATUS_ATIVO } from "../../includes/const";
 
 const TipoColaborador = () => {
   const [results, setResults] = useState([]);
@@ -64,7 +66,12 @@ const TipoColaborador = () => {
               {results.map((result) => (
                 <tr>
                   <td>{result.descricao}</td>
-                  <td>{result.ativo}</td>
+                  <td>
+                    <Checkbox
+                      isChecked={result.ativo == STATUS_ATIVO ? true : false}
+                      isDisabled
+                    />
+                  </td>
                   <td>
                     <button
                       class="btn btn-primary"

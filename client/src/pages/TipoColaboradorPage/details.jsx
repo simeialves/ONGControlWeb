@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   Center,
+  Checkbox,
   Flex,
   FormControl,
   FormLabel,
@@ -13,6 +14,7 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { STATUS_ATIVO, STATUS_INATIVO } from "../../includes/const";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 
@@ -30,7 +32,6 @@ const New = () => {
       setLoading(true);
       (async () => {
         const response = await api.get(`/tipocolaboradores/${id}`);
-        console.log(response);
         setInputDescricao(response.data[0].descricao);
         setInputAtivo(response.data[0].ativo);
       })();
@@ -69,9 +70,11 @@ const New = () => {
         });
     }
   };
-
   async function handleVoltar() {
     navigate(`/tipocolaboradores`);
+  }
+  async function handleClick() {
+    setInputAtivo(inputAtivo == STATUS_INATIVO ? STATUS_ATIVO : STATUS_INATIVO);
   }
 
   return (
@@ -107,7 +110,7 @@ const New = () => {
           >
             <FormControl display="flex" flexDir="column" gap="4">
               <HStack spacing={4}>
-                <Box w="100%">
+                <Box w="90%">
                   <FormLabel htmlFor="nome">Descrição</FormLabel>
                   <Input
                     id="nome"
@@ -116,6 +119,15 @@ const New = () => {
                       setInputDescricao(event.target.value);
                     }}
                   />
+                </Box>
+                <Box w="10%">
+                  <FormLabel htmlFor="ativo"></FormLabel>
+                  <Checkbox
+                    onChange={handleClick}
+                    isChecked={inputAtivo == STATUS_ATIVO ? true : false}
+                  >
+                    Ativo
+                  </Checkbox>
                 </Box>
               </HStack>
 

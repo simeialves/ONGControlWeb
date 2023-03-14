@@ -79,10 +79,30 @@ appRoutes.post("/", (req, res) => {
 //#endregion
 
 //#region READ
-appRoutes.get("/", verifyJWT, async (req, res, next) => {
+appRoutes.get("/", async (req, res, next) => {
   await db.knex
     .select("*")
     .from("pessoa")
+    .orderBy("nome")
+    .then(function (results) {
+      if (results.length) {
+        return res.status(201).json(results);
+      } else {
+        return res.status(404).json({ message: "Nenhuma pessoa encontrada" });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+appRoutes.post("/filter", async (req, res, next) => {
+  const { nome } = req.body;
+
+  await db.knex
+    .select("*")
+    .from("pessoa")
+    .whereILike("nome", `%${nome}%`)
     .orderBy("nome")
     .then(function (results) {
       if (results.length) {

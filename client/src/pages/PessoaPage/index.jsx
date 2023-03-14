@@ -8,12 +8,14 @@ import SpinnerUtil from "../Uteis/progress";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 
+import { Alert, AlertIcon, Input, Stack } from "@chakra-ui/react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "react-bootstrap";
 
 const Pessoa = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [inputNome, setInputNome] = useState("");
 
   const navigate = useNavigate();
 
@@ -44,12 +46,43 @@ const Pessoa = () => {
         console.log(err);
       });
   }
+
+  async function handleClick() {
+    setLoading(true);
+    api
+      .post(`/pessoas/filter`, {
+        nome: inputNome,
+      })
+      .then((response) => {
+        setResults(response.data);
+        setLoading(false);
+      })
+      .catch(() => {
+        alert("Nenhuma pessoa encontrada");
+        setLoading(false);
+      });
+  }
   return (
     <>
       <Headers />
       <br></br>
       <Container fluid="md">
         <Button href="/pessoas/new">Nova</Button>
+        <br />
+        <br />
+        <Stack spacing={3}>
+          <Alert status="error">
+            <AlertIcon />
+            There was an error processing your request
+          </Alert>
+        </Stack>
+        <Input
+          onChange={(event) => {
+            setInputNome(event.target.value);
+          }}
+          placeholder="Nome"
+        />
+        <Button onClick={handleClick}>Pesquisar</Button>
         <br />
         <br />
         <Row>

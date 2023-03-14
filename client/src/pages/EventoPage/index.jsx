@@ -8,8 +8,10 @@ import SpinnerUtil from "../Uteis/progress";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 
+import { Checkbox } from "@chakra-ui/react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "react-bootstrap";
+import { STATUS_ATIVO } from "../../includes/const";
 
 const Evento = () => {
   const [results, setResults] = useState([]);
@@ -65,7 +67,12 @@ const Evento = () => {
               {results.map((result) => (
                 <tr>
                   <td>{result.descricao}</td>
-                  <td>{result.ativo}</td>
+                  <td>
+                    <Checkbox
+                      isChecked={result.ativo == STATUS_ATIVO ? true : false}
+                      isDisabled
+                    />
+                  </td>
                   <td>
                     <button
                       class="btn btn-primary"

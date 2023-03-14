@@ -41,6 +41,10 @@ export const getEventos = async () => {
   return api.get("/eventos");
 };
 
+export const getEventosAtivos = async () => {
+  return api.post(`/eventos/ativo`);
+};
+
 export const getLocalEventos = async () => {
   return api.get("/localeventos");
 };

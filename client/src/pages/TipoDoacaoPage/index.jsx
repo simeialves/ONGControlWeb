@@ -9,6 +9,7 @@ import { Checkbox } from "@chakra-ui/react";
 import { Button } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import { STATUS_ATIVO } from "../../includes/const";
 
 const TipoDoacao = () => {
   const [results, setResults] = useState([]);
@@ -67,7 +68,7 @@ const TipoDoacao = () => {
                   <td>{result.descricao}</td>
                   <td>
                     <Checkbox
-                      isChecked={result.ativo == 1 ? true : false}
+                      isChecked={result.ativo == STATUS_ATIVO ? true : false}
                       isDisabled
                     />
                   </td>

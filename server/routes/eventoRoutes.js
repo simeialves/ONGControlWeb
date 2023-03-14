@@ -96,7 +96,48 @@ appRoutes.get("/:id", verifyJWT, async (req, res, next) => {
         return res.status(201).json(result);
       } else {
         res.status(404).json({
-          message: "Evento não encontrada",
+          message: "Evento não encontrado",
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+// appRoutes.get("/filter", async (req, res, next) => {
+//   console.log(ativo);
+
+//   await db.knex
+//     .select("*")
+//     .from("evento")
+//     .where({ eventoid: 1 })
+//     .then(function (result) {
+//       if (result.length) {
+//         return res.status(201).json(result);
+//       } else {
+//         res.status(404).json({
+//           message: "Evento não encontrado",
+//         });
+//       }
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// });
+
+appRoutes.post("/filter", async (req, res, next) => {
+  const { ativo } = req.body;
+  await db.knex
+    .select("*")
+    .from("evento")
+    .where({ ativo: ativo })
+    .then(function (result) {
+      if (result.length) {
+        return res.status(201).json(result);
+      } else {
+        res.status(404).json({
+          message: "Nenhum evento encontrado",
         });
       }
     })
