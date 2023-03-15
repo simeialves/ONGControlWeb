@@ -7,6 +7,8 @@ const bodyParser = require("body-parser");
 
 appRoutes.use(bodyParser.json());
 
+const STATUS_ATIVO = 1;
+
 //#region Methods
 function verifyJWT(req, res, next) {
   var token = req.headers["x-access-token"];
@@ -51,43 +53,44 @@ appRoutes.post("/", (req, res) => {
 
 //#region READ
 appRoutes.get("/", async (req, res, next) => {
-  const { ativo, descricao } = req.query;
+  await db.knex
+    .select("*")
+    .from("tipodoacao")
+    .then(function (results) {
+      if (results.length) {
+        return res.status(201).json(results);
+      } else {
+        res.status(404).json({
+          message: "Nenhum registro encontrado",
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
 
-  if (ativo == undefined && descricao == undefined) {
-    await db.knex
-      .select("*")
-      .from("tipodoacao")
-      .then(function (results) {
-        if (results.length) {
-          return res.status(201).json(results);
-        } else {
-          res.status(404).json({
-            message: "Nenhum tipo de doação cadastrada",
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  } else {
-    await db.knex
-      .select("*")
-      .from("tipodoacao")
-      .where("descricao", "like", `%${descricao}%`)
-      .where("ativo", ativo)
-      .then(function (results) {
-        if (results.length) {
-          return res.status(201).json(results);
-        } else {
-          res.status(404).json({
-            message: "Nenhum tipo de doação cadastrada",
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+appRoutes.post("/filter", async (req, res, next) => {
+  const { ativo, descricao } = req.body;
+
+  var query = knex("tipodoacao").select("*");
+
+  if (ativo != undefined) query.where("ativo", ativo);
+  if (descricao != undefined) query.whereILike("descricao", `%${descricao}%`);
+
+  query
+    .then(function (results) {
+      if (results.length) {
+        return res.status(201).json(results);
+      } else {
+        res.status(404).json({
+          message: "Nenhum registro encontrado",
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 appRoutes.get("/:id", async (req, res, next) => {

@@ -107,8 +107,14 @@ const TipoDoacao = () => {
             </RadioGroup>
           </Box>
         </HStack>
-        <Button onClick={handleClick}>Pesquisar</Button>
-        <Button onClick={handleClear}>Limpar</Button>
+        <Box margin={2}>
+          <Button padding={20} onClick={handleClick}>
+            Pesquisar
+          </Button>
+          <Button padding={20} onClick={handleClear}>
+            Limpar
+          </Button>
+        </Box>
         <Row>
           <Table striped bordered hover size="sm">
             <thead>

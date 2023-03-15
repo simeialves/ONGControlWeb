@@ -82,7 +82,7 @@ export const CardEvento = () => {
         ))}
       </Container>
 
-      <Flex>
+      {/* <Flex>
         <HStack>
           <Heading>Titulo</Heading>
           <Text>Descrição</Text>
@@ -92,7 +92,7 @@ export const CardEvento = () => {
           <Text>Descrição</Text>
           <Text>Data de Início</Text>
         </HStack>
-      </Flex>
+      </Flex> */}
     </>
   );
 };
