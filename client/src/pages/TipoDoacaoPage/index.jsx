@@ -5,7 +5,7 @@ import { api, getTipoDoacoes } from "../../shared/services/api";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 
-import { Checkbox } from "@chakra-ui/react";
+import { Checkbox, Input } from "@chakra-ui/react";
 import { Button } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -14,6 +14,8 @@ import { STATUS_ATIVO } from "../../includes/const";
 const TipoDoacao = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState(false);
+  const [inputDescricao, setInputDescricao] = useState("");
 
   const navigate = useNavigate();
 
@@ -44,7 +46,31 @@ const TipoDoacao = () => {
         console.log(err);
       });
   }
+  async function handleClick() {
+    setLoading(true);
+    api
+      .post(`/tipodoacoes/filter`, {
+        descricao: inputDescricao,
+      })
+      .then((response) => {
+        setResults(response.data);
+        setMessage(false);
+        setLoading(false);
+        setInputDescricao("");
+      })
+      .catch(() => {
+        setMessage(true);
+        setLoading(false);
+      });
+  }
 
+  async function handleClear() {
+    setLoading(true);
+    setInputDescricao("");
+    const response = await getTipoDoacoes();
+    setResults(response.data);
+    setLoading(false);
+  }
   return (
     <>
       <Headers />
@@ -53,6 +79,14 @@ const TipoDoacao = () => {
         <Button href="/tipodoacoes/new">Novo</Button>
         <br />
         <br />
+        <Input
+          onChange={(event) => {
+            setInputDescricao(event.target.value);
+          }}
+          placeholder="Nome"
+        />
+        <Button onClick={handleClick}>Pesquisar</Button>
+        <Button onClick={handleClear}>Limpar</Button>
         <Row>
           <Table striped bordered hover size="sm">
             <thead>
@@ -68,7 +102,7 @@ const TipoDoacao = () => {
                   <td>{result.descricao}</td>
                   <td>
                     <Checkbox
-                      isChecked={result.ativo === STATUS_ATIVO ? true : false}
+                      isChecked={result.ativo == STATUS_ATIVO ? true : false}
                       isDisabled
                     />
                   </td>
