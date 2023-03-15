@@ -51,21 +51,43 @@ appRoutes.post("/", (req, res) => {
 
 //#region READ
 appRoutes.get("/", async (req, res, next) => {
-  await db.knex
-    .select("*")
-    .from("tipodoacao")
-    .then(function (results) {
-      if (results.length) {
-        return res.status(201).json(results);
-      } else {
-        res.status(404).json({
-          message: "Nenhum tipo de doação cadastrada",
-        });
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  const { ativo, descricao } = req.query;
+
+  if (ativo == undefined && descricao == undefined) {
+    await db.knex
+      .select("*")
+      .from("tipodoacao")
+      .then(function (results) {
+        if (results.length) {
+          return res.status(201).json(results);
+        } else {
+          res.status(404).json({
+            message: "Nenhum tipo de doação cadastrada",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else {
+    await db.knex
+      .select("*")
+      .from("tipodoacao")
+      .where("descricao", "like", `%${descricao}%`)
+      .where("ativo", ativo)
+      .then(function (results) {
+        if (results.length) {
+          return res.status(201).json(results);
+        } else {
+          res.status(404).json({
+            message: "Nenhum tipo de doação cadastrada",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 });
 
 appRoutes.get("/:id", async (req, res, next) => {
@@ -88,27 +110,6 @@ appRoutes.get("/:id", async (req, res, next) => {
     });
 });
 
-appRoutes.get("/?ativo=", async (req, res, next) => {
-  const ativo = req.query.ativo;
-  console.log(ativo);
-
-  await db.knex
-    .select("*")
-    .from("tipodoacao")
-    .where({ ativo: 2 })
-    .then(function (results) {
-      if (results.length) {
-        return res.status(201).json(results);
-      } else {
-        res.status(404).json({
-          message: "Nenhum tipo de doação cadastrada",
-        });
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
 //#endregion
 
 //#region UPDATE

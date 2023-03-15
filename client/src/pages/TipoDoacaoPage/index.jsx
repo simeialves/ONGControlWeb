@@ -5,8 +5,15 @@ import { api, getTipoDoacoes } from "../../shared/services/api";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 
-import { Checkbox, Input } from "@chakra-ui/react";
-import { Button } from "react-bootstrap";
+import {
+  Box,
+  Checkbox,
+  HStack,
+  Input,
+  Radio,
+  RadioGroup,
+} from "@chakra-ui/react";
+import { Button, Stack } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import { STATUS_ATIVO } from "../../includes/const";
@@ -16,6 +23,7 @@ const TipoDoacao = () => {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState(false);
   const [inputDescricao, setInputDescricao] = useState("");
+  const [inputAtivo, setInputAtivo] = useState("");
 
   const navigate = useNavigate();
 
@@ -48,10 +56,10 @@ const TipoDoacao = () => {
   }
   async function handleClick() {
     setLoading(true);
+    const descricao = inputDescricao;
+    const ativo = inputAtivo;
     api
-      .post(`/tipodoacoes/filter`, {
-        descricao: inputDescricao,
-      })
+      .get(`/tipodoacoes/?ativo=${ativo}&descricao=${descricao}`)
       .then((response) => {
         setResults(response.data);
         setMessage(false);
@@ -79,12 +87,26 @@ const TipoDoacao = () => {
         <Button href="/tipodoacoes/new">Novo</Button>
         <br />
         <br />
-        <Input
-          onChange={(event) => {
-            setInputDescricao(event.target.value);
-          }}
-          placeholder="Nome"
-        />
+        <HStack spacing={4}>
+          <Box w="70%">
+            <Input
+              onChange={(event) => {
+                setInputDescricao(event.target.value);
+              }}
+              placeholder="Nome"
+            />
+          </Box>
+          <Box w="30%">
+            <RadioGroup onChange={setInputAtivo} value={inputAtivo}>
+              <Stack direction="row">
+                <Radio checked={true} value="1">
+                  Ativo
+                </Radio>
+                <Radio value="0">Inativo</Radio>
+              </Stack>
+            </RadioGroup>
+          </Box>
+        </HStack>
         <Button onClick={handleClick}>Pesquisar</Button>
         <Button onClick={handleClear}>Limpar</Button>
         <Row>
