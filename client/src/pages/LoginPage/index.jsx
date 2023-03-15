@@ -1,21 +1,18 @@
-import { Image } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  FormControl,
+  FormLabel,
+  HStack,
+  Image,
+  Input,
+} from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
-import FloatingLabel from "react-bootstrap/FloatingLabel";
-import Form from "react-bootstrap/Form";
 import { AuthContext } from "../../shared/contexts/auth";
-import Headers from "../Headers";
 
 import "./styles.css";
-
-import {
-  MDBBtn,
-  MDBCard,
-  MDBCardBody,
-  MDBCheckbox,
-  MDBCol,
-  MDBContainer,
-  MDBRow,
-} from "mdb-react-ui-kit";
 
 const LoginPage = () => {
   const { login } = useContext(AuthContext);
@@ -23,86 +20,110 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("submit");
     login(email, password);
   };
 
+  function handleKeyPress(event) {
+    if (event.key === "Enter") {
+      handleSubmit();
+    }
+  }
+
   return (
     <>
-      <Headers />
-      <MDBContainer fluid>
-        <MDBRow className="container-login">
-          <MDBCol col="12">
-            <MDBCard
-              className="bg-white my-5 mx-auto"
-              style={{ borderRadius: "1rem", maxWidth: "500px" }}
-            >
-              <MDBCardBody className="p-5 w-100 d-flex flex-column">
-                <div className="img">
-                  <Image
-                    className="img"
-                    borderRadius="full"
-                    objectFit="cover"
-                    boxSize="250px"
-                    //src="http://www.lyon.com.br/img/produtos/lyonControl_redmine.png"
-                    src="https://simeialves.com.br/images/logo_ongcontrol.png"
-                    alt="Dan Abramov"
-                    padding={50}
+      <Box h="100vh">
+        <Center
+          as="header"
+          h={"100%"}
+          bg="gray.100"
+          color={"blue.800"}
+          fontWeight="bold"
+          fontSize={"4x1"}
+          pb="8"
+        ></Center>
+        <Flex
+          align="center"
+          justify="center"
+          bg="blackAlpha.200"
+          h="calc(100vh-150px)"
+        >
+          <Center
+            w="100%"
+            maxW={500}
+            bg="white"
+            top={150}
+            position="absolute"
+            borderRadius={5}
+            p="6"
+            boxShadow="0 1px 2px #ccc"
+          >
+            <FormControl display="flex" flexDir="column" gap="4">
+              <HStack justify={"center"}>
+                <Image
+                  className="img"
+                  objectFit="cover"
+                  boxSize="250px"
+                  //src="http://www.lyon.com.br/img/produtos/lyonControl_redmine.png"
+                  src="https://simeialves.com.br/images/logo_ongcontrol.png"
+                  alt="Dan Abramov"
+                  padding={50}
+                />
+              </HStack>
+              <HStack justify={"center"}>
+                <FormLabel htmlFor="nome">Login In ONGControlWeb</FormLabel>
+              </HStack>
+              <HStack spacing={4}>
+                <Box w="100%">
+                  <FormLabel htmlFor="nome">E-mail</FormLabel>
+                  <Input
+                    id="nome"
+                    type={"email"}
+                    placeholder="manoelgomes@gmail.com"
+                    required={true}
+                    value={email}
+                    onChange={(event) => {
+                      setEmail(event.target.value);
+                    }}
                   />
-                </div>
-
-                <h2 className="fw-bold mb-2 text-center">
-                  Sign in to ONGControl
-                </h2>
-                <p className="text-white-50 mb-3">
-                  Please enter your login and password!
-                </p>
-
-                <form className="form" onSubmit={handleSubmit}>
-                  <FloatingLabel
-                    controlId="floatingInput"
-                    label="Email address"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      type="email"
-                      placeholder="name@example.com"
-                      value={login}
-                      onChange={(event) => {
-                        setEmail(event.target.value);
-                      }}
-                    />
-                  </FloatingLabel>
-                  <FloatingLabel controlId="floatingPassword" label="Password">
-                    <Form.Control
-                      type="password"
-                      placeholder="Password"
-                      value={password}
-                      onChange={(event) => {
-                        setPassword(event.target.value);
-                      }}
-                    />
-                  </FloatingLabel>
-
-                  <MDBCheckbox
-                    name="flexCheck"
-                    id="flexCheckDefault"
-                    className="mb-4"
-                    label="Remember password"
+                </Box>
+              </HStack>
+              <HStack spacing={4}>
+                <Box w="100%">
+                  <FormLabel htmlFor="senha">Senha</FormLabel>
+                  <Input
+                    id="senha"
+                    type={"password"}
+                    placeholder="********"
+                    required
+                    value={password}
+                    onChange={(event) => {
+                      setPassword(event.target.value);
+                    }}
+                    onKeyPress={(event) => handleKeyPress(event)}
                   />
+                </Box>
+              </HStack>
 
-                  <div className="img">
-                    <MDBBtn size="lg" className="loginButton">
-                      Login
-                    </MDBBtn>
-                  </div>
-                </form>
-              </MDBCardBody>
-            </MDBCard>
-          </MDBCol>
-        </MDBRow>
-      </MDBContainer>
+              <HStack spacing="4" justify={"center"}>
+                <Button
+                  w={150}
+                  p="6"
+                  type="submit"
+                  bg="red.600"
+                  color="white"
+                  fontWeight="bold"
+                  fontSize="x1"
+                  _hover={{ bg: "red.800" }}
+                  onClick={handleSubmit}
+                  borderRadius="full"
+                >
+                  Entrar
+                </Button>
+              </HStack>
+            </FormControl>
+          </Center>
+        </Flex>
+      </Box>
     </>
   );
 };

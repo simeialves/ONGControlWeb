@@ -97,7 +97,7 @@ appRoutes.get("/:id", verifyJWT, async (req, res, next) => {
 
 //#region UPDATE
 
-appRoutes.put("/:id", verifyJWT, (req, res) => {
+appRoutes.put("/:id", (req, res) => {
   const id = Number.parseInt(req.params.id);
   const { nome, login, senha, senha2, administrador } = req.body;
   if (senha != senha2) {

@@ -4,6 +4,12 @@ const db = require("../config/db");
 const appRoutes = express.Router();
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
+const {
+  NO_TOKEN_PROVIDER,
+  FAILED_AUTH_TOKEN,
+  NOT_FOUND,
+  CREATED,
+} = require("../includes/const");
 
 appRoutes.use(bodyParser.json());
 
@@ -14,14 +20,14 @@ function verifyJWT(req, res, next) {
   var token = req.headers["x-access-token"];
 
   if (!token) {
-    return res.status(401).send({ auth: false, message: "No token provided." });
+    return res.status(401).send({ auth: false, message: "NO_TOKEN_PROVIDER" });
   }
 
   jwt.verify(token, process.env.SECRET_KEY, function (err, decoded) {
     if (err)
       return res
         .status(500)
-        .send({ auth: false, message: "Failed to authenticate token." });
+        .send({ auth: false, message: "FAILED_AUTH_TOKEN" });
 
     // se tudo estiver ok, salva no request para uso posterior
     req.userId = decoded.id;
@@ -41,7 +47,7 @@ appRoutes.post("/", (req, res) => {
     })
     .then((result) => {
       let resultInsert = result[0];
-      res.status(200).json({ tipodoacaoid: resultInsert });
+      res.status(201).json({ message: "CREATED" });
     })
     .catch((err) => {
       res.status(500).json({
@@ -61,7 +67,7 @@ appRoutes.get("/", async (req, res, next) => {
         return res.status(201).json(results);
       } else {
         res.status(404).json({
-          message: "Nenhum registro encontrado",
+          message: NOT_FOUND,
         });
       }
     })
@@ -91,6 +97,8 @@ appRoutes.post("/filter", async (req, res, next) => {
     .catch((err) => {
       console.log(err);
     });
+
+  console.log(query.toString());
 });
 
 appRoutes.get("/:id", async (req, res, next) => {
@@ -104,7 +112,7 @@ appRoutes.get("/:id", async (req, res, next) => {
         return res.status(201).json(result);
       } else {
         res.status(404).json({
-          message: "Tipo de Doação não encontrada",
+          message: "NOT_FOUND",
         });
       }
     })
@@ -141,11 +149,11 @@ appRoutes.put("/:id", async (req, res) => {
           });
 
         res.status(200).json({
-          message: "Tipo de Doação alterada com sucesso",
+          message: "Registro alterado com sucesso",
         });
       } else {
         res.status(404).json({
-          message: "Tipo de Doação não encontrada",
+          message: "Registro não encontrado",
         });
       }
     })

@@ -23,7 +23,7 @@ const TipoDoacao = () => {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState(false);
   const [inputDescricao, setInputDescricao] = useState("");
-  const [inputAtivo, setInputAtivo] = useState("");
+  const [inputAtivo, setInputAtivo] = useState(true);
 
   const navigate = useNavigate();
 
@@ -59,8 +59,12 @@ const TipoDoacao = () => {
     const descricao = inputDescricao;
     const ativo = inputAtivo;
     api
-      .get(`/tipodoacoes/?ativo=${ativo}&descricao=${descricao}`)
+      .post(`/tipodoacoes/filter`, {
+        descricao: descricao,
+        ativo: ativo,
+      })
       .then((response) => {
+        console.log(response.data);
         setResults(response.data);
         setMessage(false);
         setLoading(false);
@@ -99,10 +103,12 @@ const TipoDoacao = () => {
           <Box w="30%">
             <RadioGroup onChange={setInputAtivo} value={inputAtivo}>
               <Stack direction="row">
-                <Radio checked={true} value="1">
-                  Ativo
-                </Radio>
-                <Radio value="0">Inativo</Radio>
+                <HStack spacing={4}>
+                  <Radio checked value="1">
+                    Ativo
+                  </Radio>
+                  <Radio value="0">Inativo</Radio>
+                </HStack>
               </Stack>
             </RadioGroup>
           </Box>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -38,8 +38,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    console.log("logout");
-
     localStorage.removeItem("user");
     localStorage.removeItem("access_token");
     api.defaults.headers.Authorization = null;

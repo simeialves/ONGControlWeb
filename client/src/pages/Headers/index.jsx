@@ -22,6 +22,8 @@ const Headers = () => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
 
+  const token = localStorage.getItem("token");
+
   return (
     <>
       <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
