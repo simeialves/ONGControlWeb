@@ -127,7 +127,6 @@ const TipoDoacao = () => {
             <AddIcon /> Nova
           </Button>
         </HStack>
-        <barradeBotoesSuperior />
         <HStack>
           <Box w="70%">
             <InputGroup>
@@ -214,86 +213,6 @@ const TipoDoacao = () => {
           </Table>
         </TableContainer>
       </Container>
-
-      {/* <Container fluid="md">
-        <HStack spacing="4" justify={"right"}>
-          <Button href="/tipodoacoes/new">
-            <AddIcon /> Novo
-          </Button>
-        </HStack>
-        <HStack spacing={4}>
-          <Box w="70%">
-            <InputGroup size="md">
-              <Input
-                onChange={(event) => {
-                  setInputDescricao(event.target.value);
-                }}
-                placeholder="Descrição"
-              />
-              <InputRightElement width="4.5rem">
-                <SmallCloseIcon size="md" onClick={handleClear} />
-              </InputRightElement>
-            </InputGroup>
-          </Box>
-          <Box w="30%">
-            <RadioGroup onChange={setInputAtivo} value={inputAtivo}>
-              <Stack direction="row">
-                <HStack spacing={4}>
-                  <Radio value="1">Ativo</Radio>
-                  <Radio value="0">Inativo</Radio>
-                </HStack>
-              </Stack>
-            </RadioGroup>
-          </Box>
-          <Button padding={20} onClick={handleClick}>
-            <SearchIcon boxSize={4} />
-          </Button>
-        </HStack>
-
-        <Row>
-          <TableContainer>
-            <Table variant="simple">
-              <TableCaption>Quantidade: {results.length}</TableCaption>
-              <Thead>
-                <Tr>
-                  <Th>Descrição</Th>
-                  <Th>Ativo</Th>
-                  <Th>Ação</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {results.map((result) => (
-                  <Tr>
-                    <Td>
-                      <a href={`/tipodoacoes/edit/${result.tipodoacaoid}`}>
-                        {result.descricao}
-                      </a>
-                    </Td>
-                    <Td>
-                      <Checkbox
-                        isChecked={result.ativo == STATUS_ATIVO ? true : false}
-                        isDisabled
-                      />
-                    </Td>
-                    <Td>
-                      <EditIcon
-                        boxSize={5}
-                        gap={2}
-                        onClick={(e) => handleEdit(result.tipodoacaoid, e)}
-                      />
-                      <DeleteIcon
-                        boxSize={5}
-                        gap={2}
-                        onClick={(e) => handleDelete(result.tipodoacaoid, e)}
-                      />
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          </TableContainer>
-        </Row>
-      </Container> */}
     </>
   );
 };
