@@ -62,6 +62,7 @@ appRoutes.get("/", async (req, res, next) => {
   await db.knex
     .select("*")
     .from("tipodoacao")
+    .where("ativo", STATUS_ATIVO)
     .then(function (results) {
       if (results.length) {
         return res.status(201).json(results);
@@ -76,11 +77,11 @@ appRoutes.get("/", async (req, res, next) => {
     });
 });
 
-appRoutes.post("/filter", async (req, res, next) => {
-  const { ativo, descricao } = req.body;
+appRoutes.get("/filter", async (req, res, next) => {
+  const { ativo, descricao } = req.query;
 
   var query = knex("tipodoacao").select("*");
-
+  console.log("ativo: " + ativo);
   if (ativo != undefined) query.where("ativo", ativo);
   if (descricao != undefined) query.whereILike("descricao", `%${descricao}%`);
 
@@ -98,7 +99,7 @@ appRoutes.post("/filter", async (req, res, next) => {
       console.log(err);
     });
 
-  console.log(query.toString());
+  console.log("Query: " + query.toString());
 });
 
 appRoutes.get("/:id", async (req, res, next) => {

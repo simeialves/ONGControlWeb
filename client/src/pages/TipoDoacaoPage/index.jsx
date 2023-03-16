@@ -10,6 +10,8 @@ import {
   Checkbox,
   HStack,
   Input,
+  InputGroup,
+  InputRightElement,
   Radio,
   RadioGroup,
 } from "@chakra-ui/react";
@@ -59,12 +61,11 @@ const TipoDoacao = () => {
     const descricao = inputDescricao;
     const ativo = inputAtivo;
     api
-      .post(`/tipodoacoes/filter`, {
+      .get(`/tipodoacoes/filter/?descricao=${descricao}&&ativo=${ativo}`, {
         descricao: descricao,
         ativo: ativo,
       })
       .then((response) => {
-        console.log(response.data);
         setResults(response.data);
         setMessage(false);
         setLoading(false);
@@ -92,14 +93,19 @@ const TipoDoacao = () => {
         <br />
         <br />
         <HStack spacing={4}>
-          <Box w="70%">
-            <Input
-              onChange={(event) => {
-                setInputDescricao(event.target.value);
-              }}
-              placeholder="Nome"
-            />
-          </Box>
+          <InputGroup size="md">
+            <Box w="70%">
+              <Input
+                onChange={(event) => {
+                  setInputDescricao(event.target.value);
+                }}
+                placeholder="Nome"
+              />
+            </Box>
+            <InputRightElement width="4.5rem">
+              <Button h="1.75rem" size="sm" onClick={handleClear}></Button>
+            </InputRightElement>
+          </InputGroup>
           <Box w="30%">
             <RadioGroup onChange={setInputAtivo} value={inputAtivo}>
               <Stack direction="row">
