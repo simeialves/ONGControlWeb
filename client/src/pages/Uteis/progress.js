@@ -1,7 +1,7 @@
 import Spinner from "react-bootstrap/Spinner";
 import "./styles.css";
 
-const SpinnerUtil = () => {
+export const SpinnerUtil = () => {
   return (
     <div className="container-spinner">
       <div className="box">

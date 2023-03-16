@@ -180,6 +180,8 @@ const New = () => {
                   <FormLabel htmlFor="nome">Nome</FormLabel>
                   <Input
                     id="nome"
+                    size="sm"
+                    borderRadius={5}
                     value={inputNome}
                     onChange={(event) => {
                       setInputNome(event.target.value);
@@ -192,6 +194,8 @@ const New = () => {
                   <FormLabel htmlFor="documento">Documento</FormLabel>
                   <Input
                     id="documento"
+                    size="sm"
+                    borderRadius={5}
                     value={inputDocumento}
                     onChange={(event) => {
                       setInputDocumento(event.target.value);
@@ -203,8 +207,12 @@ const New = () => {
                   <FormLabel htmlFor="sexo">Sexo</FormLabel>
                   <RadioGroup onChange={setInputSexo} value={inputSexo}>
                     <Stack direction="row">
-                      <Radio value="1">Masculino</Radio>
-                      <Radio value="2">Feminino</Radio>
+                      <Radio size="sm" borderRadius={5} value="1">
+                        Masculino
+                      </Radio>
+                      <Radio size="sm" borderRadius={5} value="2">
+                        Feminino
+                      </Radio>
                     </Stack>
                   </RadioGroup>
                 </Box>
@@ -214,11 +222,12 @@ const New = () => {
                   </FormLabel>
                   <Input
                     id="dtnascimento"
+                    size="sm"
+                    borderRadius={5}
                     value={inputDtNascimento}
                     onChange={(event) => {
                       setInputDtNascimento(event.target.value);
                     }}
-                    size="md"
                     type="date"
                   />
                 </Box>
@@ -228,6 +237,8 @@ const New = () => {
                   <FormLabel htmlFor="telefone">Telefone</FormLabel>
                   <Input
                     id="telefone"
+                    size="sm"
+                    borderRadius={5}
                     value={inputTelefone}
                     onChange={(event) => {
                       setInputTelefone(event.target.value);
@@ -238,6 +249,8 @@ const New = () => {
                   <FormLabel htmlFor="email">E-mail</FormLabel>
                   <Input
                     id="email"
+                    size="sm"
+                    borderRadius={5}
                     value={inputEmail}
                     onChange={(event) => {
                       setInputEmail(event.target.value);
@@ -251,6 +264,8 @@ const New = () => {
                   <FormLabel htmlFor="cep">Cep</FormLabel>
                   <Input
                     id="cep"
+                    size="sm"
+                    borderRadius={5}
                     value={inputCEP}
                     onChange={(event) => {
                       setInputCEP(event.target.value);
@@ -264,6 +279,8 @@ const New = () => {
                   <FormLabel htmlFor="logradouro">Logradouro</FormLabel>
                   <Input
                     id="logradouro"
+                    size="sm"
+                    borderRadius={5}
                     value={inputLogradouro}
                     onChange={(event) => {
                       setInputLogradouro(event.target.value);
@@ -274,6 +291,8 @@ const New = () => {
                   <FormLabel htmlFor="numero">Número</FormLabel>
                   <Input
                     id="numero"
+                    size="sm"
+                    borderRadius={5}
                     value={inputNumero}
                     onChange={(event) => {
                       setInputNumero(event.target.value);
@@ -284,6 +303,8 @@ const New = () => {
                   <FormLabel htmlFor="complemento">Complemento</FormLabel>
                   <Input
                     id="complemento"
+                    size="sm"
+                    borderRadius={5}
                     value={inputComplemento}
                     onChange={(event) => {
                       setInputComplemento(event.target.value);
@@ -297,6 +318,8 @@ const New = () => {
                   <FormLabel htmlFor="bairro">Bairro</FormLabel>
                   <Input
                     id="bairro"
+                    size="sm"
+                    borderRadius={5}
                     value={inputBairro}
                     onChange={(event) => {
                       setInputBairro(event.target.value);
@@ -308,6 +331,8 @@ const New = () => {
                   <FormLabel htmlFor="cidade">Cidade</FormLabel>
                   <Input
                     id="cidade"
+                    size="sm"
+                    borderRadius={5}
                     value={inputCidade}
                     onChange={(event) => {
                       setInputCidade(event.target.value);
@@ -319,6 +344,8 @@ const New = () => {
                   <FormLabel htmlFor="uf">UF</FormLabel>
                   <Input
                     id="uf"
+                    size="sm"
+                    borderRadius={5}
                     value={inputUF}
                     onChange={(event) => {
                       setInputUF(event.target.value);
@@ -351,6 +378,9 @@ const New = () => {
                   fontSize="x1"
                   _hover={{ bg: "gray.800" }}
                   onClick={handleVoltar}
+                  gap={2}
+                  size="sm"
+                  marginBottom={2}
                 >
                   Cancelar
                 </Button>

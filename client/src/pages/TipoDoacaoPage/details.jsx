@@ -36,6 +36,8 @@ const New = () => {
         setInputAtivo(response.data[0].ativo);
       })();
       setLoading(false);
+    } else {
+      setInputAtivo(STATUS_ATIVO);
     }
   }, [id]);
 
@@ -111,9 +113,11 @@ const New = () => {
             <FormControl display="flex" flexDir="column" gap="4">
               <HStack spacing={4}>
                 <Box w="90%">
-                  <FormLabel htmlFor="nome">Descrição</FormLabel>
+                  <FormLabel htmlFor="descricao">Descrição</FormLabel>
                   <Input
-                    id="nome"
+                    id="descricao"
+                    size="sm"
+                    borderRadius={5}
                     value={inputDescricao}
                     onChange={(event) => {
                       setInputDescricao(event.target.value);
@@ -121,8 +125,11 @@ const New = () => {
                   />
                 </Box>
                 <Box w="10%">
-                  <FormLabel htmlFor="ativo"></FormLabel>
                   <Checkbox
+                    paddingTop={8}
+                    id="ativo"
+                    size="md"
+                    borderRadius={5}
                     onChange={handleClick}
                     isChecked={inputAtivo == STATUS_ATIVO ? true : false}
                   >
@@ -149,6 +156,7 @@ const New = () => {
                   w={100}
                   p="6"
                   type="submit"
+                  variant="outline"
                   bg="gray.600"
                   color="white"
                   fontWeight="bold"

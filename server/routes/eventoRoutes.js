@@ -7,6 +7,8 @@ const bodyParser = require("body-parser");
 
 appRoutes.use(bodyParser.json());
 
+const STATUS_ATIVO = 1;
+
 //#region Methods
 function verifyJWT(req, res, next) {
   var token = req.headers["x-access-token"];
@@ -71,6 +73,7 @@ appRoutes.get("/", verifyJWT, async (req, res, next) => {
   await db.knex
     .select("*")
     .from("evento")
+    .where("ativo", STATUS_ATIVO)
     .then(function (results) {
       if (results.length) {
         return res.status(201).json(results);
@@ -85,9 +88,32 @@ appRoutes.get("/", verifyJWT, async (req, res, next) => {
     });
 });
 
+appRoutes.get("/filter", verifyJWT, async (req, res, next) => {
+  const { ativo, descricao } = req.query;
+
+  var query = knex("evento").select("*");
+
+  if (ativo != undefined) query.where("ativo", ativo);
+  if (descricao != undefined) query.whereILike("descricao", `%${descricao}%`);
+
+  query
+    .then(function (results) {
+      if (results.length) {
+        return res.status(201).json(results);
+      } else {
+        res.status(404).json({
+          message: NOT_FOUND,
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 appRoutes.get("/:id", verifyJWT, async (req, res, next) => {
   let id = Number.parseInt(req.params.id);
-  await db.knex
+  const query = await db.knex
     .select("*")
     .from("evento")
     .where({ eventoid: id })
@@ -96,7 +122,7 @@ appRoutes.get("/:id", verifyJWT, async (req, res, next) => {
         return res.status(201).json(result);
       } else {
         res.status(404).json({
-          message: "Evento não encontrado",
+          message: "NOT_FOUND",
         });
       }
     })
@@ -105,46 +131,6 @@ appRoutes.get("/:id", verifyJWT, async (req, res, next) => {
     });
 });
 
-// appRoutes.get("/filter", async (req, res, next) => {
-//   console.log(ativo);
-
-//   await db.knex
-//     .select("*")
-//     .from("evento")
-//     .where({ eventoid: 1 })
-//     .then(function (result) {
-//       if (result.length) {
-//         return res.status(201).json(result);
-//       } else {
-//         res.status(404).json({
-//           message: "Evento não encontrado",
-//         });
-//       }
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// });
-
-appRoutes.post("/filter", async (req, res, next) => {
-  const { ativo } = req.body;
-  await db.knex
-    .select("*")
-    .from("evento")
-    .where({ ativo: ativo })
-    .then(function (result) {
-      if (result.length) {
-        return res.status(201).json(result);
-      } else {
-        res.status(404).json({
-          message: "Nenhum evento encontrado",
-        });
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
 //#endregion
 
 //#region UPDATE

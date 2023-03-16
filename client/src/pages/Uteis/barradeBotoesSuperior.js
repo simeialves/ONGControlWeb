@@ -1,15 +1,18 @@
-import Spinner from "react-bootstrap/Spinner";
+import { Button, HStack } from "@chakra-ui/react";
 
-const barradeBotoesSuperior = () => {
+export const barradeBotoesSuperior = () => {
   return (
-    <div className="container-spinner">
-      <div className="box">
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
-      </div>
-    </div>
+    <HStack spacing="4" justify={"right"}>
+      <Button
+        variant="outline"
+        colorScheme="gray"
+        gap={2}
+        onClick={handleNew}
+        size="sm"
+        marginBottom={2}
+      >
+        <AddIcon /> Nova
+      </Button>
+    </HStack>
   );
 };
-
-export default barradeBotoesSuperior;

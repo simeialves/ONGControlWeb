@@ -37,7 +37,7 @@ function verifyJWT(req, res, next) {
 //#endregion
 
 //#region CREATE
-appRoutes.post("/", (req, res) => {
+appRoutes.post("/", verifyJWT, (req, res) => {
   const { descricao, ativo } = req.body;
 
   db.knex("tipodoacao")
@@ -58,7 +58,7 @@ appRoutes.post("/", (req, res) => {
 //#endregion
 
 //#region READ
-appRoutes.get("/", async (req, res, next) => {
+appRoutes.get("/", verifyJWT, async (req, res, next) => {
   await db.knex
     .select("*")
     .from("tipodoacao")
@@ -77,11 +77,11 @@ appRoutes.get("/", async (req, res, next) => {
     });
 });
 
-appRoutes.get("/filter", async (req, res, next) => {
+appRoutes.get("/filter", verifyJWT, async (req, res, next) => {
   const { ativo, descricao } = req.query;
 
   var query = knex("tipodoacao").select("*");
-  console.log("ativo: " + ativo);
+
   if (ativo != undefined) query.where("ativo", ativo);
   if (descricao != undefined) query.whereILike("descricao", `%${descricao}%`);
 
@@ -91,18 +91,16 @@ appRoutes.get("/filter", async (req, res, next) => {
         return res.status(201).json(results);
       } else {
         res.status(404).json({
-          message: "Nenhum registro encontrado",
+          message: NOT_FOUND,
         });
       }
     })
     .catch((err) => {
       console.log(err);
     });
-
-  console.log("Query: " + query.toString());
 });
 
-appRoutes.get("/:id", async (req, res, next) => {
+appRoutes.get("/:id", verifyJWT, async (req, res, next) => {
   let id = Number.parseInt(req.params.id);
   await db.knex
     .select("*")
@@ -121,11 +119,10 @@ appRoutes.get("/:id", async (req, res, next) => {
       console.log(err);
     });
 });
-
 //#endregion
 
 //#region UPDATE
-appRoutes.put("/:id", async (req, res) => {
+appRoutes.put("/:id", verifyJWT, async (req, res) => {
   const id = Number.parseInt(req.params.id);
   const { descricao, ativo } = req.body;
 
@@ -165,7 +162,7 @@ appRoutes.put("/:id", async (req, res) => {
 //#endregion
 
 //#region DELETE
-appRoutes.delete("/:id", async (req, res) => {
+appRoutes.delete("/:id", verifyJWT, async (req, res) => {
   let id = Number.parseInt(req.params.id);
   await db.knex
     .select("*")

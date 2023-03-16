@@ -4,6 +4,7 @@ const db = require("../config/db");
 const appRoutes = express.Router();
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
+const { NOT_FOUND } = require("../includes/const");
 
 appRoutes.use(bodyParser.json());
 
@@ -29,7 +30,7 @@ function verifyJWT(req, res, next) {
 //#endregion
 
 //#region CREATE
-appRoutes.post("/", (req, res) => {
+appRoutes.post("/", verifyJWT, (req, res) => {
   const { descricao, ativo } = req.body;
 
   db.knex("tipocolaborador")
@@ -50,7 +51,7 @@ appRoutes.post("/", (req, res) => {
 //#endregion
 
 //#region READ
-appRoutes.get("/", async (req, res, next) => {
+appRoutes.get("/", verifyJWT, async (req, res, next) => {
   await db.knex
     .select("*")
     .from("tipocolaborador")
@@ -58,9 +59,7 @@ appRoutes.get("/", async (req, res, next) => {
       if (results.length) {
         return res.status(201).json(results);
       } else {
-        return res
-          .status(404)
-          .json({ message: "Nenhum tipo de colaborador encontrado" });
+        return res.status(404).json({ message: NOT_FOUND });
       }
     })
     .catch((err) => {
@@ -68,7 +67,30 @@ appRoutes.get("/", async (req, res, next) => {
     });
 });
 
-appRoutes.get("/:id", async (req, res, next) => {
+appRoutes.get("/filter", verifyJWT, async (req, res, next) => {
+  const { ativo, descricao } = req.query;
+
+  var query = knex("tipocolaborador").select("*");
+
+  if (ativo != undefined) query.where("ativo", ativo);
+  if (descricao != undefined) query.whereILike("descricao", `%${descricao}%`);
+
+  query
+    .then(function (results) {
+      if (results.length) {
+        return res.status(201).json(results);
+      } else {
+        res.status(404).json({
+          message: NOT_FOUND,
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+appRoutes.get("/:id", verifyJWT, async (req, res, next) => {
   let id = Number.parseInt(req.params.id);
   await db.knex
     .select("*")
@@ -78,9 +100,7 @@ appRoutes.get("/:id", async (req, res, next) => {
       if (result.length) {
         return res.status(201).json(result);
       } else {
-        return res
-          .status(404)
-          .json({ message: "Tipo de Colaborador não encontrado" });
+        return res.status(404).json({ message: NOT_FOUND });
       }
     })
     .catch((err) => {
@@ -90,7 +110,7 @@ appRoutes.get("/:id", async (req, res, next) => {
 //#endregion
 
 //#region UPDATE
-appRoutes.put("/:id", async (req, res) => {
+appRoutes.put("/:id", verifyJWT, async (req, res) => {
   const id = Number.parseInt(req.params.id);
   const { descricao, ativo } = req.body;
 
@@ -130,7 +150,7 @@ appRoutes.put("/:id", async (req, res) => {
 //#endregion
 
 //#region DELETE
-appRoutes.delete("/:id", async (req, res) => {
+appRoutes.delete("/:id", verifyJWT, async (req, res) => {
   let id = Number.parseInt(req.params.id);
   await db.knex
     .select("*")

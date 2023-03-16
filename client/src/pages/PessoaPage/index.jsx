@@ -1,16 +1,35 @@
+import {
+  Button,
+  InputRightElement,
+  Table,
+  TableCaption,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
+
+import {
+  AddIcon,
+  DeleteIcon,
+  EditIcon,
+  SearchIcon,
+  SmallCloseIcon,
+} from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
-import Table from "react-bootstrap/Table";
 import { useNavigate } from "react-router-dom";
-import { api, getPessoas } from "../../shared/services/api";
+import { api } from "../../shared/services/api";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 
+import { Box, HStack, Input, InputGroup } from "@chakra-ui/react";
 import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
 
-import { Alert, AlertIcon, Input, Stack } from "@chakra-ui/react";
+import { getPessoas } from "../../shared/services/api";
+
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Button } from "react-bootstrap";
 
 const Pessoa = () => {
   const [results, setResults] = useState([]);
@@ -33,11 +52,10 @@ const Pessoa = () => {
     return <SpinnerUtil />;
   }
 
-  function handleEdit(id) {
+  async function handleEdit(id) {
     navigate(`/pessoas/edit/${id}`);
   }
-
-  function handleDelete(id) {
+  async function handleDelete(id) {
     api
       .delete(`/pessoas/${id}`, {})
       .then(() => {
@@ -48,7 +66,6 @@ const Pessoa = () => {
         console.log(err);
       });
   }
-
   async function handleClick() {
     setLoading(true);
     api
@@ -66,7 +83,6 @@ const Pessoa = () => {
         setLoading(false);
       });
   }
-
   async function handleClear() {
     setLoading(true);
     setInputNome("");
@@ -74,77 +90,98 @@ const Pessoa = () => {
     setResults(response.data);
     setLoading(false);
   }
+  async function handleNew() {
+    navigate("/pessoas/new");
+  }
   return (
     <>
       <Headers />
       <br></br>
       <Container fluid="md">
-        <Button href="/pessoas/new">Nova</Button>
-        <br />
-        <br />
-        {message && (
-          <Stack spacing={3}>
-            <Alert status="error">
-              <AlertIcon />
-              Pessoa não encontrada
-            </Alert>
-          </Stack>
-        )}
-
-        {/* {message &&
-          Toast({
-            title: `Pessoa não encontrada`,
-            position: "top",
-            duration: 0,
-            isClosable: true,
-          })} */}
-
-        <Input
-          onChange={(event) => {
-            setInputNome(event.target.value);
-          }}
-          placeholder="Nome"
-        />
-        <Button onClick={handleClick}>Pesquisar</Button>
-        <Button onClick={handleClear}>Limpar</Button>
-        <Row>
-          <Table striped bordered hover size="sm">
-            <thead>
-              <tr>
-                <th scope="col">Nome</th>
-                <th scope="col">Documento</th>
-                <th scope="col">Telefone</th>
-                <th colspan="2">Ação</th>
-              </tr>
-            </thead>
-            <tbody>
+        <HStack spacing="4" justify={"right"}>
+          <Button
+            variant="outline"
+            colorScheme="gray"
+            gap={2}
+            onClick={handleNew}
+            size="sm"
+            marginBottom={2}
+          >
+            <AddIcon /> Nova
+          </Button>
+        </HStack>
+        <barradeBotoesSuperior />
+        <HStack>
+          <Box w="70%">
+            <InputGroup>
+              <Input
+                onChange={(event) => {
+                  setInputNome(event.target.value);
+                }}
+                placeholder="Pesquisar por nome"
+                size="sm"
+                borderRadius={5}
+              />
+              <InputRightElement>
+                <SmallCloseIcon justify={"right"} onClick={handleClear} />
+              </InputRightElement>
+            </InputGroup>
+          </Box>
+          <Button
+            variant="solid"
+            gap={2}
+            w={120}
+            p="1"
+            bg="gray.600"
+            color="white"
+            fontSize="x1"
+            _hover={{ bg: "gray.800" }}
+            onClick={handleClick}
+            size="sm"
+          >
+            <SearchIcon />
+            Pesquisar
+          </Button>
+        </HStack>
+        <br></br>
+        <TableContainer>
+          <Table variant="simple" size="sm">
+            <TableCaption>Quantidade: {results.length}</TableCaption>
+            <Thead>
+              <Tr>
+                <Th>Nome</Th>
+                <Th>Documento</Th>
+                <Th>Telefone</Th>
+                <Th>Ação</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
               {results.map((result) => (
-                <tr>
-                  <td>{result.nome}</td>
-                  <td>{result.documento}</td>
-                  <td>{result.telefone}</td>
-                  <td>
-                    <button
-                      class="btn btn-primary"
+                <Tr>
+                  <Td>
+                    <a href={`/pessoas/edit/${result.pessoaid}`}>
+                      {result.nome}
+                    </a>
+                  </Td>
+                  <Td>{result.documento}</Td>
+                  <Td>{result.telefone}</Td>
+                  <Td>
+                    <EditIcon
+                      boxSize={5}
+                      gap={2}
                       onClick={(e) => handleEdit(result.pessoaid, e)}
-                    >
-                      Editar
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      class="btn btn-danger"
+                    />
+                    <DeleteIcon
+                      boxSize={5}
+                      gap={2}
                       onClick={(e) => handleDelete(result.pessoaid, e)}
-                    >
-                      Excluir
-                    </button>
-                  </td>
-                </tr>
+                    />
+                  </Td>
+                </Tr>
               ))}
-            </tbody>
+            </Tbody>
           </Table>
-        </Row>
-        <label>Quantidade: {results.length}</label>
+        </TableContainer>
       </Container>
     </>
   );
