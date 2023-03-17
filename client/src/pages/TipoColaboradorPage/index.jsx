@@ -110,7 +110,7 @@ const TipoColaborador = () => {
   }
 
   async function handleNew() {
-    navigate(`/tipodoacoes/new`);
+    navigate(`/tipocolaboradores/new`);
   }
   return (
     <>
@@ -209,7 +209,7 @@ const TipoColaborador = () => {
                     <DeleteIcon
                       boxSize={5}
                       gap={2}
-                      onClick={(e) => handleDelete(result.tipodoacaoid, e)}
+                      onClick={(e) => handleDelete(result.tipocolaboradorid, e)}
                     />
                   </Td>
                 </Tr>

@@ -80,11 +80,10 @@ const Evento = () => {
   }
 
   async function handleClick() {
-    //setLoading(true);
+    setLoading(true);
     setResults([]);
     const descricao = inputDescricao;
     const ativo = inputAtivo;
-    console.log(descricao, ativo);
     api
       .get(`/eventos/filter/?descricao=${descricao}&&ativo=${ativo}`, {
         descricao: descricao,
@@ -97,9 +96,9 @@ const Evento = () => {
         setInputDescricao("");
       })
       .catch(() => {
+        setLoading(false);
         setResults([]);
         setMessage(true);
-        setLoading(false);
       });
   }
 
@@ -112,7 +111,7 @@ const Evento = () => {
   }
 
   async function handleNew() {
-    navigate(`/tipodoacoes/new`);
+    navigate(`/eventos/new`);
   }
 
   return (
@@ -192,7 +191,7 @@ const Evento = () => {
               {results.map((result) => (
                 <Tr>
                   <Td>
-                    <a href={`/tipodoacoes/edit/${result.eventoid}`}>
+                    <a href={`/eventos/edit/${result.eventoid}`}>
                       {result.descricao}
                     </a>
                   </Td>

@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 appRoutes.use(bodyParser.json());
 
 const STATUS_ATIVO = 1;
+const NOT_FOUND = "Not Found.";
 
 //#region Methods
 function verifyJWT(req, res, next) {
@@ -73,7 +74,7 @@ appRoutes.get("/", verifyJWT, async (req, res, next) => {
   await db.knex
     .select("*")
     .from("evento")
-    .where("ativo", STATUS_ATIVO)
+    //.where("ativo", STATUS_ATIVO)
     .then(function (results) {
       if (results.length) {
         return res.status(201).json(results);

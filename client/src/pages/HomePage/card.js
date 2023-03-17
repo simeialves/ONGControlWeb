@@ -13,7 +13,6 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { STATUS_ATIVO } from "../../includes/const";
 import { api } from "../../shared/services/api";
 import { formatDate } from "../Uteis/Uteis";
 
@@ -25,14 +24,12 @@ export const CardEvento = () => {
 
   useEffect(() => {
     (async () => {
-      await api
-        .post(`/eventos/filter`, {
-          ativo: STATUS_ATIVO,
-        })
-        .then((response) => {
-          setResults(response.data);
-          setLoading(false);
-        });
+      setLoading(true);
+      setResults([]);
+      await api.get(`/eventos`).then((response) => {
+        setResults(response.data);
+        setLoading(false);
+      });
     })();
   }, []);
 
@@ -42,11 +39,11 @@ export const CardEvento = () => {
 
   return (
     <>
-      <Container gap={4}>
-        {results.map((result) => (
-          <Flex>
-            <HStack spacing="24px">
-              <Card maxW="sm" size="sm">
+      <Container gap={4} width={"100%"}>
+        <HStack spacing="24px">
+          {results.map((result) => (
+            <Flex>
+              <Card width={250} maxW="sm" size="sm" marginTop={5}>
                 <CardBody>
                   {/* <Image
               src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
@@ -54,9 +51,11 @@ export const CardEvento = () => {
               borderRadius="lg"
             /> */}
                   <Stack mt="6" spacing="3">
-                    <Heading size="md">{result.descricao}</Heading>
-                    <Text>{result.descricao}</Text>
-                    <Text color="blue.600" fontSize="2xl">
+                    <Heading size="md" noOfLines={1}>
+                      {result.descricao}
+                    </Heading>
+                    {/* <Text noOfLines={1}> {result.descricao}</Text> */}
+                    <Text color="blue.600" fontSize="1x1">
                       Data de Início: {formatDate(result.datainicio)}
                       <br />
                       Data de Término: {formatDate(result.datafim)}
@@ -77,9 +76,9 @@ export const CardEvento = () => {
                   </ButtonGroup>
                 </CardFooter>
               </Card>
-            </HStack>
-          </Flex>
-        ))}
+            </Flex>
+          ))}
+        </HStack>
       </Container>
 
       {/* <Flex>

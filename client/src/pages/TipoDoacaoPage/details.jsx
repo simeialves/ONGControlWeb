@@ -126,10 +126,10 @@ const New = () => {
                 </Box>
                 <Box w="10%">
                   <Checkbox
-                    paddingTop={8}
                     id="ativo"
                     size="md"
                     borderRadius={5}
+                    paddingTop={8}
                     onChange={handleClick}
                     isChecked={inputAtivo == STATUS_ATIVO ? true : false}
                   >

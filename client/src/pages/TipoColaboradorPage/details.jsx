@@ -121,8 +121,11 @@ const New = () => {
                   />
                 </Box>
                 <Box w="10%">
-                  <FormLabel htmlFor="ativo"></FormLabel>
                   <Checkbox
+                    id="ativo"
+                    size="md"
+                    borderRadius={5}
+                    paddingTop={8}
                     onChange={handleClick}
                     isChecked={inputAtivo == STATUS_ATIVO ? true : false}
                   >
