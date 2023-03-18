@@ -1,11 +1,5 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-
-import "bootstrap/dist/css/bootstrap.min.css";
-
-import "bootstrap/dist/css/bootstrap.min.css";
-import React from "react";
-
 import {
+  Button,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -15,7 +9,7 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React from "react";
 import ParametroPage from ".";
 
 export const ModalParams = () => {
@@ -23,10 +17,6 @@ export const ModalParams = () => {
 
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
-
-  const handleCloseModal = () => {
-    onClose();
-  };
 
   return (
     <>
@@ -47,19 +37,10 @@ export const ModalParams = () => {
           </ModalBody>
 
           <ModalFooter>
-            {/* <Button
-              w={240}
-              p="6"
-              type="submit"
-              bg="blue.600"
-              color="white"
-              fontWeight="bold"
-              fontSize="x1"
-              _hover={{ bg: "blue.800" }}
-            >
-              Salvaraa
+            <Button colorScheme="blue" mr={3}>
+              Salvar
             </Button>
-            <Button onClick={handleCloseModal}>Cancel</Button> */}
+            <Button onClick={onClose}>Cancel</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
