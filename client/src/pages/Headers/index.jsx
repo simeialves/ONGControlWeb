@@ -1,3 +1,4 @@
+import { Button } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -23,7 +24,9 @@ const Headers = () => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
 
-  const token = localStorage.getItem("token");
+  const handleModal = () => {
+    <ModalParams />;
+  };
 
   return (
     <>
@@ -68,9 +71,11 @@ const Headers = () => {
               <div className="box">
                 <FcSettings size={"24px"} />
                 <NavDropdown title="Configurações" id="basic-nav-dropdown">
-                  <NavDropdown.Item>
+                  {/* <NavDropdown.Item> */}
+                  <Button bg={"white.100"} color="black" fontWeight="">
                     <ModalParams />
-                  </NavDropdown.Item>
+                  </Button>
+                  {/* </NavDropdown.Item> */}
                   <NavDropdown.Item href="/usuarios">Usuários</NavDropdown.Item>
                 </NavDropdown>
               </div>

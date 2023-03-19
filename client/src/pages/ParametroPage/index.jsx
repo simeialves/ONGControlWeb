@@ -63,7 +63,6 @@ function ParametroPage() {
       setLoading(true);
 
       const response = await api.get(`/parametros/`);
-      console.log(response);
 
       setInputNome(response.data[ID_NOME].valor);
       setInputDocumento(response.data[ID_DOCUMENTO].valor);
