@@ -210,7 +210,6 @@ function ParametroPage() {
             />
           </Box>
         </HStack>
-
         <HStack spacing={4}>
           <Box w="30%">
             <FormLabel htmlFor="cep">Cep</FormLabel>
@@ -334,7 +333,6 @@ function ParametroPage() {
             />
           </Box>
         </HStack>
-
         <HStack>
           <Box w="50%">
             <FormLabel htmlFor="emaillogin">E-mail Login</FormLabel>
@@ -363,7 +361,6 @@ function ParametroPage() {
             />
           </Box>
         </HStack>
-
         <HStack>
           <Box w="50%">
             <FormLabel htmlFor="emailservidor">Servidor</FormLabel>
@@ -404,7 +401,6 @@ function ParametroPage() {
             </Checkbox>
           </Box>
         </HStack>
-
         <HStack marginTop={5} spacing="4" justify={"right"}>
           <Button
             w={240}
