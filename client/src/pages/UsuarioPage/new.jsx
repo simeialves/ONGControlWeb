@@ -85,6 +85,8 @@ const NewUsuarioPage = () => {
                   <FormLabel htmlFor="nome">Nome</FormLabel>
                   <Input
                     id="nome"
+                    size={"xs"}
+                    borderRadius={5}
                     placeholder="Nome"
                     value={inputNome}
                     onChange={(event) => {
@@ -98,6 +100,8 @@ const NewUsuarioPage = () => {
                   <FormLabel htmlFor="email">E-mail</FormLabel>
                   <Input
                     id="email"
+                    size={"xs"}
+                    borderRadius={5}
                     placeholder="E-mail"
                     value={inputEmail}
                     onChange={(event) => {
@@ -114,6 +118,8 @@ const NewUsuarioPage = () => {
                       pr="4.5rem"
                       type={show ? "text" : "password"}
                       id="senha"
+                      size={"xs"}
+                      borderRadius={5}
                       placeholder="Senha"
                       value={inputSenha}
                       onChange={(event) => {
@@ -136,6 +142,8 @@ const NewUsuarioPage = () => {
                       pr="4.5rem"
                       type={show ? "text" : "password"}
                       id="senha2"
+                      size={"xs"}
+                      borderRadius={5}
                       placeholder="Repita a senha"
                       value={inputSenha2}
                       onChange={(event) => {
@@ -166,14 +174,19 @@ const NewUsuarioPage = () => {
                 </Button>
                 <Button
                   w={100}
-                  p="6"
+                  p="5"
                   type="submit"
-                  bg="gray.600"
-                  color="white"
+                  colorScheme="gray"
+                  bg="gray.100"
+                  color="black"
+                  variant="outline"
                   fontWeight="bold"
                   fontSize="x1"
-                  _hover={{ bg: "gray.800" }}
+                  _hover={{ bg: "gray.300" }}
                   onClick={handleVoltar}
+                  gap={2}
+                  size="xs"
+                  marginBottom={2}
                 >
                   Cancelar
                 </Button>

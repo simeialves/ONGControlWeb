@@ -72,9 +72,11 @@ const Pessoa = () => {
   }
   async function handleClick() {
     setLoading(true);
+    setResults([]);
+    const nome = inputNome;
     api
-      .post(`/pessoas/filter`, {
-        nome: inputNome,
+      .get(`/pessoas/filter/?nome=${nome}`, {
+        nome: nome,
       })
       .then((response) => {
         setResults(response.data);

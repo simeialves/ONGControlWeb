@@ -4,6 +4,7 @@ const db = require("../config/db");
 const appRoutes = express.Router();
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
+const { NOT_FOUND } = require("../includes/const");
 
 appRoutes.use(bodyParser.json());
 
@@ -73,12 +74,35 @@ appRoutes.get("/", verifyJWT, async (req, res, next) => {
   await db.knex
     .select("*")
     .from("localevento")
+    .orderBy("nome")
     .then(function (results) {
       if (results.length) {
         return res.status(201).json(results);
       } else {
         res.status(404).json({
           message: "Nenhum Local de Evento cadastrado",
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+appRoutes.get("/filter", verifyJWT, async (req, res, next) => {
+  const { nome } = req.query;
+
+  var query = knex("localevento").select("*").orderBy("nome");
+
+  if (nome != undefined) query.whereILike("nome", `%${nome}%`);
+
+  query
+    .then(function (results) {
+      if (results.length) {
+        return res.status(201).json(results);
+      } else {
+        res.status(404).json({
+          message: NOT_FOUND,
         });
       }
     })

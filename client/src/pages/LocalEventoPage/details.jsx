@@ -156,6 +156,8 @@ const New = () => {
                   <FormLabel htmlFor="nome">Nome</FormLabel>
                   <Input
                     id="nome"
+                    size="xs"
+                    borderRadius={5}
                     value={inputNome}
                     onChange={(event) => {
                       setInputNome(event.target.value);
@@ -168,6 +170,8 @@ const New = () => {
                   <FormLabel htmlFor="cep">Cep</FormLabel>
                   <Input
                     id="cep"
+                    size="xs"
+                    borderRadius={5}
                     value={inputCep}
                     onChange={(event) => {
                       setInputCep(event.target.value);
@@ -181,6 +185,8 @@ const New = () => {
                   <FormLabel htmlFor="logradouro">Logradouro</FormLabel>
                   <Input
                     id="logradouro"
+                    size="xs"
+                    borderRadius={5}
                     value={inputLogradouro}
                     onChange={(event) => {
                       setInputLogradouro(event.target.value);
@@ -194,6 +200,8 @@ const New = () => {
                   <FormLabel htmlFor="numero">Numero</FormLabel>
                   <Input
                     id="numero"
+                    size="xs"
+                    borderRadius={5}
                     value={inputNumero}
                     onChange={(event) => {
                       setInputNumero(event.target.value);
@@ -204,6 +212,8 @@ const New = () => {
                   <FormLabel htmlFor="complemento">Complemento</FormLabel>
                   <Input
                     id="complemento"
+                    size="xs"
+                    borderRadius={5}
                     value={inputComplemento}
                     onChange={(event) => {
                       setInputComplemento(event.target.value);
@@ -215,6 +225,8 @@ const New = () => {
                   <FormLabel htmlFor="bairro">Bairro</FormLabel>
                   <Input
                     id="bairro"
+                    size="xs"
+                    borderRadius={5}
                     value={inputBairro}
                     onChange={(event) => {
                       setInputBairro(event.target.value);
@@ -228,6 +240,8 @@ const New = () => {
                   <FormLabel htmlFor="cidade">Cidade</FormLabel>
                   <Input
                     id="cidade"
+                    size="xs"
+                    borderRadius={5}
                     value={inputCidade}
                     onChange={(event) => {
                       setInputCidade(event.target.value);
@@ -238,6 +252,8 @@ const New = () => {
                   <FormLabel htmlFor="uf">UF</FormLabel>
                   <Input
                     id="uf"
+                    size="xs"
+                    borderRadius={5}
                     value={inputUF}
                     onChange={(event) => {
                       setInputUF(event.target.value);
@@ -250,6 +266,8 @@ const New = () => {
                   <FormLabel htmlFor="uf">Link</FormLabel>
                   <Input
                     id="link"
+                    size="xs"
+                    borderRadius={5}
                     value={inputLink}
                     onChange={(event) => {
                       setInputLink(event.target.value);
@@ -273,14 +291,19 @@ const New = () => {
                 </Button>
                 <Button
                   w={100}
-                  p="6"
+                  p="5"
                   type="submit"
-                  bg="gray.600"
-                  color="white"
+                  colorScheme="gray"
+                  bg="gray.100"
+                  color="black"
+                  variant="outline"
                   fontWeight="bold"
                   fontSize="x1"
-                  _hover={{ bg: "gray.800" }}
+                  _hover={{ bg: "gray.300" }}
                   onClick={handleVoltar}
+                  gap={2}
+                  size="xs"
+                  marginBottom={2}
                 >
                   Cancelar
                 </Button>

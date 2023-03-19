@@ -74,7 +74,7 @@ appRoutes.get("/", verifyJWT, async (req, res, next) => {
   await db.knex
     .select("*")
     .from("evento")
-    //.where("ativo", STATUS_ATIVO)
+    .orderBy("descricao")
     .then(function (results) {
       if (results.length) {
         return res.status(201).json(results);
@@ -92,7 +92,7 @@ appRoutes.get("/", verifyJWT, async (req, res, next) => {
 appRoutes.get("/filter", verifyJWT, async (req, res, next) => {
   const { ativo, descricao } = req.query;
 
-  var query = knex("evento").select("*");
+  var query = knex("evento").select("*").orderBy("descricao");
 
   if (ativo != undefined) query.where("ativo", ativo);
   if (descricao != undefined) query.whereILike("descricao", `%${descricao}%`);

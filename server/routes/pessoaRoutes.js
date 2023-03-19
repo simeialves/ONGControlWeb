@@ -4,6 +4,7 @@ const db = require("../config/db");
 const appRoutes = express.Router();
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
+const { NOT_FOUND } = require("../includes/const");
 
 appRoutes.use(bodyParser.json());
 
@@ -96,19 +97,21 @@ appRoutes.get("/", async (req, res, next) => {
     });
 });
 
-appRoutes.post("/filter", async (req, res, next) => {
-  const { nome } = req.body;
+appRoutes.get("/filter", verifyJWT, async (req, res, next) => {
+  const { nome } = req.query;
 
-  await db.knex
-    .select("*")
-    .from("pessoa")
-    .whereILike("nome", `%${nome}%`)
-    .orderBy("nome")
+  var query = knex("pessoa").select("*");
+
+  if (nome != undefined) query.whereILike("nome", `%${nome}%`).orderBy("nome");
+
+  query
     .then(function (results) {
       if (results.length) {
         return res.status(201).json(results);
       } else {
-        return res.status(404).json({ message: "Nenhuma pessoa encontrada" });
+        res.status(404).json({
+          message: NOT_FOUND,
+        });
       }
     })
     .catch((err) => {

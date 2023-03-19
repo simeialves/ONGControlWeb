@@ -180,7 +180,7 @@ const New = () => {
                   <FormLabel htmlFor="nome">Nome</FormLabel>
                   <Input
                     id="nome"
-                    size="sm"
+                    size="xs"
                     borderRadius={5}
                     value={inputNome}
                     onChange={(event) => {
@@ -194,7 +194,7 @@ const New = () => {
                   <FormLabel htmlFor="documento">Documento</FormLabel>
                   <Input
                     id="documento"
-                    size="sm"
+                    size="xs"
                     borderRadius={5}
                     value={inputDocumento}
                     onChange={(event) => {
@@ -222,7 +222,7 @@ const New = () => {
                   </FormLabel>
                   <Input
                     id="dtnascimento"
-                    size="sm"
+                    size="xs"
                     borderRadius={5}
                     value={inputDtNascimento}
                     onChange={(event) => {
@@ -237,7 +237,7 @@ const New = () => {
                   <FormLabel htmlFor="telefone">Telefone</FormLabel>
                   <Input
                     id="telefone"
-                    size="sm"
+                    size="xs"
                     borderRadius={5}
                     value={inputTelefone}
                     onChange={(event) => {
@@ -249,7 +249,7 @@ const New = () => {
                   <FormLabel htmlFor="email">E-mail</FormLabel>
                   <Input
                     id="email"
-                    size="sm"
+                    size="xs"
                     borderRadius={5}
                     value={inputEmail}
                     onChange={(event) => {
@@ -264,7 +264,7 @@ const New = () => {
                   <FormLabel htmlFor="cep">Cep</FormLabel>
                   <Input
                     id="cep"
-                    size="sm"
+                    size="xs"
                     borderRadius={5}
                     value={inputCEP}
                     onChange={(event) => {
@@ -279,7 +279,7 @@ const New = () => {
                   <FormLabel htmlFor="logradouro">Logradouro</FormLabel>
                   <Input
                     id="logradouro"
-                    size="sm"
+                    size="xs"
                     borderRadius={5}
                     value={inputLogradouro}
                     onChange={(event) => {
@@ -291,7 +291,7 @@ const New = () => {
                   <FormLabel htmlFor="numero">Número</FormLabel>
                   <Input
                     id="numero"
-                    size="sm"
+                    size="xs"
                     borderRadius={5}
                     value={inputNumero}
                     onChange={(event) => {
@@ -303,7 +303,7 @@ const New = () => {
                   <FormLabel htmlFor="complemento">Complemento</FormLabel>
                   <Input
                     id="complemento"
-                    size="sm"
+                    size="xs"
                     borderRadius={5}
                     value={inputComplemento}
                     onChange={(event) => {
@@ -318,7 +318,7 @@ const New = () => {
                   <FormLabel htmlFor="bairro">Bairro</FormLabel>
                   <Input
                     id="bairro"
-                    size="sm"
+                    size="xs"
                     borderRadius={5}
                     value={inputBairro}
                     onChange={(event) => {
@@ -331,7 +331,7 @@ const New = () => {
                   <FormLabel htmlFor="cidade">Cidade</FormLabel>
                   <Input
                     id="cidade"
-                    size="sm"
+                    size="xs"
                     borderRadius={5}
                     value={inputCidade}
                     onChange={(event) => {
@@ -344,7 +344,7 @@ const New = () => {
                   <FormLabel htmlFor="uf">UF</FormLabel>
                   <Input
                     id="uf"
-                    size="sm"
+                    size="xs"
                     borderRadius={5}
                     value={inputUF}
                     onChange={(event) => {
@@ -370,16 +370,18 @@ const New = () => {
                 </Button>
                 <Button
                   w={100}
-                  p="6"
+                  p="5"
                   type="submit"
-                  bg="gray.600"
-                  color="white"
+                  colorScheme="gray"
+                  bg="gray.100"
+                  color="black"
+                  variant="outline"
                   fontWeight="bold"
                   fontSize="x1"
-                  _hover={{ bg: "gray.800" }}
+                  _hover={{ bg: "gray.300" }}
                   onClick={handleVoltar}
                   gap={2}
-                  size="sm"
+                  size="xs"
                   marginBottom={2}
                 >
                   Cancelar

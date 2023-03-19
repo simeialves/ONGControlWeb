@@ -90,6 +90,7 @@ const Evento = () => {
         ativo: ativo,
       })
       .then((response) => {
+        console.log(response);
         setResults(response.data);
         setMessage(false);
         setLoading(false);

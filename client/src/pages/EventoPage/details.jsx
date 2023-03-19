@@ -158,7 +158,7 @@ const NewPessoaPage = () => {
                         <FormLabel htmlFor="descricao">Descrição</FormLabel>
                         <Input
                           id="descricao"
-                          size={"sm"}
+                          size="xs"
                           borderRadius={5}
                           value={inputDescricao}
                           onChange={(event) => {
@@ -185,7 +185,7 @@ const NewPessoaPage = () => {
                         <FormLabel htmlFor="projetoid">Projeto</FormLabel>
                         <Input
                           id="projetoid"
-                          size={"sm"}
+                          size="xs"
                           borderRadius={5}
                           value={inputProjetoId}
                           onChange={(event) => {
@@ -199,7 +199,7 @@ const NewPessoaPage = () => {
                         </FormLabel>
                         <Input
                           id="datainicio"
-                          size={"sm"}
+                          size="xs"
                           borderRadius={5}
                           value={inputDataInicio}
                           onChange={(event) => {
@@ -211,8 +211,7 @@ const NewPessoaPage = () => {
                       <Box w="30%">
                         <FormLabel htmlFor="datafim">Data de Término</FormLabel>
                         <Input
-                          id="datafim"
-                          size={"sm"}
+                          size="xs"
                           borderRadius={5}
                           value={inputDataFim}
                           onChange={(event) => {
@@ -228,7 +227,7 @@ const NewPessoaPage = () => {
                         <FormLabel htmlFor="nivel">Nível</FormLabel>
                         <Input
                           id="nivel"
-                          size={"sm"}
+                          size="xs"
                           borderRadius={5}
                           value={inputNivel}
                           onChange={(event) => {
@@ -243,7 +242,7 @@ const NewPessoaPage = () => {
                         </FormLabel>
                         <Input
                           id="localeventoid"
-                          size={"sm"}
+                          size="xs"
                           borderRadius={5}
                           value={inputLocalEventoId}
                           onChange={(event) => {
@@ -260,7 +259,7 @@ const NewPessoaPage = () => {
                         </FormLabel>
                         <Input
                           id="formularionivelamento"
-                          size={"sm"}
+                          size="xs"
                           borderRadius={5}
                           value={inputFormularioNivelamento}
                           onChange={(event) => {
@@ -286,14 +285,19 @@ const NewPessoaPage = () => {
                       </Button>
                       <Button
                         w={100}
-                        p="6"
+                        p="5"
                         type="submit"
-                        bg="gray.600"
-                        color="white"
+                        colorScheme="gray"
+                        bg="gray.100"
+                        color="black"
+                        variant="outline"
                         fontWeight="bold"
                         fontSize="x1"
-                        _hover={{ bg: "gray.800" }}
+                        _hover={{ bg: "gray.300" }}
                         onClick={handleVoltar}
+                        gap={2}
+                        size="xs"
+                        marginBottom={2}
                       >
                         Cancelar
                       </Button>

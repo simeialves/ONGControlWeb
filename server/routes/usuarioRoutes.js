@@ -66,6 +66,7 @@ appRoutes.get("/", verifyJWT, (req, res, next) => {
   db.knex
     .select()
     .from("usuario")
+    .orderBy("nome")
     .then((result) => {
       res.status(200).json(result);
     })
@@ -73,6 +74,28 @@ appRoutes.get("/", verifyJWT, (req, res, next) => {
       res.status(500).json({
         message: "Erro ao buscar usuarios - " + err.message,
       });
+    });
+});
+
+appRoutes.get("/filter", verifyJWT, async (req, res, next) => {
+  const { nome } = req.query;
+
+  var query = knex("usuario").select("*");
+
+  if (nome != undefined) query.whereILike("nome", `%${nome}%`).orderBy("nome");
+
+  query
+    .then(function (results) {
+      if (results.length) {
+        return res.status(201).json(results);
+      } else {
+        res.status(404).json({
+          message: NOT_FOUND,
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
     });
 });
 

@@ -114,6 +114,8 @@ const New = () => {
                   <FormLabel htmlFor="nome">Descrição</FormLabel>
                   <Input
                     id="nome"
+                    size={"xs"}
+                    borderRadius={5}
                     value={inputDescricao}
                     onChange={(event) => {
                       setInputDescricao(event.target.value);
@@ -149,15 +151,19 @@ const New = () => {
                   Salvar
                 </Button>
                 <Button
-                  w={100}
-                  p="6"
+                  p="5"
                   type="submit"
-                  bg="gray.600"
-                  color="white"
+                  colorScheme="gray"
+                  bg="gray.100"
+                  color="black"
+                  variant="outline"
                   fontWeight="bold"
                   fontSize="x1"
-                  _hover={{ bg: "gray.800" }}
+                  _hover={{ bg: "gray.300" }}
                   onClick={handleVoltar}
+                  gap={2}
+                  size="xs"
+                  marginBottom={2}
                 >
                   Cancelar
                 </Button>

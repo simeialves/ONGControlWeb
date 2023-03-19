@@ -7,9 +7,9 @@ import {
   Divider,
   Flex,
   Heading,
-  HStack,
   Stack,
   Text,
+  VStack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -40,9 +40,9 @@ export const CardEvento = () => {
   return (
     <>
       <Container gap={4} width={"100%"}>
-        <HStack spacing="24px">
+        <VStack gap={1}>
           {results.map((result) => (
-            <Flex>
+            <Flex borderRadius={5} bgColor="gray.100">
               <Card width={250} maxW="sm" size="sm" marginTop={5}>
                 <CardBody>
                   {/* <Image
@@ -78,7 +78,7 @@ export const CardEvento = () => {
               </Card>
             </Flex>
           ))}
-        </HStack>
+        </VStack>
       </Container>
 
       {/* <Flex>
