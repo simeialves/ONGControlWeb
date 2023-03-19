@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 
 import {
+  Button,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -47,7 +48,8 @@ export const ModalParams = () => {
           </ModalBody>
 
           <ModalFooter>
-            {/* <Button
+            {
+              /* <Button
               w={240}
               p="6"
               type="submit"
@@ -58,8 +60,9 @@ export const ModalParams = () => {
               _hover={{ bg: "blue.800" }}
             >
               Salvaraa
-            </Button>
-            <Button onClick={handleCloseModal}>Cancel</Button> */}
+            </Button>*/
+              <Button onClick={handleCloseModal}>Cancel</Button>
+            }
           </ModalFooter>
         </ModalContent>
       </Modal>
