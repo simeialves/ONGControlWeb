@@ -46,7 +46,7 @@ export const getEventosAtivos = async () => {
 };
 
 export const getLocalEventos = async () => {
-  return api.get("/localeventos");
+  return await api.get("/localeventos");
 };
 
 export const getClienteByNome = async (nome) => {

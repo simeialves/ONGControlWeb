@@ -47,7 +47,7 @@ const Evento = () => {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState(false);
   const [inputDescricao, setInputDescricao] = useState("");
-  const [inputAtivo, setInputAtivo] = useState(1);
+  const [inputAtivo, setInputAtivo] = useState(true);
 
   const navigate = useNavigate();
 
@@ -211,7 +211,7 @@ const Evento = () => {
                     <DeleteIcon
                       boxSize={5}
                       gap={2}
-                      onClick={(e) => handleDelete(result.tipodoacaoid, e)}
+                      onClick={(e) => handleDelete(result.eventoid, e)}
                     />
                   </Td>
                 </Tr>

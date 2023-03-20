@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { api } from "../../shared/services/api";
+import { api, getLocalEventos } from "../../shared/services/api";
 import { formatDateNoTime } from "../Uteis/Uteis";
 
 import {
@@ -13,6 +13,7 @@ import {
   FormLabel,
   HStack,
   Input,
+  Select,
   Tab,
   TabList,
   TabPanel,
@@ -24,7 +25,7 @@ import { STATUS_ATIVO, STATUS_INATIVO } from "../../includes/const";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 
-const NewPessoaPage = () => {
+const Evento = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -41,7 +42,10 @@ const NewPessoaPage = () => {
   const [inputLocalEventoId, setInputLocalEventoId] = useState("");
   const [inputAtivo, setInputAtivo] = useState("");
 
+  const [results, setResults] = useState([]);
+
   useEffect(() => {
+    handleLocalEvento();
     if (id !== undefined) {
       setLoading(true);
       (async () => {
@@ -112,6 +116,10 @@ const NewPessoaPage = () => {
     setInputAtivo(inputAtivo == STATUS_INATIVO ? STATUS_ATIVO : STATUS_INATIVO);
   }
 
+  async function handleLocalEvento() {
+    const response = await getLocalEventos();
+    setResults(response.data);
+  }
   return (
     <>
       <Headers />
@@ -193,6 +201,7 @@ const NewPessoaPage = () => {
                           }}
                         />
                       </Box>
+
                       <Box w="30%">
                         <FormLabel htmlFor="datainicio">
                           Data de Início
@@ -235,20 +244,28 @@ const NewPessoaPage = () => {
                           }}
                         />
                       </Box>
-
                       <Box w="80%">
                         <FormLabel htmlFor="localeventoid">
                           Local do Evento
                         </FormLabel>
-                        <Input
-                          id="localeventoid"
-                          size="xs"
+                        <Select
+                          size={"xs"}
                           borderRadius={5}
+                          placeholder="Selecione"
                           value={inputLocalEventoId}
                           onChange={(event) => {
                             setInputLocalEventoId(event.target.value);
                           }}
-                        />
+                        >
+                          {results.map((result) => (
+                            <option
+                              key={result.localeventoid}
+                              value={result.localeventoid}
+                            >
+                              {result.nome}
+                            </option>
+                          ))}
+                        </Select>
                       </Box>
                     </HStack>
 
@@ -316,4 +333,4 @@ const NewPessoaPage = () => {
   );
 };
 
-export default NewPessoaPage;
+export default Evento;
