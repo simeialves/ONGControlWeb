@@ -127,16 +127,6 @@ const LocalEvento = () => {
               </InputRightElement>
             </InputGroup>
           </Box>
-          {/* <Box w="30%">
-            <RadioGroup onChange={setInputAtivo} value={inputAtivo}>
-              <Stack direction="row">
-                <HStack spacing={4}>
-                  <Radio value="1">Ativo</Radio>
-                  <Radio value="0">Inativo</Radio>
-                </HStack>
-              </Stack>
-            </RadioGroup>
-          </Box> */}
           <Button
             variant="solid"
             gap={2}
@@ -180,16 +170,20 @@ const LocalEvento = () => {
                   <Td>{result.bairro}</Td>
                   <Td>{result.cidade}</Td>
                   <Td>
-                    <EditIcon
-                      boxSize={5}
-                      gap={2}
-                      onClick={(e) => handleEdit(result.localeventoid, e)}
-                    />
-                    <DeleteIcon
-                      boxSize={5}
-                      gap={2}
-                      onClick={(e) => handleDelete(result.localeventoid, e)}
-                    />
+                    <Button size={"xs"} bg={"write"}>
+                      <EditIcon
+                        color={"blue.800"}
+                        boxSize={5}
+                        onClick={(e) => handleEdit(result.localeventoid, e)}
+                      />
+                    </Button>
+                    <Button size={"xs"} bg={"write"}>
+                      <DeleteIcon
+                        color={"red.500"}
+                        boxSize={5}
+                        onClick={(e) => handleDelete(result.localeventoid, e)}
+                      />
+                    </Button>
                   </Td>
                 </Tr>
               ))}

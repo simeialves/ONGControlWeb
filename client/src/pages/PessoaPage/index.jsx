@@ -1,9 +1,6 @@
 import {
   Button,
   InputRightElement,
-  Radio,
-  RadioGroup,
-  Stack,
   Table,
   TableCaption,
   TableContainer,
@@ -133,7 +130,7 @@ const Pessoa = () => {
               </InputRightElement>
             </InputGroup>
           </Box>
-          <Box w="30%">
+          {/* <Box w="30%">
             <RadioGroup onChange={setInputAtivo} value={inputAtivo}>
               <Stack direction="row">
                 <HStack spacing={4}>
@@ -142,7 +139,7 @@ const Pessoa = () => {
                 </HStack>
               </Stack>
             </RadioGroup>
-          </Box>
+          </Box> */}
           <Button
             variant="solid"
             gap={2}
@@ -182,16 +179,20 @@ const Pessoa = () => {
                   <Td>{result.documento}</Td>
                   <Td>{result.telefone}</Td>
                   <Td>
-                    <EditIcon
-                      boxSize={5}
-                      gap={2}
-                      onClick={(e) => handleEdit(result.pessoaid, e)}
-                    />
-                    <DeleteIcon
-                      boxSize={5}
-                      gap={2}
-                      onClick={(e) => handleDelete(result.pessoaid, e)}
-                    />
+                    <Button size={"xs"} bg={"write"}>
+                      <EditIcon
+                        color={"blue.800"}
+                        boxSize={5}
+                        onClick={(e) => handleEdit(result.pessoaid, e)}
+                      />
+                    </Button>
+                    <Button size={"xs"} bg={"write"}>
+                      <DeleteIcon
+                        color={"red.500"}
+                        boxSize={5}
+                        onClick={(e) => handleDelete(result.pessoaid, e)}
+                      />
+                    </Button>
                   </Td>
                 </Tr>
               ))}

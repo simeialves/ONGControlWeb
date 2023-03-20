@@ -201,16 +201,22 @@ const TipoColaborador = () => {
                     />
                   </Td>
                   <Td>
-                    <EditIcon
-                      boxSize={5}
-                      gap={2}
-                      onClick={(e) => handleEdit(result.tipocolaboradorid, e)}
-                    />
-                    <DeleteIcon
-                      boxSize={5}
-                      gap={2}
-                      onClick={(e) => handleDelete(result.tipocolaboradorid, e)}
-                    />
+                    <Button size={"xs"} bg={"write"}>
+                      <EditIcon
+                        color={"blue.800"}
+                        boxSize={5}
+                        onClick={(e) => handleEdit(result.tipocolaboradorid, e)}
+                      />
+                    </Button>
+                    <Button size={"xs"} bg={"write"}>
+                      <DeleteIcon
+                        color={"red.500"}
+                        boxSize={5}
+                        onClick={(e) =>
+                          handleDelete(result.tipocolaboradorid, e)
+                        }
+                      />
+                    </Button>
                   </Td>
                 </Tr>
               ))}

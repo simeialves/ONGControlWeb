@@ -203,16 +203,20 @@ const Evento = () => {
                     />
                   </Td>
                   <Td>
-                    <EditIcon
-                      boxSize={5}
-                      gap={2}
-                      onClick={(e) => handleEdit(result.eventoid, e)}
-                    />
-                    <DeleteIcon
-                      boxSize={5}
-                      gap={2}
-                      onClick={(e) => handleDelete(result.eventoid, e)}
-                    />
+                    <Button size={"xs"} bg={"write"}>
+                      <EditIcon
+                        color={"blue.800"}
+                        boxSize={5}
+                        onClick={(e) => handleEdit(result.eventoid, e)}
+                      />
+                    </Button>
+                    <Button size={"xs"} bg={"write"}>
+                      <DeleteIcon
+                        color={"red.500"}
+                        boxSize={5}
+                        onClick={(e) => handleDelete(result.eventoid, e)}
+                      />
+                    </Button>
                   </Td>
                 </Tr>
               ))}
