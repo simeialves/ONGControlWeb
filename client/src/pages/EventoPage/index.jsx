@@ -224,53 +224,6 @@ const Evento = () => {
           </Table>
         </TableContainer>
       </Container>
-
-      {/* <Container fluid="md">
-        <Button href="/eventos/new">Novo</Button>
-        <br />
-        <br />
-        <Row>
-          <Table striped bordered hover size="sm">
-            <thead>
-              <tr>
-                <th scope="col">Descrição</th>
-                <th scope="col">Ativo</th>
-                <th colspan="2">Ação</th>
-              </tr>
-            </thead>
-            <tbody>
-              {results.map((result) => (
-                <tr>
-                  <td>{result.descricao}</td>
-                  <td>
-                    <Checkbox
-                      isChecked={result.ativo == STATUS_ATIVO ? true : false}
-                      isDisabled
-                    />
-                  </td>
-                  <td>
-                    <button
-                      class="btn btn-primary"
-                      onClick={(e) => handleEdit(result.eventoid, e)}
-                    >
-                      Editar
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      class="btn btn-danger"
-                      onClick={(e) => handleDelete(result.eventoid, e)}
-                    >
-                      Excluir
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </Row>
-        <label>Quantidade: {results.length}</label>
-      </Container> */}
     </>
   );
 };
