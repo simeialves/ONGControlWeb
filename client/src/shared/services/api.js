@@ -37,6 +37,10 @@ export const getTipoColaboradores = async () => {
   return api.get("/tipocolaboradores");
 };
 
+export const getProjetos = async () => {
+  return api.get("/projetos");
+};
+
 export const getEventos = async () => {
   return api.get("/eventos");
 };

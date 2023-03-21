@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { api, getLocalEventos } from "../../shared/services/api";
+import { api, getLocalEventos, getProjetos } from "../../shared/services/api";
 import { formatDateNoTime } from "../Uteis/Uteis";
 
 import {
@@ -42,10 +42,12 @@ const Evento = () => {
   const [inputLocalEventoId, setInputLocalEventoId] = useState("");
   const [inputAtivo, setInputAtivo] = useState("");
 
-  const [results, setResults] = useState([]);
+  const [resultsLocalEventos, setResultsLocalEventos] = useState([]);
+  const [resultsProjetos, setResultsProjetos] = useState([]);
 
   useEffect(() => {
     handleLocalEvento();
+    handleProjeto();
     if (id !== undefined) {
       setLoading(true);
       (async () => {
@@ -118,7 +120,11 @@ const Evento = () => {
 
   async function handleLocalEvento() {
     const response = await getLocalEventos();
-    setResults(response.data);
+    setResultsLocalEventos(response.data);
+  }
+  async function handleProjeto() {
+    const response = await getProjetos();
+    setResultsProjetos(response.data);
   }
   return (
     <>
@@ -191,7 +197,7 @@ const Evento = () => {
                     <HStack spacing={4}>
                       <Box w="40%">
                         <FormLabel htmlFor="projetoid">Projeto</FormLabel>
-                        <Input
+                        {/* <Input
                           id="projetoid"
                           size="xs"
                           borderRadius={5}
@@ -199,7 +205,26 @@ const Evento = () => {
                           onChange={(event) => {
                             setInputProjetoId(event.target.value);
                           }}
-                        />
+                        /> */}
+                        <Select
+                          id="projetoid"
+                          size={"xs"}
+                          borderRadius={5}
+                          placeholder="Selecione"
+                          value={inputProjetoId}
+                          onChange={(event) => {
+                            setInputProjetoId(event.target.value);
+                          }}
+                        >
+                          {resultsProjetos.map((result) => (
+                            <option
+                              key={result.projetoid}
+                              value={result.projetoid}
+                            >
+                              {result.descricao}
+                            </option>
+                          ))}
+                        </Select>
                       </Box>
 
                       <Box w="30%">
@@ -249,6 +274,7 @@ const Evento = () => {
                           Local do Evento
                         </FormLabel>
                         <Select
+                          id="localeventoid"
                           size={"xs"}
                           borderRadius={5}
                           placeholder="Selecione"
@@ -257,7 +283,7 @@ const Evento = () => {
                             setInputLocalEventoId(event.target.value);
                           }}
                         >
-                          {results.map((result) => (
+                          {resultsLocalEventos.map((result) => (
                             <option
                               key={result.localeventoid}
                               value={result.localeventoid}

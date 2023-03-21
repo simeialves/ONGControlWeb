@@ -9,6 +9,7 @@ const tipoColaboradorRoutes = require("./routes/tipoColaboradoresRoutes");
 const eventoRoutes = require("./routes/eventoRoutes");
 const localeventoRoutes = require("./routes/localEventoRoutes");
 const parametrosRoutes = require("./routes/parametroRoutes");
+const projetoRoutes = require("./routes/projetoRoutes");
 const app = express();
 require("dotenv").config();
 
@@ -29,6 +30,7 @@ app.use("/tipocolaboradores", tipoColaboradorRoutes);
 app.use("/eventos", eventoRoutes);
 app.use("/localeventos", localeventoRoutes);
 app.use("/parametros", parametrosRoutes);
+app.use("/projetos", projetoRoutes);
 //#endregion
 
 //#region Outros

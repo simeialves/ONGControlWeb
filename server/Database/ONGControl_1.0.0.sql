@@ -24,3 +24,14 @@ CREATE TABLE `pessoa` (
   `pais` VARCHAR(30) NULL,
   `tipo` CHAR(1) NULL,
   PRIMARY KEY (`pessoaid`));
+
+
+CREATE TABLE `projeto` (
+  `projetoid` INT NOT NULL AUTO_INCREMENT,
+  `descricao` VARCHAR(200) NULL,
+  `ativo` CHAR(1) NULL,  
+  PRIMARY KEY (`projetoid`));
+  
+  ALTER TABLE `evento` 
+ADD CONSTRAINT FK_projetoid
+FOREIGN KEY (projetoid) REFERENCES projeto (projetoid);
