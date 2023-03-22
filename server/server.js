@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const clientRoutes = require("./routes/clienteRoutes");
 const loginRoutes = require("./routes/loginRoutes");
 const usuarioRoutes = require("./routes/usuarioRoutes");
 const pessoasRoutes = require("./routes/pessoaRoutes");
@@ -21,7 +20,6 @@ app.get("/", (req, res) => {
 });
 
 //#region routes
-app.use("/clientes", clientRoutes);
 app.use("/auth", loginRoutes);
 app.use("/usuarios", usuarioRoutes);
 app.use("/pessoas", pessoasRoutes);

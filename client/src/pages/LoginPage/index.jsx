@@ -2,17 +2,18 @@ import {
   Box,
   Button,
   Center,
+  Checkbox,
   Flex,
   FormControl,
   FormLabel,
+  Heading,
   HStack,
   Image,
   Input,
+  Text,
 } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../shared/contexts/auth";
-
-import "./styles.css";
 
 const LoginPage = () => {
   const { login } = useContext(AuthContext);
@@ -53,7 +54,7 @@ const LoginPage = () => {
             bg="white"
             top={150}
             position="absolute"
-            borderRadius={5}
+            borderRadius={20}
             p="6"
             boxShadow="0 1px 2px #ccc"
           >
@@ -70,7 +71,21 @@ const LoginPage = () => {
                 />
               </HStack>
               <HStack justify={"center"}>
-                <FormLabel htmlFor="nome">Login In ONGControlWeb</FormLabel>
+                {/* <FormLabel htmlFor="nome">Login In ONGControlWeb</FormLabel> */}
+                <Heading
+                  size={{
+                    base: "xs",
+                    md: "md",
+                  }}
+                >
+                  Login In ONGControlWeb
+                </Heading>
+              </HStack>
+              <HStack spacing="1" justify="center">
+                <Text color="muted">Ainda não tem conta?</Text>
+                <Button variant="link" colorScheme="blue">
+                  Criar conta
+                </Button>
               </HStack>
               <HStack spacing={4}>
                 <Box w="100%">
@@ -118,6 +133,12 @@ const LoginPage = () => {
                   borderRadius="full"
                 >
                   Entrar
+                </Button>
+              </HStack>
+              <HStack justify="space-between">
+                <Checkbox defaultChecked>Remember me</Checkbox>
+                <Button variant="link" colorScheme="blue" size="sm">
+                  Forgot password?
                 </Button>
               </HStack>
             </FormControl>

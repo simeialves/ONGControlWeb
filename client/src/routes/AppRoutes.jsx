@@ -22,6 +22,7 @@ import {
 } from "../pages/LocalEventoPage/details";
 
 import LoginPage from "../pages/LoginPage";
+// import App from "../pages/LoginPage/App";
 
 import ParametroPage from "../pages/ParametroPage";
 
