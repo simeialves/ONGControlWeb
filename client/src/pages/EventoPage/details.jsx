@@ -24,6 +24,7 @@ import { useState } from "react";
 import { STATUS_ATIVO, STATUS_INATIVO } from "../../includes/const";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
+import Beneficiarios from "./Beneficiarios";
 
 const Evento = () => {
   const { id } = useParams();
@@ -351,7 +352,15 @@ const Evento = () => {
             </Box>
           </TabPanel>
           <TabPanel>
-            <p>two!</p>
+            <>
+              <Beneficiarios />
+            </>
+          </TabPanel>
+          <TabPanel>
+            <p>Colaboradores</p>
+          </TabPanel>
+          <TabPanel>
+            <p>Doações</p>
           </TabPanel>
         </TabPanels>
       </Tabs>

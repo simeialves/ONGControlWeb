@@ -3,6 +3,7 @@ const cors = require("cors");
 const loginRoutes = require("./routes/loginRoutes");
 const usuarioRoutes = require("./routes/usuarioRoutes");
 const pessoasRoutes = require("./routes/pessoaRoutes");
+const pessoasEventoRoutes = require("./routes/pessoaEventoRoutes");
 const tipoDoacaoRoutes = require("./routes/tipoDoacaoRoutes");
 const tipoColaboradorRoutes = require("./routes/tipoColaboradoresRoutes");
 const eventoRoutes = require("./routes/eventoRoutes");
@@ -23,6 +24,7 @@ app.get("/", (req, res) => {
 app.use("/auth", loginRoutes);
 app.use("/usuarios", usuarioRoutes);
 app.use("/pessoas", pessoasRoutes);
+app.use("/pessoaseventos", pessoasEventoRoutes);
 app.use("/tipodoacoes", tipoDoacaoRoutes);
 app.use("/tipocolaboradores", tipoColaboradorRoutes);
 app.use("/eventos", eventoRoutes);

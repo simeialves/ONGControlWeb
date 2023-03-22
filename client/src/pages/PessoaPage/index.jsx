@@ -130,16 +130,6 @@ const Pessoa = () => {
               </InputRightElement>
             </InputGroup>
           </Box>
-          {/* <Box w="30%">
-            <RadioGroup onChange={setInputAtivo} value={inputAtivo}>
-              <Stack direction="row">
-                <HStack spacing={4}>
-                  <Radio value="1">Ativo</Radio>
-                  <Radio value="0">Inativo</Radio>
-                </HStack>
-              </Stack>
-            </RadioGroup>
-          </Box> */}
           <Button
             variant="solid"
             gap={2}

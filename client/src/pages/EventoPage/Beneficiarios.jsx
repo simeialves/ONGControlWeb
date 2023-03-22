@@ -1,8 +1,6 @@
 import {
   Button,
-  Checkbox,
-  Link,
-  Stack,
+  InputRightElement,
   Table,
   TableCaption,
   TableContainer,
@@ -20,43 +18,33 @@ import {
   SearchIcon,
   SmallCloseIcon,
 } from "@chakra-ui/icons";
-
-import {
-  Box,
-  HStack,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Radio,
-  RadioGroup,
-} from "@chakra-ui/react";
-
-import { STATUS_ATIVO } from "../../includes/const";
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api, getEventos } from "../../shared/services/api";
-import Headers from "../Headers";
+import { api } from "../../shared/services/api";
 import SpinnerUtil from "../Uteis/progress";
 
+import { Box, HStack, Input, InputGroup } from "@chakra-ui/react";
 import Container from "react-bootstrap/Container";
+
+import { getPessoasEvento } from "../../shared/services/api";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const Evento = () => {
+const Beneficiarios = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState(false);
-  const [inputDescricao, setInputDescricao] = useState("");
-  const [inputAtivo, setInputAtivo] = useState(true);
+  const [inputNome, setInputNome] = useState("");
+  const [inputAtivo, setInputAtivo] = useState(1);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
-      const response = await getEventos();
+      const response = await getPessoasEvento();
       setResults(response.data);
       setLoading(false);
+      setMessage(false);
     })();
   }, []);
 
@@ -64,63 +52,51 @@ const Evento = () => {
     return <SpinnerUtil />;
   }
 
-  function handleEdit(id) {
-    navigate(`/eventos/edit/${id}`);
+  async function handleEdit(id) {
+    navigate(`/pessoas/edit/${id}`);
   }
-
-  function handleDelete(id) {
+  async function handleDelete(id) {
     api
-      .delete(`/eventos/${id}`, {})
+      .delete(`/pessoas/${id}`, {})
       .then(() => {
-        navigate("/eventos");
+        navigate("/pessoas");
         window.location.reload(false);
       })
       .catch((err) => {
         console.log(err);
       });
   }
-
   async function handleClick() {
     setLoading(true);
     setResults([]);
-    const descricao = inputDescricao;
-    const ativo = inputAtivo;
+    const nome = inputNome;
     api
-      .get(`/eventos/filter/?descricao=${descricao}&&ativo=${ativo}`, {
-        descricao: descricao,
-        ativo: ativo,
+      .get(`/pessoas/filter/?nome=${nome}`, {
+        nome: nome,
       })
       .then((response) => {
-        console.log(response);
         setResults(response.data);
         setMessage(false);
         setLoading(false);
-        setInputDescricao("");
+        setInputNome("");
       })
       .catch(() => {
-        setLoading(false);
-        setResults([]);
         setMessage(true);
+        setLoading(false);
       });
   }
-
   async function handleClear() {
     setLoading(true);
-    setInputDescricao("");
-    const response = await getEventos();
+    setInputNome("");
+    const response = await getPessoasEvento();
     setResults(response.data);
     setLoading(false);
   }
-
   async function handleNew() {
-    navigate(`/eventos/new`);
+    navigate("/pessoas/new");
   }
-
   return (
     <>
-      <Headers />
-      <br></br>
-
       <Container fluid="md">
         <HStack spacing="4" justify={"right"}>
           <Button
@@ -134,15 +110,14 @@ const Evento = () => {
             <AddIcon /> Nova
           </Button>
         </HStack>
-        <barradeBotoesSuperior />
         <HStack>
           <Box w="70%">
             <InputGroup>
               <Input
                 onChange={(event) => {
-                  setInputDescricao(event.target.value);
+                  setInputNome(event.target.value);
                 }}
-                placeholder="Pesquisar pela descrição"
+                placeholder="Pesquisar por nome"
                 size="sm"
                 borderRadius={5}
               />
@@ -151,17 +126,6 @@ const Evento = () => {
               </InputRightElement>
             </InputGroup>
           </Box>
-          <Box w="30%">
-            <RadioGroup onChange={setInputAtivo} value={inputAtivo}>
-              <Stack direction="row">
-                <HStack spacing={4}>
-                  <Radio value="1">Ativo</Radio>
-                  <Radio value="0">Inativo</Radio>
-                </HStack>
-              </Stack>
-            </RadioGroup>
-          </Box>
-
           <Button
             variant="solid"
             gap={2}
@@ -184,8 +148,9 @@ const Evento = () => {
             <TableCaption>Quantidade: {results.length}</TableCaption>
             <Thead>
               <Tr>
-                <Th>Descrição</Th>
-                <Th>Ativo</Th>
+                <Th>Nome</Th>
+                <Th>Documento</Th>
+                <Th>Telefone</Th>
                 <Th>Ação</Th>
               </Tr>
             </Thead>
@@ -193,29 +158,25 @@ const Evento = () => {
               {results.map((result) => (
                 <Tr>
                   <Td>
-                    <Link href={`/eventos/edit/${result.eventoid}`}>
-                      {result.descricao}
-                    </Link>
+                    <a href={`/pessoas/edit/${result.pessoaid}`}>
+                      {result.nome}
+                    </a>
                   </Td>
-                  <Td>
-                    <Checkbox
-                      isChecked={result.ativo == STATUS_ATIVO ? true : false}
-                      isDisabled
-                    />
-                  </Td>
+                  <Td>{result.documento}</Td>
+                  <Td>{result.telefone}</Td>
                   <Td>
                     <Button size={"xs"} bg={"write"}>
                       <EditIcon
                         color={"blue.800"}
                         boxSize={5}
-                        onClick={(e) => handleEdit(result.eventoid, e)}
+                        onClick={(e) => handleEdit(result.pessoaid, e)}
                       />
                     </Button>
                     <Button size={"xs"} bg={"write"}>
                       <DeleteIcon
                         color={"red.500"}
                         boxSize={5}
-                        onClick={(e) => handleDelete(result.eventoid, e)}
+                        onClick={(e) => handleDelete(result.pessoaid, e)}
                       />
                     </Button>
                   </Td>
@@ -229,4 +190,4 @@ const Evento = () => {
   );
 };
 
-export default Evento;
+export default Beneficiarios;
