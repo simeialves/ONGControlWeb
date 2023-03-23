@@ -29,7 +29,7 @@ import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { TIPO_BENEFICIARIO } from "../../../includes/const";
 
-const Beneficiarios = () => {
+export default function Beneficiarios({ eventoid }) {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState(false);
@@ -40,12 +40,12 @@ const Beneficiarios = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await getPessoasEvento(TIPO_BENEFICIARIO);
+      const response = await getPessoasEvento(TIPO_BENEFICIARIO, eventoid);
       setResults(response.data);
       setLoading(false);
       setMessage(false);
     })();
-  }, []);
+  }, [eventoid]);
 
   if (loading) {
     return <SpinnerUtil />;
@@ -87,7 +87,7 @@ const Beneficiarios = () => {
   async function handleClear() {
     setLoading(true);
     setInputNome("");
-    const response = await getPessoasEvento();
+    const response = await getPessoasEvento(eventoid);
     setResults(response.data);
     setLoading(false);
   }
@@ -97,6 +97,7 @@ const Beneficiarios = () => {
   return (
     <>
       <Container fluid="md">
+        <div>eventoid = {eventoid}</div>
         <HStack spacing="4" justify={"right"}>
           <Button
             variant="outline"
@@ -187,6 +188,4 @@ const Beneficiarios = () => {
       </Container>
     </>
   );
-};
-
-export default Beneficiarios;
+}

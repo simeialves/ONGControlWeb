@@ -34,6 +34,8 @@ const Evento = () => {
 
   const [loading, setLoading] = useState(true);
 
+  const [eventoId, setEventoId] = useState("");
+
   const [inputProjetoId, setInputProjetoId] = useState("");
   const [inputDescricao, setInputDescricao] = useState("");
   const [inputDataInicio, setInputDataInicio] = useState("");
@@ -55,6 +57,7 @@ const Evento = () => {
       setLoading(true);
       (async () => {
         const response = await api.get(`/eventos/${id}`);
+        setEventoId(response.data[0].eventoid);
         setInputProjetoId(response.data[0].projetoid);
         setInputDescricao(response.data[0].descricao);
         setInputDataInicio(formatDateNoTime(response.data[0].datainicio));
@@ -355,7 +358,7 @@ const Evento = () => {
           </TabPanel>
           <TabPanel>
             <>
-              <Beneficiarios />
+              <Beneficiarios eventoid={eventoId} />
             </>
           </TabPanel>
           <TabPanel>

@@ -6,12 +6,7 @@ const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const { NOT_FOUND } = require("../includes/const");
 
-const TABLE_NAME = "tipodoacaoevento";
-
 appRoutes.use(bodyParser.json());
-/*
-tipodoacaoid, eventoid, quantidade, quantidaderecebidas, quantidaderealizadas
-*/
 
 //#region Methods
 function verifyJWT(req, res, next) {
@@ -54,7 +49,7 @@ appRoutes.post("/", (req, res) => {
     })
     .then((result) => {
       let resultInsert = result[0];
-      res.status(200).json({ pessoaid: resultInsert });
+      res.status(200).json({ tipodoacaoeventoid: resultInsert });
     })
     .catch((err) => {
       res.status(500).json({

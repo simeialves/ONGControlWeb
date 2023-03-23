@@ -4,11 +4,16 @@ const db = require("../config/db");
 const appRoutes = express.Router();
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
-const { NOT_FOUND } = require("../includes/const");
+const {
+  NOT_FOUND,
+  NO_TOKEN_PROVIDER,
+  FAILED_AUTH_TOKEN,
+} = require("../includes/const");
 
 appRoutes.use(bodyParser.json());
+
 /*
-pessoaid, tipocolaboradoreventoid, eventoid, tipo, status, senharetirada
+tipodoacaoid, tipodoacaoeventoid, eventoid, pessoaid, datadoacao, quantidade
 */
 
 //#region Methods
@@ -16,16 +21,12 @@ function verifyJWT(req, res, next) {
   var token = req.headers["x-access-token"];
 
   if (!token) {
-    return res.status(401).send({ auth: false, message: "No token provided." });
+    return res.status(401).send({ auth: false, message: NO_TOKEN_PROVIDER });
   }
 
   jwt.verify(token, process.env.SECRET_KEY, function (err, decoded) {
     if (err)
-      return res
-        .status(500)
-        .send({ auth: false, message: "Failed to authenticate token." });
-
-    // se tudo estiver ok, salva no request para uso posterior
+      return res.status(500).send({ auth: false, message: FAILED_AUTH_TOKEN });
     req.userId = decoded.id;
     next();
   });
@@ -35,26 +36,26 @@ function verifyJWT(req, res, next) {
 //#region CREATE
 appRoutes.post("/", (req, res) => {
   const {
-    pessoaid,
-    tipocolaboradoreventoid,
+    tipodoacaoid,
+    tipodoacaoeventoid,
     eventoid,
-    tipo,
-    status,
-    senharetirada,
+    pessoaid,
+    datadoacao,
+    quantidade,
   } = req.body;
 
-  db.knex("pessoaevento")
+  db.knex("doacaoevento")
     .insert({
-      pessoaid: pessoaid,
-      tipocolaboradoreventoid: tipocolaboradoreventoid,
+      tipodoacaoid: tipodoacaoid,
+      tipodoacaoeventoid: tipodoacaoeventoid,
       eventoid: eventoid,
-      tipo: tipo,
-      status: status,
-      senharetirada: senharetirada,
+      pessoaid: pessoaid,
+      datadoacao: datadoacao,
+      quantidade: quantidade,
     })
     .then((result) => {
       let resultInsert = result[0];
-      res.status(200).json({ pessoaid: resultInsert });
+      res.status(200).json({ tipodoacaoid: resultInsert });
     })
     .catch((err) => {
       res.status(500).json({
@@ -66,54 +67,48 @@ appRoutes.post("/", (req, res) => {
 
 //#region READ
 appRoutes.get("/", async (req, res, next) => {
-  const { tipo, eventoid } = req.query;
+  const { tipo } = req.query;
 
-  console.log(eventoid);
-
-  var query = knex("pessoaevento")
-    .select("*")
-    .join("pessoa", "pessoaevento.pessoaid", "=", "pessoa.pessoaid");
-
-  if (tipo != undefined) query.where("pessoaevento.tipo", tipo);
-  if (eventoid != undefined) query.where("pessoaevento.eventoid", eventoid);
-
-  query
+  await db.knex
+    .select(
+      "tipodoacao.descricao as tipodoacaodescricao",
+      "doacaoevento.quantidade as doacaoeventoquantidade",
+      "pessoa.nome as pessoanome",
+      "doacaoevento.datadoacao as doacaoeventodatadoacao",
+      "pessoa.telefone as pessoatelefone",
+      "pessoa.email as pessoaemail"
+    )
+    .from("doacaoevento")
+    .join(
+      "tipodoacao",
+      "doacaoevento.tipodoacaoid",
+      "=",
+      "tipodoacao.tipodoacaoid"
+    )
+    .join(
+      "tipodoacaoevento",
+      "doacaoevento.tipodoacaoeventoid",
+      "=",
+      "tipodoacaoevento.tipodoacaoeventoid"
+    )
+    // .join("evento", "doacaoevento.eventoid", "=", "evento.eventoid")
+    .join("pessoa", "doacaoevento.pessoaid", "=", "pessoa.pessoaid")
     .then(function (results) {
       if (results.length) {
         return res.status(201).json(results);
       } else {
-        res.status(404).json({
-          message: NOT_FOUND,
-        });
+        return res.status(404).json({ message: NOT_FOUND });
       }
     })
     .catch((err) => {
       console.log(err);
     });
-
-  // console.log(eventoid);
-  // await db.knex
-  //   .select("*")
-  //   .from("pessoaevento")
-  //   .join("pessoa", "pessoaevento.pessoaid", "=", "pessoa.pessoaid")
-  //   .where("pessoaevento.tipo", "=", tipo)
-  //   .where("pessoaevento.eventoid", "=", eventoid)
-  //   .then(function (results) {
-  //     if (results.length) {
-  //       return res.status(201).json(results);
-  //     } else {
-  //       return res.status(404).json({ message: "Nenhuma pessoa encontrada" });
-  //     }
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
 });
 
 appRoutes.get("/filter", verifyJWT, async (req, res, next) => {
   const { nome } = req.query;
 
-  var query = knex("pessoaevento").select("*");
+  var query = knex("doacaoevento").select("*");
 
   if (nome != undefined) query.whereILike("nome", `%${nome}%`).orderBy("nome");
 
@@ -136,7 +131,7 @@ appRoutes.get("/:id", async (req, res, next) => {
   let id = Number.parseInt(req.params.id);
   await db.knex
     .select("*")
-    .from("pessoaevento")
+    .from("doacaoevento")
     .where({ pessoaeventoid: id })
     .then(function (result) {
       if (result.length) {
@@ -156,31 +151,31 @@ appRoutes.get("/:id", async (req, res, next) => {
 appRoutes.put("/:id", async (req, res) => {
   const id = Number.parseInt(req.params.id);
   const {
-    pessoaid,
-    tipocolaboradoreventoid,
+    tipodoacaoid,
+    tipodoacaoeventoid,
     eventoid,
-    tipo,
-    status,
-    senharetirada,
+    pessoaid,
+    datadoacao,
+    quantidade,
   } = req.body;
 
   await db.knex
     .select("*")
-    .from("pessoaevento")
-    .where({ pessoaid: id })
+    .from("doacaoevento")
+    .where({ doacaoeventoid: id })
     .then(function (result) {
       if (result.length) {
         knex
-          .where({ pessoaeventoid: id })
+          .where({ doacaoeventoid: id })
           .update({
-            pessoaid: pessoaid,
-            tipocolaboradoreventoid: tipocolaboradoreventoid,
+            tipodoacaoid: tipodoacaoid,
+            tipodoacaoeventoid: tipodoacaoeventoid,
             eventoid: eventoid,
-            tipo: tipo,
-            status: status,
-            senharetirada: senharetirada,
+            pessoaid: pessoaid,
+            datadoacao: datadoacao,
+            quantidade: quantidade,
           })
-          .table("pessoaevento")
+          .table("doacaoevento")
           .then((result) => {
             console.log(result);
           })
@@ -193,7 +188,7 @@ appRoutes.put("/:id", async (req, res) => {
         });
       } else {
         res.status(404).json({
-          message: "Pessoa não encontrada",
+          message: NOT_FOUND,
         });
       }
     })
@@ -208,14 +203,14 @@ appRoutes.delete("/:id", async (req, res) => {
   let id = Number.parseInt(req.params.id);
   await db.knex
     .select("*")
-    .from("pessoaevento")
-    .where({ pessoaeventoid: id })
+    .from("doacaoevento")
+    .where({ doacaoeventoid: id })
     .then(function (result) {
       if (result.length) {
         knex
-          .where({ pessoaeventoid: id })
+          .where({ doacaoeventoid: id })
           .delete()
-          .table("pessoaevento")
+          .table("doacaoevento")
           .then((result) => {
             console.log(result);
           })
@@ -228,7 +223,7 @@ appRoutes.delete("/:id", async (req, res) => {
         });
       } else {
         res.status(404).json({
-          message: "Pessoa não encontrada",
+          message: NOT_FOUND,
         });
       }
     })
