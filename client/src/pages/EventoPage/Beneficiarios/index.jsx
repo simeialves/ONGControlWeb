@@ -31,7 +31,7 @@ import { TIPO_BENEFICIARIO } from "../../../includes/const";
 
 export default function Beneficiarios({ eventoid }) {
   const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(false);
   const [inputNome, setInputNome] = useState("");
   const [inputAtivo, setInputAtivo] = useState(1);
