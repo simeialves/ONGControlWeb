@@ -29,8 +29,8 @@ export const getPessoas = async () => {
   return api.get("/pessoas");
 };
 
-export const getPessoasEvento = async () => {
-  const result = await api.get("/pessoasevento");
+export const getPessoasEvento = async (tipo) => {
+  const result = await api.get(`/pessoaseventos/?tipo=${tipo}`);
   return result;
 };
 

@@ -25,6 +25,8 @@ import { STATUS_ATIVO, STATUS_INATIVO } from "../../includes/const";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 import Beneficiarios from "./Beneficiarios";
+import Colaboradores from "./Colaboradores";
+import Doacoes from "./Doacoes";
 
 const Evento = () => {
   const { id } = useParams();
@@ -357,10 +359,10 @@ const Evento = () => {
             </>
           </TabPanel>
           <TabPanel>
-            <p>Colaboradores</p>
+            <Colaboradores />
           </TabPanel>
           <TabPanel>
-            <p>Doações</p>
+            <Doacoes />
           </TabPanel>
         </TabPanels>
       </Tabs>

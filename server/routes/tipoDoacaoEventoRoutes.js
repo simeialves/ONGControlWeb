@@ -6,9 +6,11 @@ const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const { NOT_FOUND } = require("../includes/const");
 
+const TABLE_NAME = "tipodoacaoevento";
+
 appRoutes.use(bodyParser.json());
 /*
-pessoaid, tipocolaboradoreventoid, eventoid, tipo, status, senharetirada
+tipodoacaoid, eventoid, quantidade, quantidaderecebidas, quantidaderealizadas
 */
 
 //#region Methods
@@ -35,22 +37,20 @@ function verifyJWT(req, res, next) {
 //#region CREATE
 appRoutes.post("/", (req, res) => {
   const {
-    pessoaid,
-    tipocolaboradoreventoid,
+    tipodoacaoid,
     eventoid,
-    tipo,
-    status,
-    senharetirada,
+    quantidade,
+    quantidaderecebidas,
+    quantidaderealizadas,
   } = req.body;
 
-  db.knex("pessoaevento")
+  db.knex("tipodoacaoevento")
     .insert({
-      pessoaid: pessoaid,
-      tipocolaboradoreventoid: tipocolaboradoreventoid,
+      tipodoacaoid: tipodoacaoid,
       eventoid: eventoid,
-      tipo: tipo,
-      status: status,
-      senharetirada: senharetirada,
+      quantidade: quantidade,
+      quantidaderecebidas: quantidaderecebidas,
+      quantidaderealizadas: quantidaderealizadas,
     })
     .then((result) => {
       let resultInsert = result[0];
@@ -70,14 +70,19 @@ appRoutes.get("/", async (req, res, next) => {
 
   await db.knex
     .select("*")
-    .from("pessoaevento")
-    .join("pessoa", "pessoaevento.pessoaid", "=", "pessoa.pessoaid")
-    .where("pessoaevento.tipo", "=", tipo)
+    .from("tipodoacaoevento")
+    .join("evento", "tipodoacaoevento.eventoid", "=", "evento.eventoid")
+    .join(
+      "tipodoacao",
+      "tipodoacaoevento.tipodoacaoid",
+      "=",
+      "tipodoacao.tipodoacaoid"
+    )
     .then(function (results) {
       if (results.length) {
         return res.status(201).json(results);
       } else {
-        return res.status(404).json({ message: "Nenhuma pessoa encontrada" });
+        return res.status(404).json({ message: NOT_FOUND });
       }
     })
     .catch((err) => {
@@ -88,7 +93,7 @@ appRoutes.get("/", async (req, res, next) => {
 appRoutes.get("/filter", verifyJWT, async (req, res, next) => {
   const { nome } = req.query;
 
-  var query = knex("pessoaevento").select("*");
+  var query = knex("tipodoacaoevento").select("*");
 
   if (nome != undefined) query.whereILike("nome", `%${nome}%`).orderBy("nome");
 
@@ -111,7 +116,7 @@ appRoutes.get("/:id", async (req, res, next) => {
   let id = Number.parseInt(req.params.id);
   await db.knex
     .select("*")
-    .from("pessoaevento")
+    .from("tipodoacaoevento")
     .where({ pessoaeventoid: id })
     .then(function (result) {
       if (result.length) {
@@ -131,31 +136,29 @@ appRoutes.get("/:id", async (req, res, next) => {
 appRoutes.put("/:id", async (req, res) => {
   const id = Number.parseInt(req.params.id);
   const {
-    pessoaid,
-    tipocolaboradoreventoid,
+    tipodoacaoid,
     eventoid,
-    tipo,
-    status,
-    senharetirada,
+    quantidade,
+    quantidaderecebidas,
+    quantidaderealizadas,
   } = req.body;
 
   await db.knex
     .select("*")
-    .from("pessoaevento")
-    .where({ pessoaid: id })
+    .from("tipodoacaoevento")
+    .where({ tipodoacaoeventoid: id })
     .then(function (result) {
       if (result.length) {
         knex
-          .where({ pessoaeventoid: id })
+          .where({ tipodoacaoeventoid: id })
           .update({
-            pessoaid: pessoaid,
-            tipocolaboradoreventoid: tipocolaboradoreventoid,
+            tipodoacaoid: tipodoacaoid,
             eventoid: eventoid,
-            tipo: tipo,
-            status: status,
-            senharetirada: senharetirada,
+            quantidade: quantidade,
+            quantidaderecebidas: quantidaderecebidas,
+            quantidaderealizadas: quantidaderealizadas,
           })
-          .table("pessoaevento")
+          .table("tipodoacaoevento")
           .then((result) => {
             console.log(result);
           })
@@ -168,7 +171,7 @@ appRoutes.put("/:id", async (req, res) => {
         });
       } else {
         res.status(404).json({
-          message: "Pessoa não encontrada",
+          message: NOT_FOUND,
         });
       }
     })
@@ -183,14 +186,14 @@ appRoutes.delete("/:id", async (req, res) => {
   let id = Number.parseInt(req.params.id);
   await db.knex
     .select("*")
-    .from("pessoaevento")
-    .where({ pessoaeventoid: id })
+    .from("tipodoacaoevento")
+    .where({ tipodoacaoeventoid: id })
     .then(function (result) {
       if (result.length) {
         knex
-          .where({ pessoaeventoid: id })
+          .where({ tipodoacaoeventoid: id })
           .delete()
-          .table("pessoaevento")
+          .table("tipodoacaoevento")
           .then((result) => {
             console.log(result);
           })
@@ -203,7 +206,7 @@ appRoutes.delete("/:id", async (req, res) => {
         });
       } else {
         res.status(404).json({
-          message: "Pessoa não encontrada",
+          message: NOT_FOUND,
         });
       }
     })

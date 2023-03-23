@@ -20,17 +20,16 @@ import {
 } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api } from "../../shared/services/api";
-import SpinnerUtil from "../Uteis/progress";
+import { api, getPessoasEvento } from "../../../shared/services/api";
+import SpinnerUtil from "../../Uteis/progress";
 
 import { Box, HStack, Input, InputGroup } from "@chakra-ui/react";
 import Container from "react-bootstrap/Container";
 
-import { getPessoasEvento } from "../../shared/services/api";
-
 import "bootstrap/dist/css/bootstrap.min.css";
+import { TIPO_COLABORADOR } from "../../../includes/const";
 
-const Beneficiarios = () => {
+const Colaboradores = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState(false);
@@ -41,7 +40,7 @@ const Beneficiarios = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await getPessoasEvento();
+      const response = await getPessoasEvento(TIPO_COLABORADOR);
       setResults(response.data);
       setLoading(false);
       setMessage(false);
@@ -57,10 +56,10 @@ const Beneficiarios = () => {
   }
   async function handleDelete(id) {
     api
-      .delete(`/pessoas/${id}`, {})
+      .delete(`/pessoaseventos/${id}`, {})
       .then(() => {
-        navigate("/pessoas");
-        window.location.reload(false);
+        // navigate(`/eventos/edit/${id}`);
+        window.location.reload(true);
       })
       .catch((err) => {
         console.log(err);
@@ -169,14 +168,14 @@ const Beneficiarios = () => {
                       <EditIcon
                         color={"blue.800"}
                         boxSize={5}
-                        onClick={(e) => handleEdit(result.pessoaid, e)}
+                        onClick={(e) => handleEdit(result.pessoaeventoid, e)}
                       />
                     </Button>
                     <Button size={"xs"} bg={"write"}>
                       <DeleteIcon
                         color={"red.500"}
                         boxSize={5}
-                        onClick={(e) => handleDelete(result.pessoaid, e)}
+                        onClick={(e) => handleDelete(result.pessoaeventoid, e)}
                       />
                     </Button>
                   </Td>
@@ -190,4 +189,4 @@ const Beneficiarios = () => {
   );
 };
 
-export default Beneficiarios;
+export default Colaboradores;

@@ -8,7 +8,7 @@ const { NOT_FOUND } = require("../includes/const");
 
 appRoutes.use(bodyParser.json());
 /*
-pessoaid, tipocolaboradoreventoid, eventoid, tipo, status, senharetirada
+tipodoacaoid, eventoid, pessoaid, parteeventoid, datadoacao, quantidade, status
 */
 
 //#region Methods
@@ -35,22 +35,24 @@ function verifyJWT(req, res, next) {
 //#region CREATE
 appRoutes.post("/", (req, res) => {
   const {
-    pessoaid,
-    tipocolaboradoreventoid,
+    tipodoacaoid,
     eventoid,
-    tipo,
+    pessoaid,
+    parteeventoid,
+    datadoacao,
+    quantidade,
     status,
-    senharetirada,
   } = req.body;
 
-  db.knex("pessoaevento")
+  db.knex("doacaoeventopessoa")
     .insert({
-      pessoaid: pessoaid,
-      tipocolaboradoreventoid: tipocolaboradoreventoid,
+      tipodoacaoid: tipodoacaoid,
       eventoid: eventoid,
-      tipo: tipo,
+      pessoaid: pessoaid,
+      parteeventoid: parteeventoid,
+      datadoacao: datadoacao,
+      quantidade: quantidade,
       status: status,
-      senharetirada: senharetirada,
     })
     .then((result) => {
       let resultInsert = result[0];
@@ -66,13 +68,20 @@ appRoutes.post("/", (req, res) => {
 
 //#region READ
 appRoutes.get("/", async (req, res, next) => {
-  const { tipo } = req.query;
+  const { eventoid } = req.query;
 
   await db.knex
     .select("*")
-    .from("pessoaevento")
-    .join("pessoa", "pessoaevento.pessoaid", "=", "pessoa.pessoaid")
-    .where("pessoaevento.tipo", "=", tipo)
+    .from("doacaoeventopessoa")
+    .join("pessoa", "doacaoeventopessoa.pessoaid", "=", "pessoa.pessoaid")
+    .join(
+      "tipodoacao",
+      "doacaoeventopessoa.tipodoacaoid",
+      "=",
+      "tipodoacao.tipodoacaoid"
+    )
+    .join("evento", "doacaoeventopessoa.eventoid", "=", "evento.eventoid")
+    // .where("doacaoeventoparte.eventoid", "=", eventoid)
     .then(function (results) {
       if (results.length) {
         return res.status(201).json(results);
