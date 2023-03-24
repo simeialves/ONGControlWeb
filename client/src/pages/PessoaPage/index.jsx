@@ -57,15 +57,19 @@ const Pessoa = () => {
     navigate(`/pessoas/edit/${id}`);
   }
   async function handleDelete(id) {
-    api
-      .delete(`/pessoas/${id}`, {})
-      .then(() => {
-        navigate("/pessoas");
-        window.location.reload(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (window.confirm("Deseja realmente excluir o registro selecionado?")) {
+      api
+        .delete(`/pessoas/${id}`, {})
+        .then(() => {
+          navigate("/pessoas");
+          window.location.reload(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      return;
+    }
   }
   async function handleClick() {
     setLoading(true);
