@@ -38,12 +38,13 @@ export default function Doacoes({ eventoid }) {
   useEffect(() => {
     (async () => {
       const response = await getTipoDoacaoEventos(eventoid);
-      const responseDoacaoEvento = await getDoacaoEvento(eventoid);
-
       setResults(response.data);
+
+      const responseDoacaoEvento = await getDoacaoEvento(eventoid);
       setDoacaoesRealizadas(responseDoacaoEvento.data);
-      // setLoading(false);
-      // setMessage(false);
+
+      setLoading(false);
+      setMessage(false);
     })();
   }, [eventoid]);
 

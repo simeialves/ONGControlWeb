@@ -37,15 +37,14 @@ export default function Colaboradores({ eventoid }) {
 
   useEffect(() => {
     (async () => {
-      const response = await getPessoasEvento(TIPO_COLABORADOR, eventoid);
-
       const responseTipoColaboradorEvento = await getTipoColaboradorEventos(
         eventoid
       );
-      setResults(response.data);
       setDoacaoesRealizadas(responseTipoColaboradorEvento.data);
 
+      const response = await getPessoasEvento(TIPO_COLABORADOR, eventoid);
       setResults(response.data);
+
       setMessage(false);
     })();
   }, [eventoid]);

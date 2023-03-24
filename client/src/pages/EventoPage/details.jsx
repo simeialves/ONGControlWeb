@@ -13,6 +13,11 @@ import {
   FormLabel,
   HStack,
   Input,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
   Select,
   Tab,
   TabList,
@@ -49,6 +54,8 @@ const Evento = () => {
 
   const [resultsLocalEventos, setResultsLocalEventos] = useState([]);
   const [resultsProjetos, setResultsProjetos] = useState([]);
+
+  const handleChange = (value) => setInputNivel(value);
 
   useEffect(() => {
     handleLocalEvento();
@@ -263,19 +270,7 @@ const Evento = () => {
                     </HStack>
 
                     <HStack spacing={4}>
-                      <Box w="20%">
-                        <FormLabel htmlFor="nivel">Nível</FormLabel>
-                        <Input
-                          id="nivel"
-                          size="xs"
-                          borderRadius={5}
-                          value={inputNivel}
-                          onChange={(event) => {
-                            setInputNivel(event.target.value);
-                          }}
-                        />
-                      </Box>
-                      <Box w="80%">
+                      <Box w="100%">
                         <FormLabel htmlFor="localeventoid">
                           Local do Evento
                         </FormLabel>
@@ -302,7 +297,7 @@ const Evento = () => {
                     </HStack>
 
                     <HStack spacing={4}>
-                      <Box w="100%">
+                      <Box w="80%">
                         <FormLabel htmlFor="formularionivelamento">
                           Formulário Nivelamento
                         </FormLabel>
@@ -315,6 +310,34 @@ const Evento = () => {
                             setInputFormularioNivelamento(event.target.value);
                           }}
                         />
+                      </Box>
+                      <Box w="20%">
+                        <FormLabel htmlFor="nivel">Nível</FormLabel>
+                        {/* <Input
+                          id="nivel"
+                          size="xs"
+                          borderRadius={5}
+                          value={inputNivel}
+                          onChange={(event) => {
+                            setInputNivel(event.target.value);
+                          }}
+                        /> */}
+                        <NumberInput
+                          id="nivel"
+                          size={"xs"}
+                          step={1}
+                          defaultValue={1}
+                          min={1}
+                          max={999}
+                          value={inputNivel}
+                          onChange={handleChange}
+                        >
+                          <NumberInputField borderRadius={5} />
+                          <NumberInputStepper>
+                            <NumberIncrementStepper />
+                            <NumberDecrementStepper />
+                          </NumberInputStepper>
+                        </NumberInput>
                       </Box>
                     </HStack>
 

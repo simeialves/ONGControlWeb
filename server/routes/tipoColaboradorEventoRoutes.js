@@ -94,23 +94,23 @@ appRoutes.get("/", async (req, res, next) => {
     });
 });
 
-appRoutes.get("/:id", async (req, res, next) => {
-  let id = Number.parseInt(req.params.id);
-  await db.knex
-    .select("*")
-    .from("tipocolaboradorevento")
-    .where({ tipocolaboradoreventoid: id })
-    .then(function (result) {
-      if (result.length) {
-        return res.status(201).json(result);
-      } else {
-        return res.status(404).json({ message: "Pessoa não encontrada" });
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+// appRoutes.get("/:id", async (req, res, next) => {
+//   let id = Number.parseInt(req.params.id);
+//   await db.knex
+//     .select("*")
+//     .from("tipocolaboradorevento")
+//     .where({ tipocolaboradoreventoid: id })
+//     .then(function (result) {
+//       if (result.length) {
+//         return res.status(201).json(result);
+//       } else {
+//         return res.status(404).json({ message: "Pessoa não encontrada" });
+//       }
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// });
 //#endregion
 
 //#region UPDATE
