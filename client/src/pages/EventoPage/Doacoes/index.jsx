@@ -24,6 +24,7 @@ import Container from "react-bootstrap/esm/Container";
 import { getDoacaoEvento } from "../../../shared/services/DoacaoEvento";
 import { getTipoDoacaoEventos } from "../../../shared/services/TipoDoacaoEvento";
 import { formatDate } from "../../Uteis/Uteis";
+import { ModalDoacaoNecessaria } from "./DoacoesNecessarias/ModalDoacaoNecessaria";
 
 export default function Doacoes({ eventoid }) {
   const [results, setResults] = useState([]);
@@ -33,6 +34,7 @@ export default function Doacoes({ eventoid }) {
   const [inputNome, setInputNome] = useState("");
   const [inputAtivo, setInputAtivo] = useState(1);
 
+  // const [eventoid, setEventoid] = useState(eventoid);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -115,12 +117,11 @@ export default function Doacoes({ eventoid }) {
             variant="outline"
             colorScheme="gray"
             gap={2}
-            onClick={handleNew}
             size="sm"
             marginTop={2}
             marginBottom={2}
           >
-            <AddIcon /> Nova
+            <AddIcon /> <ModalDoacaoNecessaria eventoid={eventoid} />
           </Button>
         </HStack>
         <TableContainer>
