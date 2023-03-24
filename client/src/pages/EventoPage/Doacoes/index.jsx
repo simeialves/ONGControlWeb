@@ -26,7 +26,6 @@ import { getTipoDoacaoEventos } from "../../../shared/services/TipoDoacaoEvento"
 import { formatDate } from "../../Uteis/Uteis";
 
 export default function Doacoes({ eventoid }) {
-  console.log(eventoid);
   const [results, setResults] = useState([]);
   const [doacoesRealizadas, setDoacaoesRealizadas] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -40,8 +39,6 @@ export default function Doacoes({ eventoid }) {
     (async () => {
       const response = await getTipoDoacaoEventos(eventoid);
       const responseDoacaoEvento = await getDoacaoEvento(eventoid);
-
-      console.log(response.data);
 
       setResults(response.data);
       setDoacaoesRealizadas(responseDoacaoEvento.data);

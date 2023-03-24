@@ -1,6 +1,6 @@
 import {
   Button,
-  InputRightElement,
+  Heading,
   Table,
   TableCaption,
   TableContainer,
@@ -11,27 +11,23 @@ import {
   Tr,
 } from "@chakra-ui/react";
 
-import {
-  AddIcon,
-  DeleteIcon,
-  EditIcon,
-  SearchIcon,
-  SmallCloseIcon,
-} from "@chakra-ui/icons";
+import { AddIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../shared/services/api";
 import SpinnerUtil from "../../Uteis/progress";
 
-import { Box, HStack, Input, InputGroup } from "@chakra-ui/react";
+import { Box, HStack } from "@chakra-ui/react";
 import Container from "react-bootstrap/Container";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import { TIPO_COLABORADOR } from "../../../includes/const";
 import { getPessoasEvento } from "../../../shared/services/PessoaEvento";
+import { getTipoColaboradorEventos } from "../../../shared/services/TipoColaboradorEvento";
 
 export default function Colaboradores({ eventoid }) {
   const [results, setResults] = useState([]);
+  const [doacoesRealizadas, setDoacaoesRealizadas] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(false);
   const [inputNome, setInputNome] = useState("");
@@ -42,6 +38,13 @@ export default function Colaboradores({ eventoid }) {
   useEffect(() => {
     (async () => {
       const response = await getPessoasEvento(TIPO_COLABORADOR, eventoid);
+
+      const responseTipoColaboradorEvento = await getTipoColaboradorEventos(
+        eventoid
+      );
+      setResults(response.data);
+      setDoacaoesRealizadas(responseTipoColaboradorEvento.data);
+
       setResults(response.data);
       setMessage(false);
     })();
@@ -97,6 +100,18 @@ export default function Colaboradores({ eventoid }) {
   return (
     <>
       <Container fluid="md">
+        <Box bg="gray.600" w="100%" p={4} color="white">
+          <HStack spacing="4" justify={"center"}>
+            <Heading
+              size={{
+                base: "xs",
+                md: "md",
+              }}
+            >
+              Colaboradores Necessários
+            </Heading>
+          </HStack>
+        </Box>
         <HStack spacing="4" justify={"right"}>
           <Button
             variant="outline"
@@ -104,49 +119,86 @@ export default function Colaboradores({ eventoid }) {
             gap={2}
             onClick={handleNew}
             size="sm"
+            marginTop={2}
             marginBottom={2}
           >
             <AddIcon /> Nova
           </Button>
         </HStack>
-        <HStack>
-          <Box w="70%">
-            <InputGroup>
-              <Input
-                onChange={(event) => {
-                  setInputNome(event.target.value);
-                }}
-                placeholder="Pesquisar por nome"
-                size="sm"
-                borderRadius={5}
-              />
-              <InputRightElement>
-                <SmallCloseIcon justify={"right"} onClick={handleClear} />
-              </InputRightElement>
-            </InputGroup>
-          </Box>
-          <Button
-            variant="solid"
-            gap={2}
-            w={120}
-            p="1"
-            bg="gray.600"
-            color="white"
-            fontSize="x1"
-            _hover={{ bg: "gray.800" }}
-            onClick={handleClick}
-            size="sm"
-          >
-            <SearchIcon />
-            Pesquisar
-          </Button>
-        </HStack>
-        <br></br>
         <TableContainer>
           <Table variant="simple" size="sm">
             <TableCaption>Quantidade: {results.length}</TableCaption>
             <Thead>
               <Tr>
+                <Th>Descrição</Th>
+                <Th>Qtd. Necessárias</Th>
+                <Th>Qtd. Inscritos</Th>
+                <Th>Ação</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {doacoesRealizadas.map((result) => (
+                <Tr>
+                  <Td>{result.descricao}</Td>
+                  <Td>{result.quantidade}</Td>
+                  <Td>{result.quantidadeinscritos}</Td>
+
+                  <Td>
+                    <Button size={"xs"} bg={"write"}>
+                      <EditIcon
+                        color={"blue.800"}
+                        boxSize={5}
+                        onClick={(e) => handleEdit(result.pessoaeventoid, e)}
+                      />
+                    </Button>
+                    <Button size={"xs"} bg={"write"}>
+                      <DeleteIcon
+                        color={"red.500"}
+                        boxSize={5}
+                        onClick={(e) => handleDelete(result.pessoaeventoid, e)}
+                      />
+                    </Button>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </Container>
+
+      <Container fluid="md">
+        <Box bg="gray.600" w="100%" p={4} color="white">
+          <HStack spacing="4" justify={"center"}>
+            <Heading
+              size={{
+                base: "xs",
+                md: "md",
+              }}
+            >
+              Colaboradores Inscritos
+            </Heading>
+          </HStack>
+        </Box>
+
+        <HStack spacing="4" justify={"right"}>
+          <Button
+            variant="outline"
+            colorScheme="gray"
+            gap={2}
+            onClick={handleNew}
+            size="sm"
+            marginTop={2}
+            marginBottom={2}
+          >
+            <AddIcon /> Nova
+          </Button>
+        </HStack>
+        <TableContainer>
+          <Table variant="simple" size="sm">
+            <TableCaption>Quantidade: {results.length}</TableCaption>
+            <Thead>
+              <Tr>
+                <Th>Descrição</Th>
                 <Th>Nome</Th>
                 <Th>Documento</Th>
                 <Th>Telefone</Th>
@@ -156,6 +208,7 @@ export default function Colaboradores({ eventoid }) {
             <Tbody>
               {results.map((result) => (
                 <Tr>
+                  <Td>{result.descricao}</Td>
                   <Td>
                     <a href={`/pessoas/edit/${result.pessoaid}`}>
                       {result.nome}
