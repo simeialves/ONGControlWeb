@@ -1,6 +1,6 @@
 import { api } from "../api";
 
-export const getDoacaoEvento = async () => {
-  const response = await api.get("/doacaoeventos");
-  return response.data;
+export const getDoacaoEvento = async (eventoid) => {
+  const result = await api.get(`/doacaoevento/eventoid=${eventoid}`);
+  return result;
 };

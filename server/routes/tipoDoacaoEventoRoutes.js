@@ -61,28 +61,58 @@ appRoutes.post("/", (req, res) => {
 
 //#region READ
 appRoutes.get("/", async (req, res, next) => {
-  const { tipo } = req.query;
+  const { tipodoacaoid, eventoid } = req.query;
 
-  await db.knex
+  console.log(eventoid);
+
+  var query = knex("tipodoacaoevento")
     .select("*")
-    .from("tipodoacaoevento")
     .join("evento", "tipodoacaoevento.eventoid", "=", "evento.eventoid")
     .join(
       "tipodoacao",
       "tipodoacaoevento.tipodoacaoid",
       "=",
       "tipodoacao.tipodoacaoid"
-    )
+    );
+
+  if (tipodoacaoid != undefined)
+    query.where("tipodoacaoevento.tipodoacaoid", tipodoacaoid);
+  if (eventoid != undefined) query.where("tipodoacaoevento.eventoid", eventoid);
+
+  query
     .then(function (results) {
       if (results.length) {
         return res.status(201).json(results);
       } else {
-        return res.status(404).json({ message: NOT_FOUND });
+        res.status(404).json({
+          message: NOT_FOUND,
+        });
       }
     })
     .catch((err) => {
       console.log(err);
     });
+
+  // await db.knex
+  //   .select("*")
+  //   .from("tipodoacaoevento")
+  //   .join("evento", "tipodoacaoevento.eventoid", "=", "evento.eventoid")
+  //   .join(
+  //     "tipodoacao",
+  //     "tipodoacaoevento.tipodoacaoid",
+  //     "=",
+  //     "tipodoacao.tipodoacaoid"
+  //   )
+  //   .then(function (results) {
+  //     if (results.length) {
+  //       return res.status(201).json(results);
+  //     } else {
+  //       return res.status(404).json({ message: NOT_FOUND });
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
 });
 
 appRoutes.get("/filter", verifyJWT, async (req, res, next) => {

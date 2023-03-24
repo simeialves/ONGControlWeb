@@ -20,14 +20,14 @@ import {
 } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api, getPessoasEvento } from "../../../shared/services/api";
 import SpinnerUtil from "../../Uteis/progress";
 
 import { Box, HStack, Input, InputGroup } from "@chakra-ui/react";
 import Container from "react-bootstrap/Container";
 
-import "bootstrap/dist/css/bootstrap.min.css";
 import { TIPO_BENEFICIARIO } from "../../../includes/const";
+import { api } from "../../../shared/services/api";
+import { getPessoasEvento } from "../../../shared/services/PessoaEvento";
 
 export default function Beneficiarios({ eventoid }) {
   const [results, setResults] = useState([]);
@@ -97,7 +97,6 @@ export default function Beneficiarios({ eventoid }) {
   return (
     <>
       <Container fluid="md">
-        <div>eventoid = {eventoid}</div>
         <HStack spacing="4" justify={"right"}>
           <Button
             variant="outline"

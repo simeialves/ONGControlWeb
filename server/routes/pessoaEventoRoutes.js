@@ -67,9 +67,6 @@ appRoutes.post("/", (req, res) => {
 //#region READ
 appRoutes.get("/", async (req, res, next) => {
   const { tipo, eventoid } = req.query;
-
-  console.log(eventoid);
-
   var query = knex("pessoaevento")
     .select("*")
     .join("pessoa", "pessoaevento.pessoaid", "=", "pessoa.pessoaid");
@@ -90,47 +87,29 @@ appRoutes.get("/", async (req, res, next) => {
     .catch((err) => {
       console.log(err);
     });
-
-  // console.log(eventoid);
-  // await db.knex
-  //   .select("*")
-  //   .from("pessoaevento")
-  //   .join("pessoa", "pessoaevento.pessoaid", "=", "pessoa.pessoaid")
-  //   .where("pessoaevento.tipo", "=", tipo)
-  //   .where("pessoaevento.eventoid", "=", eventoid)
-  //   .then(function (results) {
-  //     if (results.length) {
-  //       return res.status(201).json(results);
-  //     } else {
-  //       return res.status(404).json({ message: "Nenhuma pessoa encontrada" });
-  //     }
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
 });
 
-appRoutes.get("/filter", verifyJWT, async (req, res, next) => {
-  const { nome } = req.query;
+// appRoutes.get("/filter", verifyJWT, async (req, res, next) => {
+//   const { nome } = req.query;
 
-  var query = knex("pessoaevento").select("*");
+//   var query = knex("pessoaevento").select("*");
 
-  if (nome != undefined) query.whereILike("nome", `%${nome}%`).orderBy("nome");
+//   if (nome != undefined) query.whereILike("nome", `%${nome}%`).orderBy("nome");
 
-  query
-    .then(function (results) {
-      if (results.length) {
-        return res.status(201).json(results);
-      } else {
-        res.status(404).json({
-          message: NOT_FOUND,
-        });
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+//   query
+//     .then(function (results) {
+//       if (results.length) {
+//         return res.status(201).json(results);
+//       } else {
+//         res.status(404).json({
+//           message: NOT_FOUND,
+//         });
+//       }
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// });
 
 appRoutes.get("/:id", async (req, res, next) => {
   let id = Number.parseInt(req.params.id);

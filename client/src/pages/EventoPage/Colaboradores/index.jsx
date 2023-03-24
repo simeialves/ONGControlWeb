@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api, getPessoasEvento } from "../../../shared/services/api";
+import { api } from "../../../shared/services/api";
 import SpinnerUtil from "../../Uteis/progress";
 
 import { Box, HStack, Input, InputGroup } from "@chakra-ui/react";
@@ -28,10 +28,11 @@ import Container from "react-bootstrap/Container";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import { TIPO_COLABORADOR } from "../../../includes/const";
+import { getPessoasEvento } from "../../../shared/services/PessoaEvento";
 
-const Colaboradores = () => {
+export default function Colaboradores({ eventoid }) {
   const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(false);
   const [inputNome, setInputNome] = useState("");
   const [inputAtivo, setInputAtivo] = useState(1);
@@ -40,12 +41,11 @@ const Colaboradores = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await getPessoasEvento(TIPO_COLABORADOR);
+      const response = await getPessoasEvento(TIPO_COLABORADOR, eventoid);
       setResults(response.data);
-      setLoading(false);
       setMessage(false);
     })();
-  }, []);
+  }, [eventoid]);
 
   if (loading) {
     return <SpinnerUtil />;
@@ -187,6 +187,4 @@ const Colaboradores = () => {
       </Container>
     </>
   );
-};
-
-export default Colaboradores;
+}

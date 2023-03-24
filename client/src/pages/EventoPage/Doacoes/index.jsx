@@ -26,10 +26,10 @@ import { getDoacaoEvento } from "../../../shared/services/DoacaoEvento";
 import { getTipoDoacaoEventos } from "../../../shared/services/TipoDoacaoEvento";
 import { formatDate } from "../../Uteis/Uteis";
 
-const Doacoes = () => {
+export default function Doacoes({ eventoid, tipodoacaoid }) {
   const [results, setResults] = useState([]);
   const [doacoesRealizadas, setDoacaoesRealizadas] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(false);
   const [inputNome, setInputNome] = useState("");
   const [inputAtivo, setInputAtivo] = useState(1);
@@ -38,14 +38,14 @@ const Doacoes = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await getTipoDoacaoEventos();
-      const responseDoacaoEvento = await getDoacaoEvento();
+      const response = await getTipoDoacaoEventos(eventoid, tipodoacaoid);
+      const responseDoacaoEvento = await getDoacaoEvento(eventoid);
       setResults(response.data);
       setDoacaoesRealizadas(responseDoacaoEvento);
       setLoading(false);
       setMessage(false);
     })();
-  }, []);
+  }, [eventoid, tipodoacaoid]);
 
   if (loading) {
     return <SpinnerUtil />;
@@ -247,6 +247,4 @@ const Doacoes = () => {
       </Container>
     </>
   );
-};
-
-export default Doacoes;
+}

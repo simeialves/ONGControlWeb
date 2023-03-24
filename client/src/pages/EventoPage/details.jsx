@@ -362,10 +362,10 @@ const Evento = () => {
             </>
           </TabPanel>
           <TabPanel>
-            <Colaboradores />
+            <Colaboradores eventoid={eventoId} />
           </TabPanel>
           <TabPanel>
-            <Doacoes />
+            <Doacoes eventoid={eventoId} />
           </TabPanel>
         </TabPanels>
       </Tabs>

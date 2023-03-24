@@ -29,13 +29,6 @@ export const getPessoas = async () => {
   return api.get("/pessoas");
 };
 
-export const getPessoasEvento = async (tipo, eventoid) => {
-  const result = await api.get(
-    `/pessoaseventos/?tipo=${tipo}&eventoid=${eventoid}`
-  );
-  return result;
-};
-
 export const getTipoDoacoes = async () => {
   return api.get("/tipodoacoes");
 };
