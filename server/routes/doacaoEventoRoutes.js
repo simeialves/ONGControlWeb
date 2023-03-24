@@ -67,9 +67,9 @@ appRoutes.post("/", (req, res) => {
 
 //#region READ
 appRoutes.get("/", async (req, res, next) => {
-  const { tipo } = req.query;
+  const { eventoid } = req.query;
 
-  await db.knex
+  var query = knex("doacaoevento")
     .select(
       "tipodoacao.descricao as tipodoacaodescricao",
       "doacaoevento.quantidade as doacaoeventoquantidade",
@@ -78,7 +78,6 @@ appRoutes.get("/", async (req, res, next) => {
       "pessoa.telefone as pessoatelefone",
       "pessoa.email as pessoaemail"
     )
-    .from("doacaoevento")
     .join(
       "tipodoacao",
       "doacaoevento.tipodoacaoid",
@@ -91,8 +90,12 @@ appRoutes.get("/", async (req, res, next) => {
       "=",
       "tipodoacaoevento.tipodoacaoeventoid"
     )
-    // .join("evento", "doacaoevento.eventoid", "=", "evento.eventoid")
-    .join("pessoa", "doacaoevento.pessoaid", "=", "pessoa.pessoaid")
+    //.join("evento", "doacaoevento.eventoid", "=", "evento.eventoid")
+    .join("pessoa", "doacaoevento.pessoaid", "=", "pessoa.pessoaid");
+
+  if (eventoid != undefined) query.where("doacaoevento.eventoid", eventoid);
+
+  query
     .then(function (results) {
       if (results.length) {
         return res.status(201).json(results);
@@ -105,27 +108,27 @@ appRoutes.get("/", async (req, res, next) => {
     });
 });
 
-appRoutes.get("/filter", verifyJWT, async (req, res, next) => {
-  const { nome } = req.query;
+// appRoutes.get("/filter", verifyJWT, async (req, res, next) => {
+//   const { nome } = req.query;
 
-  var query = knex("doacaoevento").select("*");
+//   var query = knex("doacaoevento").select("*");
 
-  if (nome != undefined) query.whereILike("nome", `%${nome}%`).orderBy("nome");
+//   if (nome != undefined) query.whereILike("nome", `%${nome}%`).orderBy("nome");
 
-  query
-    .then(function (results) {
-      if (results.length) {
-        return res.status(201).json(results);
-      } else {
-        res.status(404).json({
-          message: NOT_FOUND,
-        });
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+//   query
+//     .then(function (results) {
+//       if (results.length) {
+//         return res.status(201).json(results);
+//       } else {
+//         res.status(404).json({
+//           message: NOT_FOUND,
+//         });
+//       }
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// });
 
 appRoutes.get("/:id", async (req, res, next) => {
   let id = Number.parseInt(req.params.id);

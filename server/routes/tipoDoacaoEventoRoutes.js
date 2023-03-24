@@ -63,8 +63,6 @@ appRoutes.post("/", (req, res) => {
 appRoutes.get("/", async (req, res, next) => {
   const { tipodoacaoid, eventoid } = req.query;
 
-  console.log(eventoid);
-
   var query = knex("tipodoacaoevento")
     .select("*")
     .join("evento", "tipodoacaoevento.eventoid", "=", "evento.eventoid")
@@ -75,8 +73,6 @@ appRoutes.get("/", async (req, res, next) => {
       "tipodoacao.tipodoacaoid"
     );
 
-  if (tipodoacaoid != undefined)
-    query.where("tipodoacaoevento.tipodoacaoid", tipodoacaoid);
   if (eventoid != undefined) query.where("tipodoacaoevento.eventoid", eventoid);
 
   query
@@ -92,27 +88,6 @@ appRoutes.get("/", async (req, res, next) => {
     .catch((err) => {
       console.log(err);
     });
-
-  // await db.knex
-  //   .select("*")
-  //   .from("tipodoacaoevento")
-  //   .join("evento", "tipodoacaoevento.eventoid", "=", "evento.eventoid")
-  //   .join(
-  //     "tipodoacao",
-  //     "tipodoacaoevento.tipodoacaoid",
-  //     "=",
-  //     "tipodoacao.tipodoacaoid"
-  //   )
-  //   .then(function (results) {
-  //     if (results.length) {
-  //       return res.status(201).json(results);
-  //     } else {
-  //       return res.status(404).json({ message: NOT_FOUND });
-  //     }
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
 });
 
 appRoutes.get("/filter", verifyJWT, async (req, res, next) => {

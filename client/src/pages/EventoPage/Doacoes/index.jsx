@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Heading,
+  HStack,
   Table,
   TableCaption,
   TableContainer,
@@ -18,15 +19,14 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../../../shared/services/api";
 import SpinnerUtil from "../../Uteis/progress";
 
-import { HStack } from "@chakra-ui/react";
-import Container from "react-bootstrap/Container";
-
 import "bootstrap/dist/css/bootstrap.min.css";
+import Container from "react-bootstrap/esm/Container";
 import { getDoacaoEvento } from "../../../shared/services/DoacaoEvento";
 import { getTipoDoacaoEventos } from "../../../shared/services/TipoDoacaoEvento";
 import { formatDate } from "../../Uteis/Uteis";
 
-export default function Doacoes({ eventoid, tipodoacaoid }) {
+export default function Doacoes({ eventoid }) {
+  console.log(eventoid);
   const [results, setResults] = useState([]);
   const [doacoesRealizadas, setDoacaoesRealizadas] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -38,14 +38,17 @@ export default function Doacoes({ eventoid, tipodoacaoid }) {
 
   useEffect(() => {
     (async () => {
-      const response = await getTipoDoacaoEventos(eventoid, tipodoacaoid);
+      const response = await getTipoDoacaoEventos(eventoid);
       const responseDoacaoEvento = await getDoacaoEvento(eventoid);
+
+      console.log(response.data);
+
       setResults(response.data);
-      setDoacaoesRealizadas(responseDoacaoEvento);
-      setLoading(false);
-      setMessage(false);
+      setDoacaoesRealizadas(responseDoacaoEvento.data);
+      // setLoading(false);
+      // setMessage(false);
     })();
-  }, [eventoid, tipodoacaoid]);
+  }, [eventoid]);
 
   if (loading) {
     return <SpinnerUtil />;
@@ -85,11 +88,11 @@ export default function Doacoes({ eventoid, tipodoacaoid }) {
       });
   }
   async function handleClear() {
-    setLoading(true);
-    setInputNome("");
-    const response = await getTipoDoacaoEventos();
-    setResults(response.data);
-    setLoading(false);
+    // setLoading(true);
+    // setInputNome("");
+    // const response = await getTipoDoacaoEventos();
+    // setResults(response.data);
+    // setLoading(false);
   }
   async function handleNew() {
     navigate("/pessoas/new");
