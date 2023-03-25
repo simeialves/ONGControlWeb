@@ -55,7 +55,7 @@ export default function Doacoes({ eventoid }) {
     return <SpinnerUtil />;
   }
 
-  async function handleEdit(id) {
+  async function handleEditDoacaoRecebida(id) {
     navigate(`/pessoas/edit/${id}`);
   }
   async function handleDelete(id) {
@@ -63,6 +63,17 @@ export default function Doacoes({ eventoid }) {
       .delete(`/pessoaseventos/${id}`, {})
       .then(() => {
         // navigate(`/eventos/edit/${id}`);
+        window.location.reload(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  async function handleDeleteDoacaoRecebida(id) {
+    console.log(id);
+    api
+      .delete(`/doacaoeventos/${id}`, {})
+      .then(() => {
         window.location.reload(true);
       })
       .catch((err) => {
@@ -157,7 +168,9 @@ export default function Doacoes({ eventoid }) {
                       <EditIcon
                         color={"blue.800"}
                         boxSize={5}
-                        onClick={(e) => handleEdit(result.pessoaeventoid, e)}
+                        onClick={(e) =>
+                          handleEditDoacaoRecebida(result.pessoaeventoid, e)
+                        }
                       />
                     </Button>
                     <Button size={"xs"} bg={"write"}>
@@ -230,14 +243,18 @@ export default function Doacoes({ eventoid }) {
                       <EditIcon
                         color={"blue.800"}
                         boxSize={5}
-                        onClick={(e) => handleEdit(result.pessoaeventoid, e)}
+                        onClick={(e) =>
+                          handleEditDoacaoRecebida(result.doacaoeventoid, e)
+                        }
                       />
                     </Button>
                     <Button size={"xs"} bg={"write"}>
                       <DeleteIcon
                         color={"red.500"}
                         boxSize={5}
-                        onClick={(e) => handleDelete(result.pessoaeventoid, e)}
+                        onClick={(e) =>
+                          handleDeleteDoacaoRecebida(result.doacaoeventoid, e)
+                        }
                       />
                     </Button>
                   </Td>

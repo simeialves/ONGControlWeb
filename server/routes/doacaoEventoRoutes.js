@@ -61,6 +61,7 @@ appRoutes.get("/", async (req, res, next) => {
 
   var query = knex("doacaoevento")
     .select(
+      "doacaoevento.doacaoeventoid",
       "tipodoacao.descricao as tipodoacaodescricao",
       "doacaoevento.quantidade as doacaoeventoquantidade",
       "pessoa.nome as pessoanome",
@@ -213,6 +214,7 @@ appRoutes.delete("/:id", async (req, res) => {
           message: "Pessoa excluída com sucesso",
         });
       } else {
+        console.log("nada");
         res.status(404).json({
           message: NOT_FOUND,
         });
