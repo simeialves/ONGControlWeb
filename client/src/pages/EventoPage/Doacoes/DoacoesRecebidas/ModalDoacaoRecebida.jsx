@@ -19,7 +19,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import DoacoesNecessariasPage from ".";
 
-export const ModalDoacaoNecessaria = (eventoid) => {
+export const ModalDoacaoRecebida = (eventoid) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initialRef = React.useRef(null);
@@ -31,7 +31,7 @@ export const ModalDoacaoNecessaria = (eventoid) => {
 
   return (
     <>
-      <a onClick={onOpen}> Nova</a>
+      <a onClick={onOpen}>Nova</a>
       <Modal
         initialFocusRef={initialRef}
         finalFocusRef={finalRef}
@@ -41,7 +41,7 @@ export const ModalDoacaoNecessaria = (eventoid) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Doações</ModalHeader>
+          <ModalHeader>Doações Recebidas</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <DoacoesNecessariasPage

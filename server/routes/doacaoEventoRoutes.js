@@ -13,7 +13,7 @@ const {
 appRoutes.use(bodyParser.json());
 
 /*
-tipodoacaoid, tipodoacaoeventoid, eventoid, pessoaid, datadoacao, quantidade
+tipodoacaoeventoid, pessoaid, datadoacao, quantidade
 */
 
 //#region Methods
@@ -35,27 +35,17 @@ function verifyJWT(req, res, next) {
 
 //#region CREATE
 appRoutes.post("/", (req, res) => {
-  const {
-    tipodoacaoid,
-    tipodoacaoeventoid,
-    eventoid,
-    pessoaid,
-    datadoacao,
-    quantidade,
-  } = req.body;
+  const { tipodoacaoeventoid, pessoaid, datadoacao, quantidade } = req.body;
 
   db.knex("doacaoevento")
     .insert({
-      tipodoacaoid: tipodoacaoid,
       tipodoacaoeventoid: tipodoacaoeventoid,
-      eventoid: eventoid,
       pessoaid: pessoaid,
       datadoacao: datadoacao,
       quantidade: quantidade,
     })
     .then((result) => {
-      let resultInsert = result[0];
-      res.status(200).json({ tipodoacaoid: resultInsert });
+      res.status(200).json({});
     })
     .catch((err) => {
       res.status(500).json({
@@ -79,22 +69,20 @@ appRoutes.get("/", async (req, res, next) => {
       "pessoa.email as pessoaemail"
     )
     .join(
-      "tipodoacao",
-      "doacaoevento.tipodoacaoid",
-      "=",
-      "tipodoacao.tipodoacaoid"
-    )
-    .join(
       "tipodoacaoevento",
       "doacaoevento.tipodoacaoeventoid",
       "=",
       "tipodoacaoevento.tipodoacaoeventoid"
     )
-    //.join("evento", "doacaoevento.eventoid", "=", "evento.eventoid")
+    .join(
+      "tipodoacao",
+      "tipodoacaoevento.tipodoacaoid",
+      "=",
+      "tipodoacao.tipodoacaoid"
+    )
     .join("pessoa", "doacaoevento.pessoaid", "=", "pessoa.pessoaid");
 
-  if (eventoid != undefined) query.where("doacaoevento.eventoid", eventoid);
-
+  if (eventoid != undefined) query.where("tipodoacaoevento.eventoid", eventoid);
   query
     .then(function (results) {
       if (results.length) {

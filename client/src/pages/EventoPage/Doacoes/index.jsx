@@ -25,6 +25,7 @@ import { getDoacaoEvento } from "../../../shared/services/DoacaoEvento";
 import { getTipoDoacaoEventos } from "../../../shared/services/TipoDoacaoEvento";
 import { formatDate } from "../../Uteis/Uteis";
 import { ModalDoacaoNecessaria } from "./DoacoesNecessarias/ModalDoacaoNecessaria";
+import { ModalDoacaoRecebida } from "./DoacoesRecebidas/ModalDoacaoRecebida";
 
 export default function Doacoes({ eventoid }) {
   const [results, setResults] = useState([]);
@@ -193,12 +194,11 @@ export default function Doacoes({ eventoid }) {
             variant="outline"
             colorScheme="gray"
             gap={2}
-            onClick={handleNew}
             size="sm"
             marginTop={2}
             marginBottom={2}
           >
-            <AddIcon /> Nova
+            <AddIcon /> <ModalDoacaoRecebida eventoid={eventoid} />
           </Button>
         </HStack>
         <TableContainer>
