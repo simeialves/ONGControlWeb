@@ -60,6 +60,7 @@ appRoutes.get("/", async (req, res, next) => {
   const { eventoid } = req.query;
 
   var query = knex("doacaoevento")
+    .orderBy("datadoacao", "descricao")
     .select(
       "doacaoevento.doacaoeventoid",
       "tipodoacao.descricao as tipodoacaodescricao",

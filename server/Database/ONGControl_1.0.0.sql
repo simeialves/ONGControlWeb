@@ -35,3 +35,18 @@ CREATE TABLE `projeto` (
   ALTER TABLE `evento` 
 ADD CONSTRAINT FK_projetoid
 FOREIGN KEY (projetoid) REFERENCES projeto (projetoid);
+
+
+
+DELIMITER $$
+USE `simeialv_ongcontrol`$$
+DROP TRIGGER IF EXISTS `simeialv_ongcontrol`.`doacaoevento_after_insert` $$
+DELIMITER ;
+
+
+delimiter $$
+create trigger `doacaoevento_after_insert` after insert on doacaoevento for each row begin	    
+    update tipodoacaoevento set quantidaderecebidas = quantidaderecebidas + new.quantidade where tipodoacaoeventoid = new.tipodoacaoeventoid;
+end
+$$
+delimiter ;

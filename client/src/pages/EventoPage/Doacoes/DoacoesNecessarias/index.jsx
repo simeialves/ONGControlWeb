@@ -25,8 +25,8 @@ function DoacoesNecessariasPage(props) {
   const [inputTipodoacaoid, setTipoDoacaoid] = useState("");
   const [inputEventoid, setEventoid] = useState(props.eventoid.eventoid);
   const [inputQuantidade, setQuantidade] = useState("");
-  const [inputQuantidadeRecebidas, setQuantidadeRecebidas] = useState("");
-  const [inputQuantidadeRealizadas, setQuantidadeRealizadas] = useState("");
+  // const [inputQuantidadeRecebidas, setQuantidadeRecebidas] = useState("");
+  // const [inputQuantidadeRealizadas, setQuantidadeRealizadas] = useState("");
 
   const [resultTipoDoacoes, setTipoDoacoes] = useState([]);
 
@@ -44,8 +44,6 @@ function DoacoesNecessariasPage(props) {
       setTipoDoacaoid(response.data[0].tipodoacaoid);
       setEventoid(response.data[0].eventoid);
       setQuantidade(response.data[0].quantidade);
-      setQuantidadeRecebidas(response.data[0].quantidaderecebidas);
-      setQuantidadeRealizadas(response.data[0].quantidaderealizadas);
 
       setLoading(false);
     })();
@@ -57,15 +55,14 @@ function DoacoesNecessariasPage(props) {
   }
 
   const handleSubmit = async () => {
-    console.log(props, "props");
     if (id != undefined) {
       return api
         .post(`/tipodoacaoeventos/`, {
           tipodoacaoid: inputTipodoacaoid,
           eventoid: Eventoid,
           quantidade: inputQuantidade,
-          quantidaderecebidas: inputQuantidadeRecebidas,
-          quantidaderealizadas: inputQuantidadeRealizadas,
+          quantidaderecebidas: 0,
+          quantidaderealizadas: 0,
         })
         .then(() => {})
         .catch((err) => {
@@ -77,8 +74,6 @@ function DoacoesNecessariasPage(props) {
           tipodoacaoid: inputTipodoacaoid,
           eventoid: Eventoid,
           quantidade: inputQuantidade,
-          quantidaderecebidas: inputQuantidadeRecebidas,
-          quantidaderealizadas: inputQuantidadeRealizadas,
         })
         .then(() => {
           navigate("/eventos");
