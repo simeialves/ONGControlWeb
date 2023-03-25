@@ -97,34 +97,12 @@ appRoutes.get("/", async (req, res, next) => {
     });
 });
 
-// appRoutes.get("/filter", verifyJWT, async (req, res, next) => {
-//   const { nome } = req.query;
-
-//   var query = knex("doacaoevento").select("*");
-
-//   if (nome != undefined) query.whereILike("nome", `%${nome}%`).orderBy("nome");
-
-//   query
-//     .then(function (results) {
-//       if (results.length) {
-//         return res.status(201).json(results);
-//       } else {
-//         res.status(404).json({
-//           message: NOT_FOUND,
-//         });
-//       }
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// });
-
 appRoutes.get("/:id", async (req, res, next) => {
   let id = Number.parseInt(req.params.id);
   await db.knex
     .select("*")
     .from("doacaoevento")
-    .where({ pessoaeventoid: id })
+    .where({ doacaoeventoid: id })
     .then(function (result) {
       if (result.length) {
         return res.status(201).json(result);
