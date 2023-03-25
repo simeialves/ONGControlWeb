@@ -27,7 +27,7 @@ import SpinnerUtil from "../Uteis/progress";
 import { Box, HStack, Input, InputGroup } from "@chakra-ui/react";
 import Container from "react-bootstrap/Container";
 
-import { getPessoas } from "../../shared/services/api";
+import { getPessoas } from "../../shared/services/Pessoas";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 

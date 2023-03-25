@@ -25,10 +25,6 @@ export const getUsuarios = async () => {
   return api.get("/usuarios");
 };
 
-export const getPessoas = async () => {
-  return api.get("/pessoas");
-};
-
 export const getTipoDoacoes = async () => {
   return api.get("/tipodoacoes");
 };
@@ -51,14 +47,6 @@ export const getEventosAtivos = async () => {
 
 export const getLocalEventos = async () => {
   return await api.get("/localeventos");
-};
-
-export const getClienteByNome = async (nome) => {
-  return api.get(`/clientes/${nome}`);
-};
-
-export const getPacoteLogByPacoteId = async (id) => {
-  return api.get(`/controlequalidade/${id}`);
 };
 
 export const newUser = async (nome, documento) => {
