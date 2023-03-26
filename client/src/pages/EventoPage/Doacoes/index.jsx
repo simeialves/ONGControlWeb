@@ -58,7 +58,7 @@ export default function Doacoes({ eventoid }) {
   async function handleEditDoacaoRecebida(id) {
     navigate(`/pessoas/edit/${id}`);
   }
-  async function handleDelete(id) {
+  async function handleDeleteDoacaoNecessaria(id) {
     api
       .delete(`/pessoaseventos/${id}`, {})
       .then(() => {
@@ -177,7 +177,9 @@ export default function Doacoes({ eventoid }) {
                       <DeleteIcon
                         color={"red.500"}
                         boxSize={5}
-                        onClick={(e) => handleDelete(result.pessoaeventoid, e)}
+                        onClick={(e) =>
+                          handleDeleteDoacaoNecessaria(result.pessoaeventoid, e)
+                        }
                       />
                     </Button>
                   </Td>

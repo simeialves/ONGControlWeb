@@ -4,20 +4,15 @@ import {
   FormControl,
   FormLabel,
   HStack,
-  Input,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
   Select,
 } from "@chakra-ui/react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { TIPO_COLABORADOR } from "../../../../includes/const";
 import { api } from "../../../../shared/services/api";
 import { getPessoas } from "../../../../shared/services/Pessoas";
-import { getTipoDoacaoEventos } from "../../../../shared/services/TipoDoacaoEvento";
+import { getTipoColaboradorEventos } from "../../../../shared/services/TipoColaboradorEvento";
 
 function DoacoesNecessariasPage(props) {
   const { id } = useParams();
@@ -25,36 +20,33 @@ function DoacoesNecessariasPage(props) {
 
   const [loading, setLoading] = useState(false);
 
-  const [inputTipoDoacaoEventoid, setTipoDoacaoEventoid] = useState("");
-  const [inputQuantidade, setQuantidade] = useState("");
+  const [inputTipoColaboradorEventoid, setTipoColaboradorEventoid] =
+    useState("");
   const [inputPessoaid, setPessoaid] = useState("");
-  const [inputDataDoacao, setDataDoacao] = useState("");
 
-  const [tipoDoacaoes, setTipoDoacoes] = useState([]);
+  const [tipoDoacaoes, setTipoColaboradorEvento] = useState([]);
   const [pessoas, setPessoas] = useState([]);
 
   const Eventoid = props.eventoid.eventoid;
 
-  const handleChange = (value) => setQuantidade(value);
-
   useEffect(() => {
     (async () => {
       setLoading(true);
-      handleTipoDoacoes();
+      handleTipoColaboradoresEvento();
       handlePessoas();
 
       const response = await api.get(`/doacaoeventos/${id}`);
 
-      setTipoDoacaoEventoid(response.data[0].tipodoacaoid);
-      setQuantidade(response.data[0].quantidade);
+      setTipoColaboradorEventoid(response.data[0].tipodoacaoid);
 
       setLoading(false);
     })();
   }, [Eventoid]);
 
-  async function handleTipoDoacoes() {
-    const response = await getTipoDoacaoEventos(Eventoid);
-    setTipoDoacoes(response.data);
+  async function handleTipoColaboradoresEvento() {
+    const response = await getTipoColaboradorEventos(Eventoid);
+    console.log(response.data);
+    setTipoColaboradorEvento(response.data);
   }
 
   async function handlePessoas() {
@@ -65,11 +57,13 @@ function DoacoesNecessariasPage(props) {
   const handleSubmit = async () => {
     if (id != undefined) {
       return api
-        .post(`/doacaoeventos/`, {
-          tipodoacaoeventoid: inputTipoDoacaoEventoid,
+        .post(`/pessoaseventos/`, {
           pessoaid: inputPessoaid,
-          datadoacao: inputDataDoacao,
-          quantidade: inputQuantidade,
+          tipocolaboradoreventoid: inputTipoColaboradorEventoid,
+          eventoid: Eventoid,
+          tipo: TIPO_COLABORADOR,
+          status: 0,
+          senharetirada: 0,
         })
         .then(() => {})
         .catch((err) => {
@@ -77,11 +71,13 @@ function DoacoesNecessariasPage(props) {
         });
     } else {
       return api
-        .put(`/doacaoeventos/${id}`, {
-          tipodoacaoeventoid: 64,
+        .put(`/pessoaseventos/${id}`, {
           pessoaid: inputPessoaid,
-          datadoacao: inputDataDoacao,
-          quantidade: inputQuantidade,
+          tipocolaboradoreventoid: inputTipoColaboradorEventoid,
+          eventoid: Eventoid,
+          tipo: TIPO_COLABORADOR,
+          status: 0,
+          senharetirada: 0,
         })
         .then(() => {
           navigate("/eventos");
@@ -96,51 +92,32 @@ function DoacoesNecessariasPage(props) {
     <>
       <FormControl display="flex" flexDir="column" gap="1">
         <HStack spacing={4}>
-          <Box w="80%">
-            <FormLabel htmlFor="tipodoacaoid">Tipo de Doação</FormLabel>
+          <Box w="100%">
+            <FormLabel htmlFor="tipodoacaoid">Tipo de Colaborador</FormLabel>
             <Select
               id="tipodoacaoid"
               size={"xs"}
               borderRadius={5}
               placeholder="Selecione"
-              value={inputTipoDoacaoEventoid}
+              value={inputTipoColaboradorEventoid}
               onChange={(event) => {
-                setTipoDoacaoEventoid(event.target.value);
+                setTipoColaboradorEventoid(event.target.value);
               }}
             >
               {tipoDoacaoes.map((result) => (
                 <option
-                  key={result.tipodoacaoeventoid}
-                  value={result.tipodoacaoeventoid}
+                  key={result.tipocolaboradoreventoid}
+                  value={result.tipocolaboradoreventoid}
                 >
                   {result.descricao}
                 </option>
               ))}
             </Select>
           </Box>
-          <Box w="20%">
-            <FormLabel htmlFor="qtd">Quantidade</FormLabel>
-            <NumberInput
-              id="qtd"
-              size={"xs"}
-              step={1}
-              defaultValue={1}
-              min={1}
-              max={999}
-              value={inputQuantidade}
-              onChange={handleChange}
-            >
-              <NumberInputField borderRadius={5} />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-          </Box>
         </HStack>
         <HStack spacing={4}>
-          <Box w="80%">
-            <FormLabel htmlFor="pessoaid">Doador</FormLabel>
+          <Box w="100%">
+            <FormLabel htmlFor="pessoaid">Colaborador</FormLabel>
             <Select
               id="pessoaid"
               size={"xs"}
@@ -157,19 +134,6 @@ function DoacoesNecessariasPage(props) {
                 </option>
               ))}
             </Select>
-          </Box>
-          <Box w="20%">
-            <FormLabel htmlFor="dtnascimento">Data Doação</FormLabel>
-            <Input
-              id="dtnascimento"
-              size="xs"
-              borderRadius={5}
-              value={inputDataDoacao}
-              onChange={(event) => {
-                setDataDoacao(event.target.value);
-              }}
-              type="date"
-            />
           </Box>
         </HStack>
 

@@ -11,7 +11,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 
-import { AddIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../shared/services/api";
@@ -24,6 +24,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { TIPO_COLABORADOR } from "../../../includes/const";
 import { getPessoasEvento } from "../../../shared/services/PessoaEvento";
 import { getTipoColaboradorEventos } from "../../../shared/services/TipoColaboradorEvento";
+import { ModalColaboradorInscrito } from "./ColaboradoresInscritos/ModalColaboradorInscrito";
 import { ModalColaboradorNecessario } from "./ColaboradoresNecessarios/ModalColaboradorNecessario";
 
 export default function Colaboradores({ eventoid }) {
@@ -54,49 +55,31 @@ export default function Colaboradores({ eventoid }) {
     return <SpinnerUtil />;
   }
 
-  async function handleEdit(id) {
+  async function handleEditColaboradorNecessario(id) {
     navigate(`/pessoas/edit/${id}`);
   }
-  async function handleDelete(id) {
+  async function handleDeleteColaboradorNecessario(id) {
     api
-      .delete(`/pessoaseventos/${id}`, {})
+      .delete(`/tipocolaboradoreventos/${id}`, {})
       .then(() => {
-        // navigate(`/eventos/edit/${id}`);
         window.location.reload(true);
       })
       .catch((err) => {
         console.log(err);
       });
   }
-  async function handleClick() {
-    setLoading(true);
-    setResults([]);
-    const nome = inputNome;
+
+  async function handleDeleteColaboradorInscrito(id) {
     api
-      .get(`/pessoas/filter/?nome=${nome}`, {
-        nome: nome,
+      .delete(`/pessoaseventos/${id}`, {})
+      .then(() => {
+        window.location.reload(true);
       })
-      .then((response) => {
-        setResults(response.data);
-        setMessage(false);
-        setLoading(false);
-        setInputNome("");
-      })
-      .catch(() => {
-        setMessage(true);
-        setLoading(false);
+      .catch((err) => {
+        console.log(err);
       });
   }
-  async function handleClear() {
-    setLoading(true);
-    setInputNome("");
-    const response = await getPessoasEvento();
-    setResults(response.data);
-    setLoading(false);
-  }
-  async function handleNew() {
-    navigate("/pessoas/new");
-  }
+
   return (
     <>
       <Container fluid="md">
@@ -147,14 +130,24 @@ export default function Colaboradores({ eventoid }) {
                       <EditIcon
                         color={"blue.800"}
                         boxSize={5}
-                        onClick={(e) => handleEdit(result.pessoaeventoid, e)}
+                        onClick={(e) =>
+                          handleEditColaboradorNecessario(
+                            result.tipocolaboradoreventoid,
+                            e
+                          )
+                        }
                       />
                     </Button>
                     <Button size={"xs"} bg={"write"}>
                       <DeleteIcon
                         color={"red.500"}
                         boxSize={5}
-                        onClick={(e) => handleDelete(result.pessoaeventoid, e)}
+                        onClick={(e) =>
+                          handleDeleteColaboradorNecessario(
+                            result.tipocolaboradoreventoid,
+                            e
+                          )
+                        }
                       />
                     </Button>
                   </Td>
@@ -184,12 +177,11 @@ export default function Colaboradores({ eventoid }) {
             variant="outline"
             colorScheme="gray"
             gap={2}
-            onClick={handleNew}
             size="sm"
             marginTop={2}
             marginBottom={2}
           >
-            <AddIcon /> Nova
+            <ModalColaboradorInscrito eventoid={eventoid} />
           </Button>
         </HStack>
         <TableContainer>
@@ -216,18 +208,28 @@ export default function Colaboradores({ eventoid }) {
                   <Td>{result.documento}</Td>
                   <Td>{result.telefone}</Td>
                   <Td>
-                    <Button size={"xs"} bg={"write"}>
+                    {/* <Button size={"xs"} bg={"write"}>
                       <EditIcon
                         color={"blue.800"}
                         boxSize={5}
-                        onClick={(e) => handleEdit(result.pessoaeventoid, e)}
+                        onClick={(e) =>
+                          handleEditColaboradorNecessario(
+                            result.pessoaeventoid,
+                            e
+                          )
+                        }
                       />
-                    </Button>
+                    </Button> */}
                     <Button size={"xs"} bg={"write"}>
                       <DeleteIcon
                         color={"red.500"}
                         boxSize={5}
-                        onClick={(e) => handleDelete(result.pessoaeventoid, e)}
+                        onClick={(e) =>
+                          handleDeleteColaboradorInscrito(
+                            result.pessoaeventoid,
+                            e
+                          )
+                        }
                       />
                     </Button>
                   </Td>

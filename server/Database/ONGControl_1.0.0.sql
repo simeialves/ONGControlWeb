@@ -79,3 +79,13 @@ create trigger `doacaoevento_after_update` after update on `doacaoevento` for ea
 end
 $$
 delimiter ;
+
+delimiter $$
+create trigger `pessoaevento_after_insert` after insert on `pessoaevento` for each row begin
+	
+    if new.tipo = 2 then
+    update tipocolaboradorevento set quantidadeinscritos = quantidadeinscritos + 1 where tipocolaboradoreventoid = new.tipocolaboradoreventoid;
+    end if;	
+end
+$$
+delimiter ;

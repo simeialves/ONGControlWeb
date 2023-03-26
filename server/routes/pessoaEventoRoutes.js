@@ -51,7 +51,7 @@ appRoutes.post("/", (req, res) => {
     })
     .then((result) => {
       let resultInsert = result[0];
-      res.status(200).json({ pessoaid: resultInsert });
+      res.status(200).json({ pessoaeventoid: resultInsert });
     })
     .catch((err) => {
       res.status(500).json({

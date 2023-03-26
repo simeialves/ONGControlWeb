@@ -12,10 +12,6 @@ const {
 
 appRoutes.use(bodyParser.json());
 
-/*
-tipocolaboradorid, eventoid, quantidade, quantidadeinscritos
-*/
-
 //#region Methods
 function verifyJWT(req, res, next) {
   var token = req.headers["x-access-token"];
@@ -84,8 +80,6 @@ appRoutes.get("/", async (req, res, next) => {
       console.log(err);
     });
 });
-
-// appRoutes.get("/:id", async (req, res, next) => {
 //   let id = Number.parseInt(req.params.id);
 //   await db.knex
 //     .select("*")
@@ -159,6 +153,7 @@ appRoutes.put("/:id", async (req, res) => {
 //#region DELETE
 appRoutes.delete("/:id", async (req, res) => {
   let id = Number.parseInt(req.params.id);
+  console.log(id);
   await db.knex
     .select("*")
     .from("tipocolaboradorevento")
@@ -177,7 +172,7 @@ appRoutes.delete("/:id", async (req, res) => {
           });
 
         res.status(200).json({
-          message: "Pessoa excluída com sucesso",
+          message: "Tipocolaboradorevento excluído com sucesso",
         });
       } else {
         res.status(404).json({
