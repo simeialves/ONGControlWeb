@@ -13,7 +13,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 
-import { AddIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../shared/services/api";
@@ -133,7 +133,7 @@ export default function Doacoes({ eventoid }) {
             marginTop={2}
             marginBottom={2}
           >
-            <AddIcon /> <ModalDoacaoNecessaria eventoid={eventoid} />
+            <ModalDoacaoNecessaria eventoid={eventoid} />
           </Button>
         </HStack>
         <TableContainer>
@@ -211,7 +211,7 @@ export default function Doacoes({ eventoid }) {
             marginTop={2}
             marginBottom={2}
           >
-            <AddIcon /> <ModalDoacaoRecebida eventoid={eventoid} />
+            <ModalDoacaoRecebida eventoid={eventoid} />
           </Button>
         </HStack>
         <TableContainer>

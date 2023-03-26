@@ -313,7 +313,7 @@ const New = () => {
                 </Box>
               </HStack>
 
-              <HStack>
+              <HStack spacing={4}>
                 <Box w="30%">
                   <FormLabel htmlFor="bairro">Bairro</FormLabel>
                   <Input

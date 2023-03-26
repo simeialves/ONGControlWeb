@@ -32,7 +32,8 @@ import {
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api, getTipoColaboradores } from "../../shared/services/api";
+import { api } from "../../shared/services/api";
+import { getTipoColaboradores } from "../../shared/services/TipoColaborador";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 

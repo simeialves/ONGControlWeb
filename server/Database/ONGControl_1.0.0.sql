@@ -50,3 +50,32 @@ create trigger `doacaoevento_after_insert` after insert on doacaoevento for each
 end
 $$
 delimiter ;
+
+
+
+DELIMITER $$
+USE `simeialv_ongcontrol`$$
+DROP TRIGGER IF EXISTS `simeialv_ongcontrol`.`doacaoevento_after_delete` $$
+DELIMITER ;
+delimiter $$
+create trigger `doacaoevento_after_delete` after delete on doacaoevento for each row begin	    
+    update tipodoacaoevento set quantidaderecebidas = quantidaderecebidas - old.quantidade where tipodoacaoeventoid = old.tipodoacaoeventoid;
+end
+$$
+delimiter ;
+
+delimiter $$
+create trigger `doacaoevento_after_update` after update on `doacaoevento` for each row begin
+	
+    if old.quantidade > new.quantidade then
+    update tipodoacaoevento set saldo = saldo + (new.quantidade-old.quantidade) where eventoid = old.eventoid and tipodoacaoid = old.tipodoacaoid;
+    update tipodoacaoevento set quantidaderecebidas = quantidaderecebidas - (old.quantidade-new.quantidade) where eventoid = old.eventoid and tipodoacaoid = old.tipodoacaoid;
+    end if;
+    
+	if old.quantidade < new.quantidade then
+    update tipodoacaoevento set saldo = saldo - (old.quantidade-new.quantidade) where eventoid = old.eventoid and tipodoacaoid = old.tipodoacaoid;
+    update tipodoacaoevento set quantidaderecebidas = quantidaderecebidas + (new.quantidade-old.quantidade) where eventoid = old.eventoid and tipodoacaoid = old.tipodoacaoid;
+    end if;
+end
+$$
+delimiter ;

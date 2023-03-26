@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+import { AddIcon } from "@chakra-ui/icons";
 import DoacoesNecessariasPage from ".";
 
 export const ModalDoacaoNecessaria = (eventoid) => {
@@ -31,7 +32,10 @@ export const ModalDoacaoNecessaria = (eventoid) => {
 
   return (
     <>
-      <a onClick={onOpen}> Nova</a>
+      <a onClick={onOpen}>
+        <AddIcon marginRight={1} />
+        Nova
+      </a>
       <Modal
         initialFocusRef={initialRef}
         finalFocusRef={finalRef}

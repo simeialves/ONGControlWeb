@@ -24,6 +24,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { TIPO_COLABORADOR } from "../../../includes/const";
 import { getPessoasEvento } from "../../../shared/services/PessoaEvento";
 import { getTipoColaboradorEventos } from "../../../shared/services/TipoColaboradorEvento";
+import { ModalColaboradorNecessario } from "./ColaboradoresNecessarios/ModalColaboradorNecessario";
 
 export default function Colaboradores({ eventoid }) {
   const [results, setResults] = useState([]);
@@ -116,12 +117,11 @@ export default function Colaboradores({ eventoid }) {
             variant="outline"
             colorScheme="gray"
             gap={2}
-            onClick={handleNew}
             size="sm"
             marginTop={2}
             marginBottom={2}
           >
-            <AddIcon /> Nova
+            <ModalColaboradorNecessario eventoid={eventoid} />
           </Button>
         </HStack>
         <TableContainer>

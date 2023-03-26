@@ -13,7 +13,7 @@ const {
 appRoutes.use(bodyParser.json());
 
 /*
-tipodoacaoid, tipodoacaoeventoid, eventoid, pessoaid, datadoacao, quantidade
+tipocolaboradorid, eventoid, quantidade, quantidadeinscritos
 */
 
 //#region Methods
@@ -35,27 +35,18 @@ function verifyJWT(req, res, next) {
 
 //#region CREATE
 appRoutes.post("/", (req, res) => {
-  const {
-    tipodoacaoid,
-    tipodoacaoeventoid,
-    eventoid,
-    pessoaid,
-    datadoacao,
-    quantidade,
-  } = req.body;
+  const { tipocolaboradorid, eventoid, quantidade } = req.body;
 
-  db.knex("doacaoevento")
+  db.knex("tipocolaboradorevento")
     .insert({
-      tipodoacaoid: tipodoacaoid,
-      tipodoacaoeventoid: tipodoacaoeventoid,
+      tipocolaboradorid: tipocolaboradorid,
       eventoid: eventoid,
-      pessoaid: pessoaid,
-      datadoacao: datadoacao,
       quantidade: quantidade,
+      quantidadeinscritos: 0,
     })
     .then((result) => {
       let resultInsert = result[0];
-      res.status(200).json({ tipodoacaoid: resultInsert });
+      res.status(200).json({ tipocolaboradoreventoid: resultInsert });
     })
     .catch((err) => {
       res.status(500).json({
