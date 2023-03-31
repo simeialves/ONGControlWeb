@@ -26,9 +26,9 @@ export const ModalDoacaoNecessaria = (eventoid) => {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
 
-  function handleCloseModal() {
+  const handleCloseModal = () => {
     onClose();
-  }
+  };
 
   return (
     <>
@@ -50,7 +50,7 @@ export const ModalDoacaoNecessaria = (eventoid) => {
           <ModalBody pb={6}>
             <DoacoesNecessariasPage
               eventoid={eventoid}
-              handleCloseModal={handleCloseModal}
+              event={handleCloseModal}
             />
           </ModalBody>
 

@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { STATUS_ATIVO, STATUS_INATIVO } from "../../includes/const";
 import { api, getCEP } from "../../shared/services/api";
 
+//#region consts
 const ID_NOME = 0;
 const ID_DOCUMENTO = 1;
 const ID_RESPONSAVEL = 2;
@@ -32,10 +33,10 @@ const ID_EMAIL_SENHA = 15;
 const ID_EMAIL_SERVIDOR = 16;
 const ID_EMAIL_PORTA = 17;
 const ID_EMAIL_SSL = 18;
+//#endregion
 
-function ParametroPage() {
+function ParametroPage(props) {
   const navigate = useNavigate();
-
   const [loading, setLoading] = useState(true);
 
   const [inputNome, setInputNome] = useState("");
@@ -111,9 +112,7 @@ function ParametroPage() {
         email_porta: inputEmailPorta,
         email_ssl: inputEmailSSL,
       })
-      .then(() => {
-        navigate("/");
-      })
+      .then()
       .catch((err) => {
         console.log(err);
       });
@@ -414,7 +413,7 @@ function ParametroPage() {
           >
             Salvar
           </Button>
-          {/* <Button
+          <Button
             w={100}
             p="6"
             type="submit"
@@ -423,13 +422,13 @@ function ParametroPage() {
             fontWeight="bold"
             fontSize="x1"
             _hover={{ bg: "gray.800" }}
-            onClick={handleVoltar}
+            onClick={props.event}
             gap={2}
             size="xs"
             marginBottom={2}
           >
             Cancelar
-          </Button> */}
+          </Button>
         </HStack>
       </FormControl>
     </>

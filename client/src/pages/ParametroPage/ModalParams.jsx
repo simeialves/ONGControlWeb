@@ -43,7 +43,7 @@ export const ModalParams = () => {
           <ModalHeader>Parâmetros</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <ParametroPage />
+            <ParametroPage event={handleCloseModal} />
           </ModalBody>
 
           <ModalFooter>

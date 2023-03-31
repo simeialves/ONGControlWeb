@@ -64,7 +64,9 @@ function DoacoesNecessariasPage(props) {
           quantidaderecebidas: 0,
           quantidaderealizadas: 0,
         })
-        .then(() => {})
+        .then(() => {
+          this.window.location.reload(true);
+        })
         .catch((err) => {
           console.log(err);
         });
@@ -75,13 +77,16 @@ function DoacoesNecessariasPage(props) {
           eventoid: Eventoid,
           quantidade: inputQuantidade,
         })
-        .then(() => {
-          navigate("/eventos");
-        })
+        .then(() => {})
         .catch((err) => {
           console.log(err);
         });
     }
+  };
+
+  const handleCloseModal = async () => {
+    await handleSubmit();
+    props.event();
   };
 
   return (
@@ -147,11 +152,11 @@ function DoacoesNecessariasPage(props) {
             fontWeight="bold"
             fontSize="x1"
             _hover={{ bg: "blue.800" }}
-            onClick={handleSubmit}
+            onClick={handleCloseModal}
           >
             Salvar
           </Button>
-          {/* <Button
+          <Button
             w={100}
             p="6"
             type="submit"
@@ -160,13 +165,13 @@ function DoacoesNecessariasPage(props) {
             fontWeight="bold"
             fontSize="x1"
             _hover={{ bg: "gray.800" }}
-            onClick={handleVoltar}
+            onClick={props.event}
             gap={2}
             size="xs"
             marginBottom={2}
           >
             Cancelar
-          </Button> */}
+          </Button>
         </HStack>
       </FormControl>
     </>
