@@ -202,7 +202,7 @@ appRoutes.delete("/:id", async (req, res) => {
           });
 
         res.status(200).json({
-          message: "Pessoa excluída com sucesso",
+          message: "Registro excluído com sucesso",
         });
       } else {
         res.status(404).json({

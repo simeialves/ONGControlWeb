@@ -60,9 +60,8 @@ export default function Doacoes({ eventoid }) {
   }
   async function handleDeleteDoacaoNecessaria(id) {
     api
-      .delete(`/pessoaseventos/${id}`, {})
+      .delete(`/tipodoacaoeventos/${id}`, {})
       .then(() => {
-        // navigate(`/eventos/edit/${id}`);
         window.location.reload(true);
       })
       .catch((err) => {
@@ -178,7 +177,10 @@ export default function Doacoes({ eventoid }) {
                         color={"red.500"}
                         boxSize={5}
                         onClick={(e) =>
-                          handleDeleteDoacaoNecessaria(result.pessoaeventoid, e)
+                          handleDeleteDoacaoNecessaria(
+                            result.tipodoacaoeventoid,
+                            e
+                          )
                         }
                       />
                     </Button>
