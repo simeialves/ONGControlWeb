@@ -1,5 +1,16 @@
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Button,
+  useDisclosure,
+} from "@chakra-ui/react";
+
+import {
   InputRightElement,
   Table,
   TableCaption,
@@ -38,6 +49,10 @@ const Pessoa = () => {
   const [inputNome, setInputNome] = useState("");
   const [inputAtivo, setInputAtivo] = useState(1);
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = React.useRef();
+  const [pessoaId, setId] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,20 +71,28 @@ const Pessoa = () => {
   async function handleEdit(id) {
     navigate(`/pessoas/edit/${id}`);
   }
-  async function handleDelete(id) {
-    if (window.confirm("Deseja realmente excluir o registro selecionado?")) {
-      api
-        .delete(`/pessoas/${id}`, {})
-        .then(() => {
-          navigate("/pessoas");
-          window.location.reload(false);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      return;
-    }
+
+  async function handleApagar(id) {
+    setId(id);
+    onOpen();
+  }
+  function handleDelete(pessoaId) {
+    // if (
+    //   window.confirm("Deseja realmente excluir o registro selecionado?" + id)
+    // ) {
+    const id = pessoaId;
+    api
+      .delete(`/pessoas/${id}`, {})
+      .then(() => {
+        navigate("/pessoas");
+        window.location.reload(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // } else {
+    //   return;
+    // }
   }
   async function handleClick() {
     setLoading(true);
@@ -100,6 +123,7 @@ const Pessoa = () => {
   async function handleNew() {
     navigate("/pessoas/new");
   }
+
   return (
     <>
       <Headers />
@@ -184,7 +208,7 @@ const Pessoa = () => {
                       <DeleteIcon
                         color={"red.500"}
                         boxSize={5}
-                        onClick={(e) => handleDelete(result.pessoaid, e)}
+                        onClick={(e) => handleApagar(result.pessoaid, e)}
                       />
                     </Button>
                   </Td>
@@ -194,6 +218,31 @@ const Pessoa = () => {
           </Table>
         </TableContainer>
       </Container>
+      <AlertDialog
+        motionPreset="slideInBottom"
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isOpen={isOpen}
+        isCentered
+      >
+        <AlertDialogOverlay />
+
+        <AlertDialogContent>
+          <AlertDialogHeader>Apagar registro?</AlertDialogHeader>
+          <AlertDialogCloseButton />
+          <AlertDialogBody>
+            Tem certeza que deseja apagar o registro selecionado?
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <Button ref={cancelRef} onClick={onClose}>
+              No
+            </Button>
+            <Button colorScheme="red" ml={3} onClick={handleDelete(pessoaId)}>
+              Yes
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };
