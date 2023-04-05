@@ -76,10 +76,7 @@ const Pessoa = () => {
     setId(id);
     onOpen();
   }
-  function handleDelete(pessoaId) {
-    // if (
-    //   window.confirm("Deseja realmente excluir o registro selecionado?" + id)
-    // ) {
+  function handleDelete() {
     const id = pessoaId;
     api
       .delete(`/pessoas/${id}`, {})
@@ -90,10 +87,8 @@ const Pessoa = () => {
       .catch((err) => {
         console.log(err);
       });
-    // } else {
-    //   return;
-    // }
   }
+
   async function handleClick() {
     setLoading(true);
     setResults([]);
@@ -235,10 +230,10 @@ const Pessoa = () => {
           </AlertDialogBody>
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose}>
-              No
+              Cancelar
             </Button>
-            <Button colorScheme="red" ml={3} onClick={handleDelete(pessoaId)}>
-              Yes
+            <Button colorScheme="red" ml={3} onClick={handleDelete}>
+              Sim
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
