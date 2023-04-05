@@ -90,7 +90,7 @@ function ParametroPage(props) {
   }, []);
 
   const handleSubmit = async () => {
-    return api
+    return await api
       .put(`/parametros`, {
         nome: inputNome,
         documento: inputDocumento,
@@ -112,10 +112,17 @@ function ParametroPage(props) {
         email_porta: inputEmailPorta,
         email_ssl: inputEmailSSL,
       })
-      .then()
+      .then(() => {
+        this.window.location.reload(true);
+      })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const handleCloseModal = async () => {
+    props.event();
+    await handleSubmit();
   };
 
   const checkCEP = async (cep) => {
@@ -409,7 +416,7 @@ function ParametroPage(props) {
             fontWeight="bold"
             fontSize="x1"
             _hover={{ bg: "blue.800" }}
-            onClick={handleSubmit}
+            onClick={handleCloseModal}
           >
             Salvar
           </Button>

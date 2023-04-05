@@ -1,10 +1,14 @@
 const express = require("express");
-const { knex } = require("../config/db");
 const db = require("../config/db");
 const appRoutes = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
+const {
+  SUCCESS_LOGGED,
+  INCORRECT_CREDENTIALS,
+  ERROR_VERIFYING_CREDENTIALS,
+} = require("../includes/Messages");
 
 require("dotenv").config();
 appRoutes.use(bodyParser.json());
@@ -29,7 +33,7 @@ appRoutes.post("/loginAuth", (req, res) => {
           );
           res.status(200).json({
             success: true,
-            message: "Logado com sucesso",
+            message: SUCCESS_LOGGED,
             id: usuario.usuarioid,
             email: usuario.login,
             access_token: tokenJWT,
@@ -38,17 +42,17 @@ appRoutes.post("/loginAuth", (req, res) => {
         } else
           res.status(401).json({
             success: false,
-            message: "Login ou senha incorretos.",
+            message: INCORRECT_CREDENTIALS,
           });
       } else
         res.status(401).json({
           success: false,
-          message: "Login ou senha incorretos.",
+          message: INCORRECT_CREDENTIALS,
         });
     })
     .catch((err) => {
       res.status(500).json({
-        message: "Erro ao verificar login - " + err.message,
+        message: ERROR_VERIFYING_CREDENTIALS + " - " + err.message,
       });
     });
 });

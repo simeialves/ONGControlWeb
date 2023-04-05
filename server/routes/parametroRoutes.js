@@ -1,35 +1,10 @@
 const express = require("express");
-const { knex } = require("../config/db");
 const db = require("../config/db");
 const appRoutes = express.Router();
-const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
+const { NOT_FOUND, SUCCESS_UPDATED } = require("../includes/Messages");
 
 appRoutes.use(bodyParser.json());
-
-const STATUS_ATIVO = 1;
-const NOT_FOUND = "Not Found.";
-
-//#region Methods
-function verifyJWT(req, res, next) {
-  var token = req.headers["x-access-token"];
-
-  if (!token) {
-    return res.status(401).send({ auth: false, message: "No token provided." });
-  }
-
-  jwt.verify(token, process.env.SECRET_KEY, function (err, decoded) {
-    if (err)
-      return res
-        .status(500)
-        .send({ auth: false, message: "Failed to authenticate token." });
-
-    // se tudo estiver ok, salva no request para uso posterior
-    req.userId = decoded.id;
-    next();
-  });
-}
-//#endregion
 
 //#region READ
 appRoutes.get("/", async (req, res, next) => {
@@ -46,7 +21,9 @@ appRoutes.get("/", async (req, res, next) => {
       }
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).json({
+        message: ERROR_FETCH + " - " + err.message,
+      });
     });
 });
 
@@ -166,16 +143,18 @@ appRoutes.put("/", async (req, res) => {
     .then(function (results) {
       if (results.length) {
         results.forEach(async (item) => {
-          await db
-            .knex("parametro")
+          db.knex("parametro")
             .where("parametroid", item.parametroid)
             .update({
               valor: GetValorByParametroId(item.parametroid),
             })
-            .then(function () {})
+            .then(() => {})
             .catch((err) => {
               console.log(err);
             });
+        });
+        return res.status(201).json({
+          message: SUCCESS_UPDATED,
         });
       } else {
         res.status(404).json({
@@ -184,7 +163,9 @@ appRoutes.put("/", async (req, res) => {
       }
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).json({
+        message: ERROR_FETCH + " - " + err.message,
+      });
     });
 });
 //#endregion

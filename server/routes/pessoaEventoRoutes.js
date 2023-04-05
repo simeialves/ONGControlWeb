@@ -1,36 +1,23 @@
 const express = require("express");
-const { knex } = require("../config/db");
 const db = require("../config/db");
 const appRoutes = express.Router();
-const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
-const { NOT_FOUND } = require("../includes/const");
+const {
+  NOT_FOUND,
+  SUCCESS_UPDATED,
+  SUCCESS_DELETED,
+  SUCCESS_CREATED,
+  ERROR_CREATED,
+  ERROR_FETCH,
+  ERROR_UPDATED,
+  ERROR_DELETED,
+} = require("../includes/Messages");
+const { verifyJWT } = require("./../includes/Uteis");
 
 appRoutes.use(bodyParser.json());
 
-//#region Methods
-function verifyJWT(req, res, next) {
-  var token = req.headers["x-access-token"];
-
-  if (!token) {
-    return res.status(401).send({ auth: false, message: "No token provided." });
-  }
-
-  jwt.verify(token, process.env.SECRET_KEY, function (err, decoded) {
-    if (err)
-      return res
-        .status(500)
-        .send({ auth: false, message: "Failed to authenticate token." });
-
-    // se tudo estiver ok, salva no request para uso posterior
-    req.userId = decoded.id;
-    next();
-  });
-}
-//#endregion
-
 //#region CREATE
-appRoutes.post("/", (req, res) => {
+appRoutes.post("/", verifyJWT, (req, res) => {
   const {
     pessoaid,
     tipocolaboradoreventoid,
@@ -49,22 +36,24 @@ appRoutes.post("/", (req, res) => {
       status: status,
       senharetirada: senharetirada,
     })
-    .then((result) => {
-      let resultInsert = result[0];
-      res.status(200).json({ pessoaeventoid: resultInsert });
+    .then(() => {
+      res.status(200).json({
+        message: SUCCESS_CREATED,
+      });
     })
     .catch((err) => {
       res.status(500).json({
-        message: "Erro ao cadastrar pessoa - " + err.message,
+        message: ERROR_CREATED + " - " + err.message,
       });
     });
 });
 //#endregion
 
 //#region READ
-appRoutes.get("/", async (req, res, next) => {
+appRoutes.get("/", verifyJWT, async (req, res, next) => {
   const { tipo, eventoid, tipocolaboradoreventoid } = req.query;
-  var query = knex("pessoaevento")
+  var query = db
+    .knex("pessoaevento")
     .select("*")
     .join("pessoa", "pessoaevento.pessoaid", "=", "pessoa.pessoaid")
     .join(
@@ -99,33 +88,13 @@ appRoutes.get("/", async (req, res, next) => {
       }
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).json({
+        message: ERROR_FETCH + " - " + err.message,
+      });
     });
 });
 
-// appRoutes.get("/filter", verifyJWT, async (req, res, next) => {
-//   const { nome } = req.query;
-
-//   var query = knex("pessoaevento").select("*");
-
-//   if (nome != undefined) query.whereILike("nome", `%${nome}%`).orderBy("nome");
-
-//   query
-//     .then(function (results) {
-//       if (results.length) {
-//         return res.status(201).json(results);
-//       } else {
-//         res.status(404).json({
-//           message: NOT_FOUND,
-//         });
-//       }
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// });
-
-appRoutes.get("/:id", async (req, res, next) => {
+appRoutes.get("/:id", verifyJWT, async (req, res, next) => {
   let id = Number.parseInt(req.params.id);
   await db.knex
     .select("*")
@@ -135,18 +104,20 @@ appRoutes.get("/:id", async (req, res, next) => {
       if (result.length) {
         return res.status(201).json(result);
       } else {
-        return res.status(404).json({ message: "Pessoa não encontrada" });
+        return res.status(404).json({ message: NOT_FOUND });
       }
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).json({
+        message: ERROR_FETCH + " - " + err.message,
+      });
     });
 });
 //#endregion
 
 //#region UPDATE
 
-appRoutes.put("/:id", async (req, res) => {
+appRoutes.put("/:id", verifyJWT, async (req, res) => {
   const id = Number.parseInt(req.params.id);
   const {
     pessoaid,
@@ -163,7 +134,7 @@ appRoutes.put("/:id", async (req, res) => {
     .where({ pessoaid: id })
     .then(function (result) {
       if (result.length) {
-        knex
+        db.knex
           .where({ pessoaeventoid: id })
           .update({
             pessoaid: pessoaid,
@@ -174,30 +145,32 @@ appRoutes.put("/:id", async (req, res) => {
             senharetirada: senharetirada,
           })
           .table("pessoaevento")
-          .then((result) => {
-            console.log(result);
+          .then(() => {
+            res.status(200).json({
+              message: SUCCESS_UPDATED,
+            });
           })
           .catch((err) => {
-            console.log(err);
+            res.status(500).json({
+              message: ERROR_UPDATED + " - " + err.message,
+            });
           });
-
-        res.status(200).json({
-          message: "Pessoa alterada com sucesso",
-        });
       } else {
         res.status(404).json({
-          message: "Pessoa não encontrada",
+          message: NOT_FOUND,
         });
       }
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).json({
+        message: ERROR_FETCH + " -" + err.message,
+      });
     });
 });
 //#endregion
 
 //#region DELETE
-appRoutes.delete("/:id", async (req, res) => {
+appRoutes.delete("/:id", verifyJWT, async (req, res) => {
   let id = Number.parseInt(req.params.id);
   await db.knex
     .select("*")
@@ -205,28 +178,30 @@ appRoutes.delete("/:id", async (req, res) => {
     .where({ pessoaeventoid: id })
     .then(function (result) {
       if (result.length) {
-        knex
+        db.knex
           .where({ pessoaeventoid: id })
           .delete()
           .table("pessoaevento")
-          .then((result) => {
-            console.log(result);
+          .then(() => {
+            res.status(201).json({
+              message: SUCCESS_DELETED,
+            });
           })
           .catch((err) => {
-            console.log(err);
+            res.status(500).json({
+              message: ERROR_DELETED + " - " + err.message,
+            });
           });
-
-        res.status(200).json({
-          message: "Pessoa excluída com sucesso",
-        });
       } else {
         res.status(404).json({
-          message: "Pessoa não encontrada",
+          message: NOT_FOUND,
         });
       }
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).json({
+        message: ERROR_FETCH + " - " + err.message,
+      });
     });
 });
 //#endregion

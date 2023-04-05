@@ -1,36 +1,23 @@
 const express = require("express");
-const { knex } = require("../config/db");
 const db = require("../config/db");
 const appRoutes = express.Router();
-const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
-const { NOT_FOUND } = require("../includes/const");
+const {
+  NOT_FOUND,
+  SUCCESS_UPDATED,
+  SUCCESS_DELETED,
+  SUCCESS_CREATED,
+  ERROR_CREATED,
+  ERROR_FETCH,
+  ERROR_UPDATED,
+  ERROR_DELETED,
+} = require("../includes/Messages");
+const { verifyJWT } = require("./../includes/Uteis");
 
 appRoutes.use(bodyParser.json());
 
-//#region Methods
-function verifyJWT(req, res, next) {
-  var token = req.headers["x-access-token"];
-
-  if (!token) {
-    return res.status(401).send({ auth: false, message: "No token provided." });
-  }
-
-  jwt.verify(token, process.env.SECRET_KEY, function (err, decoded) {
-    if (err)
-      return res
-        .status(500)
-        .send({ auth: false, message: "Failed to authenticate token." });
-
-    // se tudo estiver ok, salva no request para uso posterior
-    req.userId = decoded.id;
-    next();
-  });
-}
-//#endregion
-
 //#region CREATE
-appRoutes.post("/", (req, res) => {
+appRoutes.post("/", verifyJWT, (req, res) => {
   const {
     tipodoacaoid,
     eventoid,
@@ -47,23 +34,25 @@ appRoutes.post("/", (req, res) => {
       quantidaderecebidas: quantidaderecebidas,
       quantidaderealizadas: quantidaderealizadas,
     })
-    .then((result) => {
-      let resultInsert = result[0];
-      res.status(200).json({ tipodoacaoeventoid: resultInsert });
+    .then(() => {
+      res.status(200).json({
+        message: SUCCESS_CREATED,
+      });
     })
     .catch((err) => {
       res.status(500).json({
-        message: "Erro ao cadastrar pessoa - " + err.message,
+        message: ERROR_CREATED + " - " + err.message,
       });
     });
 });
 //#endregion
 
 //#region READ
-appRoutes.get("/", async (req, res, next) => {
+appRoutes.get("/", verifyJWT, async (req, res, next) => {
   const { tipodoacaoid, eventoid } = req.query;
 
-  var query = knex("tipodoacaoevento")
+  var query = db
+    .knex("tipodoacaoevento")
     .select("*")
     .join("evento", "tipodoacaoevento.eventoid", "=", "evento.eventoid")
     .join(
@@ -86,14 +75,16 @@ appRoutes.get("/", async (req, res, next) => {
       }
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).json({
+        message: ERROR_FETCH + " - " + err.message,
+      });
     });
 });
 
 appRoutes.get("/filter", verifyJWT, async (req, res, next) => {
   const { nome } = req.query;
 
-  var query = knex("tipodoacaoevento").select("*");
+  var query = db.knex("tipodoacaoevento").select("*");
 
   if (nome != undefined) query.whereILike("nome", `%${nome}%`).orderBy("nome");
 
@@ -108,11 +99,13 @@ appRoutes.get("/filter", verifyJWT, async (req, res, next) => {
       }
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).json({
+        message: ERROR_FETCH + " - " + err.message,
+      });
     });
 });
 
-appRoutes.get("/:id", async (req, res, next) => {
+appRoutes.get("/:id", verifyJWT, async (req, res, next) => {
   let id = Number.parseInt(req.params.id);
   await db.knex
     .select("*")
@@ -122,18 +115,19 @@ appRoutes.get("/:id", async (req, res, next) => {
       if (result.length) {
         return res.status(201).json(result);
       } else {
-        return res.status(404).json({ message: "Pessoa não encontrada" });
+        return res.status(404).json({ message: NOT_FOUND });
       }
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).json({
+        message: ERROR_FETCH + " - " + err.message,
+      });
     });
 });
 //#endregion
 
 //#region UPDATE
-
-appRoutes.put("/:id", async (req, res) => {
+appRoutes.put("/:id", verifyJWT, async (req, res) => {
   const id = Number.parseInt(req.params.id);
   const {
     tipodoacaoid,
@@ -149,7 +143,7 @@ appRoutes.put("/:id", async (req, res) => {
     .where({ tipodoacaoeventoid: id })
     .then(function (result) {
       if (result.length) {
-        knex
+        db.knex
           .where({ tipodoacaoeventoid: id })
           .update({
             tipodoacaoid: tipodoacaoid,
@@ -159,16 +153,16 @@ appRoutes.put("/:id", async (req, res) => {
             quantidaderealizadas: quantidaderealizadas,
           })
           .table("tipodoacaoevento")
-          .then((result) => {
-            console.log(result);
+          .then(() => {
+            res.status(201).json({
+              message: SUCCESS_UPDATED,
+            });
           })
           .catch((err) => {
-            console.log(err);
+            res.status(500).json({
+              message: ERROR_UPDATED + " - " + err.message,
+            });
           });
-
-        res.status(200).json({
-          message: "Pessoa alterada com sucesso",
-        });
       } else {
         res.status(404).json({
           message: NOT_FOUND,
@@ -176,13 +170,15 @@ appRoutes.put("/:id", async (req, res) => {
       }
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).json({
+        message: ERROR_FETCH + " - " + err.message,
+      });
     });
 });
 //#endregion
 
 //#region DELETE
-appRoutes.delete("/:id", async (req, res) => {
+appRoutes.delete("/:id", verifyJWT, async (req, res) => {
   let id = Number.parseInt(req.params.id);
   await db.knex
     .select("*")
@@ -190,20 +186,20 @@ appRoutes.delete("/:id", async (req, res) => {
     .where({ tipodoacaoeventoid: id })
     .then(function (result) {
       if (result.length) {
-        knex
+        db.knex
           .where({ tipodoacaoeventoid: id })
           .delete()
           .table("tipodoacaoevento")
-          .then((result) => {
-            console.log(result);
+          .then(() => {
+            res.status(201).json({
+              message: SUCCESS_DELETED,
+            });
           })
           .catch((err) => {
-            console.log(err);
+            res.status(500).json({
+              message: ERROR_DELETED + " - " + err.message,
+            });
           });
-
-        res.status(200).json({
-          message: "Registro excluído com sucesso",
-        });
       } else {
         res.status(404).json({
           message: NOT_FOUND,
@@ -211,7 +207,9 @@ appRoutes.delete("/:id", async (req, res) => {
       }
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).json({
+        message: ERROR_FETCH + " - " + err.message,
+      });
     });
 });
 //#endregion
