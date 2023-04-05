@@ -51,7 +51,7 @@ const Pessoa = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
-  const [pessoaId, setId] = useState("");
+  const [id, setId] = useState("");
 
   const navigate = useNavigate();
 
@@ -68,17 +68,14 @@ const Pessoa = () => {
     return <SpinnerUtil />;
   }
 
+  async function handleNew() {
+    navigate("/pessoas/new");
+  }
   async function handleEdit(id) {
     navigate(`/pessoas/edit/${id}`);
   }
-
-  async function handleApagar(id) {
-    setId(id);
-    onOpen();
-  }
-  function handleDelete() {
-    const id = pessoaId;
-    api
+  async function handleDelete() {
+    await api
       .delete(`/pessoas/${id}`, {})
       .then(() => {
         navigate("/pessoas");
@@ -88,7 +85,6 @@ const Pessoa = () => {
         console.log(err);
       });
   }
-
   async function handleClick() {
     setLoading(true);
     setResults([]);
@@ -115,8 +111,9 @@ const Pessoa = () => {
     setResults(response.data);
     setLoading(false);
   }
-  async function handleNew() {
-    navigate("/pessoas/new");
+  async function handleOpenDialog(id) {
+    setId(id);
+    onOpen();
   }
 
   return (
@@ -203,7 +200,7 @@ const Pessoa = () => {
                       <DeleteIcon
                         color={"red.500"}
                         boxSize={5}
-                        onClick={(e) => handleApagar(result.pessoaid, e)}
+                        onClick={(e) => handleOpenDialog(result.pessoaid, e)}
                       />
                     </Button>
                   </Td>
@@ -229,11 +226,11 @@ const Pessoa = () => {
             Tem certeza que deseja apagar o registro selecionado?
           </AlertDialogBody>
           <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose}>
-              Cancelar
-            </Button>
             <Button colorScheme="red" ml={3} onClick={handleDelete}>
               Sim
+            </Button>
+            <Button ref={cancelRef} ml={3} onClick={onClose}>
+              Cancelar
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
