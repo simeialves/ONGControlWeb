@@ -35,13 +35,14 @@ import { STATUS_ATIVO } from "../../includes/const";
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api, getEventos } from "../../shared/services/api";
+import { api } from "../../shared/services/api";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 
 import Container from "react-bootstrap/Container";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import { getEventos } from "../../shared/services/Evento";
 
 const Evento = () => {
   const [results, setResults] = useState([]);

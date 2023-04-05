@@ -20,31 +20,3 @@ export const getCEP = async (cep) => {
 export const createSession = async (email, password) => {
   return api.post("/auth/loginAuth", { email, password });
 };
-
-export const getUsuarios = async () => {
-  return api.get("/usuarios");
-};
-
-export const getTipoDoacoes = async () => {
-  return api.get("/tipodoacoes");
-};
-
-export const getProjetos = async () => {
-  return api.get("/projetos");
-};
-
-export const getEventos = async () => {
-  return api.get("/eventos");
-};
-
-export const getEventosAtivos = async () => {
-  return api.post(`/eventos/ativo`);
-};
-
-export const getLocalEventos = async () => {
-  return await api.get("/localeventos");
-};
-
-export const newUser = async (nome, documento) => {
-  return api.post("/user/register", {});
-};

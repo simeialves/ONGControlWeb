@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api, getLocalEventos } from "../../shared/services/api";
+import { api } from "../../shared/services/api";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 
@@ -28,6 +28,7 @@ import { Box, HStack, Input, InputGroup } from "@chakra-ui/react";
 import Container from "react-bootstrap/Container";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import { getLocalEventos } from "../../shared/services/LocalEvento";
 
 const LocalEvento = () => {
   const [results, setResults] = useState([]);

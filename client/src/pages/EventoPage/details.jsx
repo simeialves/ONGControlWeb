@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { api, getLocalEventos, getProjetos } from "../../shared/services/api";
+import { api } from "../../shared/services/api";
 import { formatDateNoTime } from "../Uteis/Uteis";
 
 import {
@@ -27,6 +27,8 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { STATUS_ATIVO, STATUS_INATIVO } from "../../includes/const";
+import { getLocalEventos } from "../../shared/services/LocalEvento";
+import { getProjetos } from "../../shared/services/Projeto/Index";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 import Beneficiarios from "./Beneficiarios";

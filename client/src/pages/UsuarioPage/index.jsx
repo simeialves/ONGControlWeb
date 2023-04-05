@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { useNavigate } from "react-router-dom";
-import { api, getUsuarios } from "../../shared/services/api";
+import { api } from "../../shared/services/api";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 
@@ -12,6 +12,7 @@ import { Checkbox } from "@chakra-ui/react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "react-bootstrap";
 import { ADMINISTRADOR } from "../../includes/const";
+import { getUsuarios } from "../../shared/services/Usuarios/Index";
 
 const Usuario = () => {
   const [results, setResults] = useState([]);

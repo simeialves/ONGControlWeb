@@ -31,12 +31,13 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api, getTipoDoacoes } from "../../shared/services/api";
+import { api } from "../../shared/services/api";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 
 import Container from "react-bootstrap/Container";
 import { STATUS_ATIVO } from "../../includes/const";
+import { getTipoDoacoes } from "../../shared/services/TipoDoacao/Index";
 
 const TipoDoacao = () => {
   const [results, setResults] = useState([]);
