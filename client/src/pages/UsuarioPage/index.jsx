@@ -236,7 +236,7 @@ const Usuario = () => {
               {results.map((result) => (
                 <Tr>
                   <Td>
-                    <a href={`/pessoas/edit/${result.usuarioid}`}>
+                    <a href={`/usuarios/edit/${result.usuarioid}`}>
                       {result.nome}
                     </a>
                   </Td>
