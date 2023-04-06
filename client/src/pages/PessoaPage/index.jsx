@@ -7,6 +7,7 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
+  Link,
   useDisclosure,
 } from "@chakra-ui/react";
 
@@ -182,9 +183,9 @@ const Pessoa = () => {
               {results.map((result) => (
                 <Tr>
                   <Td>
-                    <a href={`/pessoas/edit/${result.pessoaid}`}>
+                    <Link href={`/pessoas/edit/${result.pessoaid}`}>
                       {result.nome}
-                    </a>
+                    </Link>
                   </Td>
                   <Td>{result.documento}</Td>
                   <Td>{result.telefone}</Td>

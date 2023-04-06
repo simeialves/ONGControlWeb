@@ -5,18 +5,27 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
+  Button,
+  useDisclosure,
 } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 
-export function AlertDialogExample() {
+export function AlertDialogExample(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
 
+  const [open, setOpen] = useState();
+
+  onOpen = useEffect(() => {
+    (async () => {
+      setOpen(true);
+    })();
+  }, []);
+
+  if (open) onOpen();
+
   return (
     <>
-      <Button colorScheme="red" onClick={onOpen}>
-        Delete Customer
-      </Button>
-
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
@@ -36,7 +45,7 @@ export function AlertDialogExample() {
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-              <Button colorScheme="red" onClick={onClose} ml={3}>
+              <Button colorScheme="red" onClick={props.event} ml={3}>
                 Delete
               </Button>
             </AlertDialogFooter>

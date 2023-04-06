@@ -1,6 +1,14 @@
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Button,
   InputRightElement,
+  Link,
   Table,
   TableCaption,
   TableContainer,
@@ -9,6 +17,7 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import {
@@ -37,6 +46,10 @@ const LocalEvento = () => {
   const [inputNome, setInputNome] = useState("");
   const [inputAtivo, setInputAtivo] = useState(1);
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = React.useRef();
+  const [id, setId] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,20 +65,10 @@ const LocalEvento = () => {
     return <SpinnerUtil />;
   }
 
-  async function handleEdit(id) {
-    navigate(`/localeventos/edit/${id}`);
+  async function handleNew() {
+    navigate("/localeventos/new");
   }
-  async function handleDelete(id) {
-    api
-      .delete(`/localeventos/${id}`, {})
-      .then(() => {
-        navigate("/localeventos");
-        window.location.reload(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+
   async function handleClick() {
     setLoading(true);
     setResults([]);
@@ -85,6 +88,23 @@ const LocalEvento = () => {
         setLoading(false);
       });
   }
+
+  async function handleEdit(id) {
+    navigate(`/localeventos/edit/${id}`);
+  }
+
+  async function handleDelete() {
+    api
+      .delete(`/localeventos/${id}`, {})
+      .then(() => {
+        navigate("/localeventos");
+        window.location.reload(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   async function handleClear() {
     setLoading(true);
     setInputNome("");
@@ -92,9 +112,12 @@ const LocalEvento = () => {
     setResults(response.data);
     setLoading(false);
   }
-  async function handleNew() {
-    navigate("/localeventos/new");
+
+  async function handleOpenDialog(id) {
+    setId(id);
+    onOpen();
   }
+
   return (
     <>
       <Headers />
@@ -161,9 +184,9 @@ const LocalEvento = () => {
               {results.map((result) => (
                 <Tr>
                   <Td>
-                    <a href={`/localeventos/edit/${result.localeventoid}`}>
+                    <Link href={`/localeventos/edit/${result.localeventoid}`}>
                       {result.nome}
-                    </a>
+                    </Link>
                   </Td>
                   <Td>
                     {result.logradouro}, {result.numero}
@@ -182,7 +205,9 @@ const LocalEvento = () => {
                       <DeleteIcon
                         color={"red.500"}
                         boxSize={5}
-                        onClick={(e) => handleDelete(result.localeventoid, e)}
+                        onClick={(e) =>
+                          handleOpenDialog(result.localeventoid, e)
+                        }
                       />
                     </Button>
                   </Td>
@@ -192,6 +217,31 @@ const LocalEvento = () => {
           </Table>
         </TableContainer>
       </Container>
+      <AlertDialog
+        motionPreset="slideInBottom"
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isOpen={isOpen}
+        isCentered
+      >
+        <AlertDialogOverlay />
+
+        <AlertDialogContent>
+          <AlertDialogHeader>Apagar registro?</AlertDialogHeader>
+          <AlertDialogCloseButton />
+          <AlertDialogBody>
+            Tem certeza que deseja apagar o registro selecionado?
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <Button colorScheme="red" ml={3} onClick={handleDelete}>
+              Sim
+            </Button>
+            <Button ref={cancelRef} ml={3} onClick={onClose}>
+              Cancelar
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };

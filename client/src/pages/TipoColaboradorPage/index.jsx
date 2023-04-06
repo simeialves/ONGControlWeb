@@ -1,6 +1,14 @@
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Button,
   Checkbox,
+  Link,
   Stack,
   Table,
   TableCaption,
@@ -10,6 +18,7 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import {
@@ -32,8 +41,8 @@ import {
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api } from "../../shared/services/api";
 import { getTipoColaboradores } from "../../shared/services/TipoColaborador";
+import { api } from "../../shared/services/api";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 
@@ -46,6 +55,10 @@ const TipoColaborador = () => {
   const [message, setMessage] = useState(false);
   const [inputDescricao, setInputDescricao] = useState("");
   const [inputAtivo, setInputAtivo] = useState(1);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = React.useRef();
+  const [id, setId] = useState("");
 
   const navigate = useNavigate();
 
@@ -60,12 +73,13 @@ const TipoColaborador = () => {
   if (loading) {
     return <SpinnerUtil />;
   }
-
+  async function handleNew() {
+    navigate(`/tipocolaboradores/new`);
+  }
   async function handleEdit(id) {
     navigate(`/tipocolaboradores/edit/${id}`);
   }
-
-  async function handleDelete(id) {
+  async function handleDelete() {
     api
       .delete(`/tipocolaboradores/${id}`, {})
       .then(() => {
@@ -76,7 +90,6 @@ const TipoColaborador = () => {
         console.log(err);
       });
   }
-
   async function handleClick() {
     setLoading(true);
     setResults([]);
@@ -101,7 +114,6 @@ const TipoColaborador = () => {
         setLoading(false);
       });
   }
-
   async function handleClear() {
     setLoading(true);
     setInputDescricao("");
@@ -109,10 +121,11 @@ const TipoColaborador = () => {
     setResults(response.data);
     setLoading(false);
   }
-
-  async function handleNew() {
-    navigate(`/tipocolaboradores/new`);
+  async function handleOpenDialog(id) {
+    setId(id);
+    onOpen();
   }
+
   return (
     <>
       <Headers />
@@ -189,11 +202,11 @@ const TipoColaborador = () => {
               {results.map((result) => (
                 <Tr>
                   <Td>
-                    <a
+                    <Link
                       href={`/tipocolaboradores/edit/${result.tipocolaboradorid}`}
                     >
                       {result.descricao}
-                    </a>
+                    </Link>
                   </Td>
                   <Td>
                     <Checkbox
@@ -214,7 +227,7 @@ const TipoColaborador = () => {
                         color={"red.500"}
                         boxSize={5}
                         onClick={(e) =>
-                          handleDelete(result.tipocolaboradorid, e)
+                          handleOpenDialog(result.tipocolaboradorid, e)
                         }
                       />
                     </Button>
@@ -225,6 +238,31 @@ const TipoColaborador = () => {
           </Table>
         </TableContainer>
       </Container>
+      <AlertDialog
+        motionPreset="slideInBottom"
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isOpen={isOpen}
+        isCentered
+      >
+        <AlertDialogOverlay />
+
+        <AlertDialogContent>
+          <AlertDialogHeader>Apagar registro?</AlertDialogHeader>
+          <AlertDialogCloseButton />
+          <AlertDialogBody>
+            Tem certeza que deseja apagar o registro selecionado?
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <Button colorScheme="red" ml={3} onClick={handleDelete}>
+              Sim
+            </Button>
+            <Button ref={cancelRef} ml={3} onClick={onClose}>
+              Cancelar
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };

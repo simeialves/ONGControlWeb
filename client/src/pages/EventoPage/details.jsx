@@ -78,6 +78,8 @@ const Evento = () => {
         setInputAtivo(response.data[0].ativo);
       })();
       setLoading(false);
+    } else {
+      setInputAtivo(STATUS_ATIVO);
     }
   }, [id]);
 

@@ -36,6 +36,8 @@ const New = () => {
         setInputAtivo(response.data[0].ativo);
       })();
       setLoading(false);
+    } else {
+      setInputAtivo(STATUS_ATIVO);
     }
   }, [id]);
 
@@ -114,7 +116,7 @@ const New = () => {
                   <FormLabel htmlFor="nome">Descrição</FormLabel>
                   <Input
                     id="nome"
-                    size={"xs"}
+                    size="xs"
                     borderRadius={5}
                     value={inputDescricao}
                     onChange={(event) => {
@@ -151,6 +153,7 @@ const New = () => {
                   Salvar
                 </Button>
                 <Button
+                  w={100}
                   p="5"
                   type="submit"
                   colorScheme="gray"

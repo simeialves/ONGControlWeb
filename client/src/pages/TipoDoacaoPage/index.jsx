@@ -1,6 +1,15 @@
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Button,
   Checkbox,
+  InputRightElement,
+  Link,
   Stack,
   Table,
   TableCaption,
@@ -10,6 +19,7 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import {
@@ -25,7 +35,6 @@ import {
   HStack,
   Input,
   InputGroup,
-  InputRightElement,
   Radio,
   RadioGroup,
 } from "@chakra-ui/react";
@@ -46,6 +55,10 @@ const TipoDoacao = () => {
   const [inputDescricao, setInputDescricao] = useState("");
   const [inputAtivo, setInputAtivo] = useState(1);
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = React.useRef();
+  const [id, setId] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,20 +74,8 @@ const TipoDoacao = () => {
     return <SpinnerUtil />;
   }
 
-  async function handleEdit(id) {
-    navigate(`/tipodoacoes/edit/${id}`);
-  }
-
-  async function handleDelete(id) {
-    api
-      .delete(`/tipodoacoes/${id}`, {})
-      .then(() => {
-        navigate("/tipodoacoes");
-        window.location.reload(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  async function handleNew() {
+    navigate(`/tipodoacoes/new`);
   }
 
   async function handleClick() {
@@ -99,6 +100,22 @@ const TipoDoacao = () => {
       });
   }
 
+  async function handleEdit(id) {
+    navigate(`/tipodoacoes/edit/${id}`);
+  }
+
+  async function handleDelete() {
+    api
+      .delete(`/tipodoacoes/${id}`, {})
+      .then(() => {
+        navigate("/tipodoacoes");
+        window.location.reload(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   async function handleClear() {
     setLoading(true);
     setInputDescricao("");
@@ -107,8 +124,9 @@ const TipoDoacao = () => {
     setLoading(false);
   }
 
-  async function handleNew() {
-    navigate(`/tipodoacoes/new`);
+  async function handleOpenDialog(id) {
+    setId(id);
+    onOpen();
   }
   return (
     <>
@@ -186,9 +204,9 @@ const TipoDoacao = () => {
               {results.map((result) => (
                 <Tr>
                   <Td>
-                    <a href={`/tipodoacoes/edit/${result.tipodoacaoid}`}>
+                    <Link href={`/tipodoacoes/edit/${result.tipodoacaoid}`}>
                       {result.descricao}
-                    </a>
+                    </Link>
                   </Td>
                   <Td>
                     <Checkbox
@@ -208,7 +226,9 @@ const TipoDoacao = () => {
                       <DeleteIcon
                         color={"red.500"}
                         boxSize={5}
-                        onClick={(e) => handleDelete(result.tipodoacaoid, e)}
+                        onClick={(e) =>
+                          handleOpenDialog(result.tipodoacaoid, e)
+                        }
                       />
                     </Button>
                   </Td>
@@ -218,6 +238,31 @@ const TipoDoacao = () => {
           </Table>
         </TableContainer>
       </Container>
+      <AlertDialog
+        motionPreset="slideInBottom"
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isOpen={isOpen}
+        isCentered
+      >
+        <AlertDialogOverlay />
+
+        <AlertDialogContent>
+          <AlertDialogHeader>Apagar registro?</AlertDialogHeader>
+          <AlertDialogCloseButton />
+          <AlertDialogBody>
+            Tem certeza que deseja apagar o registro selecionado?
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <Button colorScheme="red" ml={3} onClick={handleDelete}>
+              Sim
+            </Button>
+            <Button ref={cancelRef} ml={3} onClick={onClose}>
+              Cancelar
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };
