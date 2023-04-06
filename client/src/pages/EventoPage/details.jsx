@@ -214,15 +214,6 @@ const Evento = () => {
                     <HStack spacing={4}>
                       <Box w="40%">
                         <FormLabel htmlFor="projetoid">Projeto</FormLabel>
-                        {/* <Input
-                          id="projetoid"
-                          size="xs"
-                          borderRadius={5}
-                          value={inputProjetoId}
-                          onChange={(event) => {
-                            setInputProjetoId(event.target.value);
-                          }}
-                        /> */}
                         <Select
                           id="projetoid"
                           size={"xs"}
@@ -317,15 +308,6 @@ const Evento = () => {
                       </Box>
                       <Box w="20%">
                         <FormLabel htmlFor="nivel">Nível</FormLabel>
-                        {/* <Input
-                          id="nivel"
-                          size="xs"
-                          borderRadius={5}
-                          value={inputNivel}
-                          onChange={(event) => {
-                            setInputNivel(event.target.value);
-                          }}
-                        /> */}
                         <NumberInput
                           id="nivel"
                           size={"xs"}

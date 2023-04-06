@@ -15,11 +15,11 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { api } from "../../../../shared/services/api";
 import { getPessoas } from "../../../../shared/services/Pessoas";
 import { getTipoDoacaoEventos } from "../../../../shared/services/TipoDoacaoEvento";
+import { api } from "../../../../shared/services/api";
 
-function DoacoesNecessariasPage(props) {
+function DoacoesRecebidasPage(props) {
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -209,4 +209,4 @@ function DoacoesNecessariasPage(props) {
   );
 }
 
-export default DoacoesNecessariasPage;
+export default DoacoesRecebidasPage;

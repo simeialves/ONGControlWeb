@@ -40,11 +40,11 @@ function DoacoesNecessariasPage(props) {
       setLoading(true);
       handleTipoDoacoes();
 
-      const response = await api.get(`/parametros/`);
+      // const response = await api.get(`/parametros/`);
 
-      setTipoDoacaoid(response.data[0].tipodoacaoid);
-      setEventoid(response.data[0].eventoid);
-      setQuantidade(response.data[0].quantidade);
+      // setTipoDoacaoid(response.data[0].tipodoacaoid);
+      // setEventoid(response.data[0].eventoid);
+      // setQuantidade(response.data[0].quantidade);
 
       setLoading(false);
     })();
@@ -77,6 +77,8 @@ function DoacoesNecessariasPage(props) {
           tipodoacaoid: inputTipodoacaoid,
           eventoid: Eventoid,
           quantidade: inputQuantidade,
+          quantidaderecebidas: 0,
+          quantidaderealizadas: 0,
         })
         .then(() => {})
         .catch((err) => {
@@ -115,15 +117,6 @@ function DoacoesNecessariasPage(props) {
           </Box>
           <Box w="20%">
             <FormLabel htmlFor="nivel">Qtd</FormLabel>
-            {/* <Input
-                          id="nivel"
-                          size="xs"
-                          borderRadius={5}
-                          value={inputNivel}
-                          onChange={(event) => {
-                            setInputNivel(event.target.value);
-                          }}
-                        /> */}
             <NumberInput
               id="nivel"
               size={"xs"}
