@@ -129,7 +129,6 @@ appRoutes.put("/:id", verifyJWT, async (req, res) => {
 //#region DELETE
 appRoutes.delete("/:id", verifyJWT, async (req, res) => {
   let id = Number.parseInt(req.params.id);
-  console.log(id);
   await db.knex
     .select("*")
     .from("tipocolaboradorevento")

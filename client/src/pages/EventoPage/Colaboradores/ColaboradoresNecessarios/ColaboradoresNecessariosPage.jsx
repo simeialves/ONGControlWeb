@@ -1,9 +1,8 @@
 import {
   Box,
   Button,
-  Heading,
   HStack,
-  Link,
+  Heading,
   Table,
   TableCaption,
   TableContainer,
@@ -17,15 +16,15 @@ import {
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SpinnerUtil } from "../../../../pages/Uteis/progress";
+import { getTipoColaboradorEventos } from "../../../../shared/services/TipoColaboradorEvento";
 import { api } from "../../../../shared/services/api";
+import SpinnerUtil from "../../../Uteis/progress";
 
-import Container from "react-bootstrap/esm/Container";
+import Container from "react-bootstrap/Container";
 
-import { getTipoDoacaoEventos } from "../../../../shared/services/TipoDoacaoEvento";
-import { ModalDoacaoNecessaria } from "./ModalDoacaoNecessaria";
+import { ModalColaboradorNecessario } from "./ModalColaboradorNecessario";
 
-export default function DoacoesNecessarias({ eventoid }) {
+export default function ColaboradoresNecessariosPage({ eventoid }) {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -33,8 +32,9 @@ export default function DoacoesNecessarias({ eventoid }) {
 
   useEffect(() => {
     (async () => {
-      const response = await getTipoDoacaoEventos(eventoid);
+      const response = await getTipoColaboradorEventos(eventoid);
       setResults(response.data);
+
       setLoading(false);
     })();
   }, [eventoid]);
@@ -44,12 +44,11 @@ export default function DoacoesNecessarias({ eventoid }) {
   }
 
   async function handleEdit(id) {
-    navigate(`/pessoas/edit/${id}`);
+    navigate(`/tipocolaboradoreventos/edit/${id}`);
   }
-
   async function handleDelete(id) {
     api
-      .delete(`/tipodoacaoeventos/${id}`, {})
+      .delete(`/tipocolaboradoreventos/${id}`, {})
       .then(() => {
         window.location.reload(true);
       })
@@ -69,11 +68,10 @@ export default function DoacoesNecessarias({ eventoid }) {
                 md: "md",
               }}
             >
-              Doações Necessárias
+              Colaboradores Necessários
             </Heading>
           </HStack>
         </Box>
-
         <HStack spacing="4" justify={"right"}>
           <Button
             variant="outline"
@@ -83,7 +81,7 @@ export default function DoacoesNecessarias({ eventoid }) {
             marginTop={2}
             marginBottom={2}
           >
-            <ModalDoacaoNecessaria eventoid={eventoid} />
+            <ModalColaboradorNecessario eventoid={eventoid} />
           </Button>
         </HStack>
         <TableContainer>
@@ -93,32 +91,25 @@ export default function DoacoesNecessarias({ eventoid }) {
               <Tr>
                 <Th>Descrição</Th>
                 <Th>Qtd. Necessárias</Th>
-                <Th>Qtd. Doações Recebidas</Th>
-                <Th>Qtd. Doações Realizadas</Th>
-                <Th>Saldo</Th>
+                <Th>Qtd. Inscritos</Th>
                 <Th>Ação</Th>
               </Tr>
             </Thead>
             <Tbody>
               {results.map((result) => (
                 <Tr>
-                  <Td>
-                    <Link href={`/pessoas/edit/${result.pessoaid}`}>
-                      {result.descricao}
-                    </Link>
-                  </Td>
+                  <Td>{result.descricao}</Td>
                   <Td>{result.quantidade}</Td>
-                  <Td>{result.quantidaderecebidas}</Td>
-                  <Td>{result.quantidaderealizadas}</Td>
-                  <Td>
-                    {result.quantidaderecebidas - result.quantidaderealizadas}
-                  </Td>
+                  <Td>{result.quantidadeinscritos}</Td>
+
                   <Td>
                     <Button size={"xs"} bg={"write"}>
                       <EditIcon
                         color={"blue.800"}
                         boxSize={5}
-                        onClick={(e) => handleEdit(result.pessoaeventoid, e)}
+                        onClick={(e) =>
+                          handleEdit(result.tipocolaboradoreventoid, e)
+                        }
                       />
                     </Button>
                     <Button size={"xs"} bg={"write"}>
@@ -126,7 +117,7 @@ export default function DoacoesNecessarias({ eventoid }) {
                         color={"red.500"}
                         boxSize={5}
                         onClick={(e) =>
-                          handleDelete(result.tipodoacaoeventoid, e)
+                          handleDelete(result.tipocolaboradoreventoid, e)
                         }
                       />
                     </Button>

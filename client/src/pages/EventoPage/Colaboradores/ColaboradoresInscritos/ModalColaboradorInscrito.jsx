@@ -18,7 +18,7 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { AddIcon } from "@chakra-ui/icons";
-import DoacoesNecessariasPage from ".";
+import ColaboradoresInscritosPage from ".";
 
 export const ModalColaboradorInscrito = (eventoid) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -48,7 +48,7 @@ export const ModalColaboradorInscrito = (eventoid) => {
           <ModalHeader>Inscrição de Colaboradores</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <DoacoesNecessariasPage
+            <ColaboradoresInscritosPage
               eventoid={eventoid}
               handleCloseModal={handleCloseModal}
             />
