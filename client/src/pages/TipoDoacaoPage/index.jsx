@@ -46,14 +46,14 @@ import SpinnerUtil from "../Uteis/progress";
 
 import Container from "react-bootstrap/Container";
 import { STATUS_ATIVO } from "../../includes/const";
-import { getTipoDoacoes } from "../../shared/services/TipoDoacao/Index";
+import { getTipoDoacoes } from "../../shared/services/TipoDoacao";
 
 const TipoDoacao = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(false);
   const [inputDescricao, setInputDescricao] = useState("");
-  const [inputAtivo, setInputAtivo] = useState(1);
+  const [inputAtivo, setInputAtivo] = useState(STATUS_ATIVO);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
@@ -63,7 +63,7 @@ const TipoDoacao = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await getTipoDoacoes();
+      const response = await getTipoDoacoes(STATUS_ATIVO);
       setResults(response.data);
       setLoading(false);
       setInputAtivo(1);

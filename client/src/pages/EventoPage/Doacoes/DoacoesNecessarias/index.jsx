@@ -14,7 +14,9 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getTipoDoacoes } from "../../../../shared/services/TipoDoacao/Index";
+import { STATUS_ATIVO } from "../../../../includes/const";
+import { getTipoDoacoes } from "../../../../shared/services/TipoDoacao";
+import { getTipoDoacaoEventos } from "../../../../shared/services/TipoDoacaoEvento";
 import { api } from "../../../../shared/services/api";
 
 function DoacoesNecessariasPage(props) {
@@ -26,8 +28,6 @@ function DoacoesNecessariasPage(props) {
   const [inputTipodoacaoid, setTipoDoacaoid] = useState("");
   const [inputEventoid, setEventoid] = useState(props.eventoid.eventoid);
   const [inputQuantidade, setQuantidade] = useState("");
-  // const [inputQuantidadeRecebidas, setQuantidadeRecebidas] = useState("");
-  // const [inputQuantidadeRealizadas, setQuantidadeRealizadas] = useState("");
 
   const [resultTipoDoacoes, setTipoDoacoes] = useState([]);
 
@@ -39,19 +39,13 @@ function DoacoesNecessariasPage(props) {
     (async () => {
       setLoading(true);
       handleTipoDoacoes();
-
-      // const response = await api.get(`/parametros/`);
-
-      // setTipoDoacaoid(response.data[0].tipodoacaoid);
-      // setEventoid(response.data[0].eventoid);
-      // setQuantidade(response.data[0].quantidade);
-
       setLoading(false);
     })();
   }, [Eventoid]);
 
   async function handleTipoDoacoes() {
-    const response = await getTipoDoacoes();
+    const tipoDoacoes = await getTipoDoacaoEventos(Eventoid);
+    const response = await getTipoDoacoes(STATUS_ATIVO);
     setTipoDoacoes(response.data);
   }
 

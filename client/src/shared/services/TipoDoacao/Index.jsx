@@ -1,5 +1,5 @@
 import { api } from "../api";
 
-export const getTipoDoacoes = async () => {
-  return api.get("/tipodoacoes");
+export const getTipoDoacoes = async (ativo) => {
+  return api.get(`/tipodoacoes/?ativo=${ativo}`);
 };

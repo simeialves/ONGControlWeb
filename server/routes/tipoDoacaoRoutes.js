@@ -38,10 +38,13 @@ appRoutes.post("/", verifyJWT, (req, res) => {
 
 //#region READ
 appRoutes.get("/", verifyJWT, async (req, res, next) => {
-  await db.knex
-    .select("*")
-    .from("tipodoacao")
-    .orderBy("descricao")
+  const { ativo } = req.query;
+
+  var query = db.knex("tipodoacao").select("*").orderBy("descricao");
+
+  if (ativo != undefined) query.where("ativo", ativo);
+
+  query
     .then(function (results) {
       if (results.length) {
         return res.status(201).json(results);
