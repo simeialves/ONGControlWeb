@@ -29,7 +29,8 @@
     "parser": "^0.1.4",
     "pm2": "^5.2.2",
     "react-bootstrap": "^2.6.0",
-    "react-router-dom": "^6.4.4"
+    "react-router-dom": "^6.4.4",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "eslint": "^8.35.0",

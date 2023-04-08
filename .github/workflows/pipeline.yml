@@ -11,6 +11,6 @@ jobs:
         with:
           node-version: "14.x"
       - run: cd server
-      - run: npm install
+      - run: yarn
       - run: echo "Configuração inicial do pipeline"
-      - run: npm run test
+      - run: yarn jest
