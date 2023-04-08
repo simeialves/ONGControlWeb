@@ -11,4 +11,4 @@ jobs:
         with:
           node-version: "14.x"
       - run: npm install
-      - run: npx jest --watchAll
+      - run: npm run test
