@@ -16,6 +16,10 @@ const { verifyJWT } = require("./../includes/Uteis");
 
 appRoutes.use(bodyParser.json());
 
+/*
+TESTE
+*/
+
 //#region CREATE
 appRoutes.post("/", verifyJWT, (req, res) => {
   const { tipodoacaoeventoid, pessoaid, datadoacao, quantidade } = req.body;
