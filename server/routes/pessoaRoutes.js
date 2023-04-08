@@ -67,7 +67,7 @@ appRoutes.post("/", verifyJWT, (req, res) => {
 //#endregion
 
 //#region READ
-appRoutes.get("/", verifyJWT, async (req, res, next) => {
+appRoutes.get("/", async (req, res, next) => {
   await db.knex
     .select("*")
     .from("pessoa")
