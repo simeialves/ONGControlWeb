@@ -6,5 +6,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: executa comando
+      - uses: actions/checkout@v2
+      - name: executa testes
       - run: npm install
