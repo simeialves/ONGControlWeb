@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const morgan = require("morgan");
+
 const loginRoutes = require("./routes/loginRoutes");
 const usuarioRoutes = require("./routes/usuarioRoutes");
 
@@ -21,8 +23,14 @@ const projetoRoutes = require("./routes/projetoRoutes");
 const app = express();
 require("dotenv").config();
 
+app.use(morgan("common"));
+
+const corsOptions = {
+  origin: "*",
+  exposedHeaders: "X-Total-Count",
+};
+app.use(cors(corsOptions));
 app.use(express.json());
-app.use(cors());
 
 app.get("/", (req, res) => {
   return res.status(200).json("Página Inicial");
@@ -56,3 +64,5 @@ app.listen(port, function () {
   console.log(`Servidor rodando na porta ${port}`);
 });
 //#endregion
+
+module.exports = app;

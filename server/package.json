@@ -25,6 +25,7 @@
     "framer-motion": "^7.6.18",
     "jsonwebtoken": "^8.5.1",
     "knex": "^2.3.0",
+    "morgan": "^1.10.0",
     "mysql2": "^2.3.3",
     "parser": "^0.1.4",
     "pm2": "^5.2.2",
