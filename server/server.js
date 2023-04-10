@@ -5,14 +5,15 @@ const morgan = require("morgan");
 const loginRoutes = require("./routes/loginRoutes");
 const usuarioRoutes = require("./routes/usuarioRoutes");
 
-const pessoasRoutes = require("./routes/pessoaRoutes");
-const pessoasEventoRoutes = require("./routes/pessoaEventoRoutes");
+const pessoaRoutes = require("./routes/pessoaRoutes");
+const pessoaEventoRoutes = require("./routes/pessoaEventoRoutes");
 
 const tipoDoacaoRoutes = require("./routes/tipoDoacaoRoutes");
 const tipoDoacaoEventoRoutes = require("./routes/tipoDoacaoEventoRoutes");
 
-const tipoColaboradorRoutes = require("./routes/tipoColaboradoresRoutes");
+const tipoColaboradorRoutes = require("./routes/tipoColaboradorRoutes");
 const tipoColaboradorEventoRoutes = require("./routes/tipoColaboradorEventoRoutes");
+
 const eventoRoutes = require("./routes/eventoRoutes");
 
 const doacaoEventoRoutes = require("./routes/doacaoEventoRoutes");
@@ -40,8 +41,8 @@ app.get("/", (req, res) => {
 app.use("/auth", loginRoutes);
 app.use("/usuarios", usuarioRoutes);
 
-app.use("/pessoas", pessoasRoutes);
-app.use("/pessoaseventos", pessoasEventoRoutes);
+app.use("/pessoas", pessoaRoutes);
+app.use("/pessoaseventos", pessoaEventoRoutes);
 
 app.use("/tipodoacoes", tipoDoacaoRoutes);
 app.use("/tipodoacaoeventos", tipoDoacaoEventoRoutes);

@@ -1,226 +1,27 @@
 const express = require("express");
-const db = require("../config/db");
 const appRoutes = express.Router();
 const bodyParser = require("body-parser");
-const {
-  NOT_FOUND,
-  SUCCESS_UPDATED,
-  SUCCESS_DELETED,
-  SUCCESS_CREATED,
-  ERROR_CREATED,
-  ERROR_FETCH,
-  ERROR_UPDATED,
-  ERROR_DELETED,
-} = require("../includes/Messages");
 const { verifyJWT } = require("./../includes/Uteis");
+const LocalEventoController = require("../Controllers/LocalEventoController");
 
 appRoutes.use(bodyParser.json());
 
 //#region CREATE
-appRoutes.post("/", verifyJWT, (req, res) => {
-  const {
-    nome,
-    cep,
-    logradouro,
-    numero,
-    complemento,
-    bairro,
-    cidade,
-    uf,
-    pais,
-    link,
-  } = req.body;
-
-  db.knex("localevento")
-    .insert({
-      nome: nome,
-      cep: cep,
-      logradouro: logradouro,
-      numero: numero,
-      complemento: complemento,
-      bairro: bairro,
-      cidade: cidade,
-      uf: uf,
-      pais: pais,
-      link: link,
-    })
-    .then((result) => {
-      let resultInsert = result[0];
-      res.status(200).json({ message: SUCCESS_CREATED });
-    })
-    .catch((err) => {
-      res.status(500).json({
-        message: ERROR_CREATED + " - " + err.message,
-      });
-    });
-});
+appRoutes.post("/", verifyJWT, LocalEventoController.create);
 //#endregion
 
 //#region READ
-appRoutes.get("/", verifyJWT, async (req, res, next) => {
-  await db.knex
-    .select("*")
-    .from("localevento")
-    .orderBy("nome")
-    .then(function (results) {
-      if (results.length) {
-        return res.status(201).json(results);
-      } else {
-        res.status(404).json({
-          message: NOT_FOUND,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({
-        message: ERROR_FETCH + " - " + err.message,
-      });
-    });
-});
-
-appRoutes.get("/filter", verifyJWT, async (req, res, next) => {
-  const { nome } = req.query;
-
-  var query = db.knex("localevento").select("*").orderBy("nome");
-
-  if (nome != undefined) query.whereILike("nome", `%${nome}%`);
-
-  query
-    .then(function (results) {
-      if (results.length) {
-        return res.status(201).json(results);
-      } else {
-        res.status(404).json({
-          message: NOT_FOUND,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({
-        message: ERROR_FETCH + " - " + err.message,
-      });
-    });
-});
-
-appRoutes.get("/:id", verifyJWT, async (req, res, next) => {
-  let id = Number.parseInt(req.params.id);
-  await db.knex
-    .select("*")
-    .from("localevento")
-    .where({ localeventoid: id })
-    .then(function (result) {
-      if (result.length) {
-        return res.status(201).json(result);
-      } else {
-        res.status(404).json({
-          message: NOT_FOUND,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({
-        message: ERROR_FETCH + " - " + err.message,
-      });
-    });
-});
+appRoutes.get("/", verifyJWT, LocalEventoController.getAll);
+appRoutes.get("/:id", verifyJWT, LocalEventoController.getById);
+appRoutes.get("/filter", verifyJWT, LocalEventoController.getByFilter);
 //#endregion
 
 //#region UPDATE
-appRoutes.put("/:id", verifyJWT, async (req, res) => {
-  const id = Number.parseInt(req.params.id);
-  const {
-    nome,
-    cep,
-    logradouro,
-    numero,
-    complemento,
-    bairro,
-    cidade,
-    uf,
-    pais,
-    link,
-  } = req.body;
-
-  await db.knex
-    .select("*")
-    .from("localevento")
-    .where({ localeventoid: id })
-    .then(function (result) {
-      if (result.length) {
-        db.knex
-          .where({ localeventoid: id })
-          .update({
-            nome: nome,
-            cep: cep,
-            logradouro: logradouro,
-            numero: numero,
-            complemento: complemento,
-            bairro: bairro,
-            cidade: cidade,
-            uf: uf,
-            pais: pais,
-            link: link,
-          })
-          .table("localevento")
-          .then(() => {
-            res.status(200).json({
-              message: SUCCESS_UPDATED,
-            });
-          })
-          .catch((err) => {
-            res.status(500).json({
-              message: ERROR_UPDATED + " - " + err.message,
-            });
-          });
-      } else {
-        res.status(404).json({
-          message: NOT_FOUND,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({
-        message: ERROR_FETCH + " - " + err.message,
-      });
-    });
-});
+appRoutes.put("/:id", verifyJWT, LocalEventoController.update);
 //#endregion
 
 //#region DELETE
-appRoutes.delete("/:id", verifyJWT, async (req, res) => {
-  let id = Number.parseInt(req.params.id);
-  await db.knex
-    .select("*")
-    .from("localevento")
-    .where({ localeventoid: id })
-    .then(function (result) {
-      if (result.length) {
-        db.knex
-          .where({ localeventoid: id })
-          .delete()
-          .table("localevento")
-          .then(() => {
-            res.status(200).json({
-              message: SUCCESS_DELETED,
-            });
-          })
-          .catch((err) => {
-            res.status(500).json({
-              message: ERROR_DELETED + " - " + err.message,
-            });
-          });
-      } else {
-        res.status(404).json({
-          message: NOT_FOUND,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({
-        message: ERROR_FETCH + " - " + err.message,
-      });
-    });
-});
+appRoutes.delete("/:id", verifyJWT, LocalEventoController.delete);
 //#endregion
 
 module.exports = appRoutes;
