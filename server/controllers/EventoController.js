@@ -55,7 +55,7 @@ class EventoController {
       .orderBy("descricao")
       .then(function (results) {
         if (results.length) {
-          res.status(200).json(results);
+          res.status(201).json(results);
         } else {
           res.status(404).json({
             message: NOT_FOUND,
