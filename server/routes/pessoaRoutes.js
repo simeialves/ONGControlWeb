@@ -80,9 +80,9 @@ appRoutes.get("/", async (req, res, next) => {
     .orderBy("nome")
     .then(function (results) {
       if (results.length) {
-        return res.status(201).json(results);
+        res.status(201).json(results);
       } else {
-        return res.status(404).json({ message: NOT_FOUND });
+        res.status(404).json({ message: NOT_FOUND });
       }
     })
     .catch((err) => {
