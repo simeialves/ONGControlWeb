@@ -102,7 +102,7 @@ appRoutes.get("/filter", verifyJWT, async (req, res, next) => {
   query
     .then(function (results) {
       if (results.length) {
-        return res.status(201).json(results);
+        res.status(201).json(results);
       } else {
         res.status(404).json({
           message: NOT_FOUND,
@@ -124,9 +124,9 @@ appRoutes.get("/:id", verifyJWT, async (req, res, next) => {
     .where({ pessoaid: id })
     .then(function (result) {
       if (result.length) {
-        return res.status(201).json(result);
+        res.status(201).json(result);
       } else {
-        return res.status(404).json({ message: NOT_FOUND });
+        res.status(404).json({ message: NOT_FOUND });
       }
     })
     .catch((err) => {
