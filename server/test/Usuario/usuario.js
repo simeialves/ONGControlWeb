@@ -6,6 +6,6 @@ describe("Testando conexão com o banco de dados", () => {
 
   test("Verificando usuarios banco de dados", async () => {
     const result = await global.connection.execute("select * from usuario");
-    expect(result[0].length).toBe(3);
+    expect(result[0].length).toBe(4);
   });
 });
