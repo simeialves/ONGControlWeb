@@ -192,6 +192,7 @@ const Pessoa = () => {
                   <Td>
                     <Button size={"xs"} bg={"write"}>
                       <EditIcon
+                        name="btnEditar"
                         color={"blue.800"}
                         boxSize={5}
                         onClick={(e) => handleEdit(result.pessoaid, e)}
