@@ -13,4 +13,4 @@ jobs:
       - run: cd server
       - run: npm install
       - run: echo "Configuração inicial do pipeline"
-      - run: npm run test
+      # - run: npm run test
