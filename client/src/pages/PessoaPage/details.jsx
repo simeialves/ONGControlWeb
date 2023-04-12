@@ -356,6 +356,7 @@ const New = () => {
 
               <HStack spacing="4" justify={"right"}>
                 <Button
+                  id="btnSalvar"
                   w={240}
                   p="6"
                   type="submit"

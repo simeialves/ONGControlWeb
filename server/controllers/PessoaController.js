@@ -71,7 +71,7 @@ class PessoaController {
         if (results.length) {
           res.status(201).json(results);
         } else {
-          res.status(404).json({ message: NOT_FOUND });
+          res.status(200).json({ message: NOT_FOUND });
         }
       })
       .catch((err) => {
@@ -207,6 +207,38 @@ class PessoaController {
         if (result.length) {
           db.knex
             .where({ pessoaid: id })
+            .delete()
+            .table("pessoa")
+            .then(() => {
+              res.status(201).json({
+                message: SUCCESS_DELETED,
+              });
+            })
+            .catch((err) => {
+              res.status(500).json({
+                message: ERROR_DELETED + " - " + err.message,
+              });
+            });
+        } else {
+          res.status(404).json({
+            message: NOT_FOUND,
+          });
+        }
+      })
+      .catch((err) => {
+        res.status(500).json({
+          message: ERROR_FETCH + " - " + err.message,
+        });
+      });
+  };
+
+  static deleteAll = async (req, res) => {
+    await db.knex
+      .select("*")
+      .from("pessoa")
+      .then(function (result) {
+        if (result.length) {
+          db.knex
             .delete()
             .table("pessoa")
             .then(() => {

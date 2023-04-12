@@ -2,8 +2,8 @@ import { Button } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import Navbar from "react-bootstrap/Navbar";
 import { FcSettings } from "react-icons/fc";
 import { IoPeopleSharp } from "react-icons/io5";
 import { RiCalendarEventFill } from "react-icons/ri";
@@ -53,8 +53,10 @@ const Headers = () => {
 
               <div className="box">
                 <IoPeopleSharp size={"24px"} />
-                <NavDropdown title="Cadastros" id="basic-nav-dropdown">
-                  <NavDropdown.Item href="/pessoas">Pessoas</NavDropdown.Item>
+                <NavDropdown title="Cadastros" id="dropdown-cadastros">
+                  <NavDropdown.Item href="/pessoas" id="dropdown-pessoas">
+                    Pessoas
+                  </NavDropdown.Item>
                   <NavDropdown.Item href="/tipodoacoes">
                     Tipo de Doações
                   </NavDropdown.Item>

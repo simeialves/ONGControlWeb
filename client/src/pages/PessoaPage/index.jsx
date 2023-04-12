@@ -45,7 +45,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const Pessoa = () => {
   const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(false);
   const [inputNome, setInputNome] = useState("");
   const [inputAtivo, setInputAtivo] = useState(1);
@@ -60,8 +60,6 @@ const Pessoa = () => {
     (async () => {
       const response = await getPessoas();
       setResults(response.data);
-      setLoading(false);
-      setMessage(false);
     })();
   }, []);
 
@@ -125,6 +123,7 @@ const Pessoa = () => {
       <Container fluid="md">
         <HStack spacing="4" justify={"right"}>
           <Button
+            id="btnNovo"
             variant="outline"
             colorScheme="gray"
             gap={2}
@@ -198,7 +197,7 @@ const Pessoa = () => {
                         onClick={(e) => handleEdit(result.pessoaid, e)}
                       />
                     </Button>
-                    <Button size={"xs"} bg={"write"}>
+                    <Button size={"xs"} bg={"write"} name="btnDelete">
                       <DeleteIcon
                         color={"red.500"}
                         boxSize={5}

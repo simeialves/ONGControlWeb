@@ -28,6 +28,7 @@ appRoutes.put("/:id", verifyJWT, PessoaController.update);
 //#endregion
 
 //#region DELETE
+// appRoutes.delete("/deleteall", PessoaController.deleteAll);
 appRoutes.delete("/:id", verifyJWT, PessoaController.delete);
 //#endregion
 

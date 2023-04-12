@@ -1,26 +1,34 @@
-describe("User CRUD Operations", () => {
-  before(() => {
+describe("Pessoas", () => {
+  beforeEach(() => {
+    //cy.task("db:reset");
     cy.visit("http://localhost:3006");
+    cy.get("#nome").type("simeiparreiras@gmail.com");
+    cy.get("#senha").type("447");
+    cy.get(".css-1huxgrb > .chakra-button").click();
   });
-  describe("Logar no Sistema", () => {
-    it("Validar se o sistema está autenticando corretamente", () => {
-      cy.get("#nome").type("simeiparreiras@gmail.com");
-      cy.get("#senha").type("447");
-      cy.get(".css-1huxgrb > .chakra-button").click();
-      cy.get(":nth-child(2) > .nav-item > #basic-nav-dropdown").click();
-      cy.get('[href="/pessoas"]').click();
-      cy.get(".css-mfdy5q > .chakra-button").click();
+  // before(() => {
+  //   cy.visit("http://localhost:3006");
+  //   cy.get("#nome").type("simeiparreiras@gmail.com");
+  //   cy.get("#senha").type("447");
+  //   cy.get(".css-1huxgrb > .chakra-button").click();
+  // });
+  describe("Criar uma pessoa", () => {
+    it("Criar uma pessoa", () => {
+      cy.get("#dropdown-cadastros").click();
+      cy.get("#dropdown-pessoas").click();
+      cy.get("#btnNovo").click();
       cy.get("#nome").type("AASIMEI ALVES PARREIRAS");
-      cy.get(".css-vjyt8w").click();
-      cy.contains("AASIMEI ALVES PARREIRAS");
+      cy.get("#btnSalvar").click();
+    });
+
+    it("Apagar uma pessoa", () => {
+      cy.get("#dropdown-cadastros").click();
+      cy.get("#dropdown-pessoas").click();
+      cy.get(':nth-child(1) > :nth-child(4) > [name="btnDelete"]').click();
+      cy.get(".css-18zw69y").click();
     });
   });
-  describe("Editar uma pessoa", () => {
-    it("Editar uma pessoa", () => {
-      cy.get(":nth-child(1) > :nth-child(4) > :nth-child(1)").click();
-      cy.get("#nome").clear().type("AASIMEI ALVES PARREIRAS");
-    });
-  });
+  describe("Apagar uma pessoa", () => {});
   //   describe("Criar um novo usuário", () => {
   //     it("Validar a criação de um novo usuário no banco de dados (este cenário deve considerar o preenchimento do formulário de cadastro e depois clicar no botão 'Save')", () => {
   //       cy.get(".RaCreateButton-root").click();
