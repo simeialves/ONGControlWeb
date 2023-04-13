@@ -23,6 +23,6 @@ steps:
 - uses: actions/download-artifact@v2
 with:
 name: deploy
-path: README.md
+# path: README.md
 - run: aws s3 cp README.md s3://devops-sap --recursive --acl
 public-read
