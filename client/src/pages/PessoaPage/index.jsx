@@ -9,6 +9,7 @@ import {
   Button,
   Link,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 
 import {
@@ -49,6 +50,7 @@ const Pessoa = () => {
   const [message, setMessage] = useState(false);
   const [inputNome, setInputNome] = useState("");
   const [inputAtivo, setInputAtivo] = useState(1);
+  const [data, setData] = useState([]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
@@ -56,11 +58,15 @@ const Pessoa = () => {
 
   const navigate = useNavigate();
 
+  const toast = useToast();
+
+  async function fetchData() {
+    const response = await getPessoas();
+    setResults(response.data);
+  }
+
   useEffect(() => {
-    (async () => {
-      const response = await getPessoas();
-      setResults(response.data);
-    })();
+    fetchData();
   }, []);
 
   if (loading) {
@@ -77,8 +83,14 @@ const Pessoa = () => {
     await api
       .delete(`/pessoas/${id}`, {})
       .then(() => {
-        navigate("/pessoas");
-        window.location.reload(false);
+        toast({
+          title: "Pessoa excluída com sucesso",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        fetchData();
+        onClose();
       })
       .catch((err) => {
         console.log(err);
@@ -180,7 +192,7 @@ const Pessoa = () => {
             </Thead>
             <Tbody>
               {results.map((result) => (
-                <Tr>
+                <Tr key={result.pessoaid}>
                   <Td>
                     <Link href={`/pessoas/edit/${result.pessoaid}`}>
                       {result.nome}

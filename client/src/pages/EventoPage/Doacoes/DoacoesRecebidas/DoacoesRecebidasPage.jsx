@@ -1,138 +1,195 @@
 import {
   Box,
   Button,
-  Heading,
+  FormControl,
+  FormLabel,
   HStack,
-  Table,
-  TableCaption,
-  TableContainer,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
+  Input,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  Select,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import Container from "react-bootstrap/esm/Container";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { getPessoas } from "../../../../shared/services/Pessoas";
+import { getTipoDoacaoEventos } from "../../../../shared/services/TipoDoacaoEvento";
 import { api } from "../../../../shared/services/api";
 
-import { DeleteIcon } from "@chakra-ui/icons";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { getDoacaoEvento } from "../../../../shared/services/DoacaoEvento";
-import { SpinnerUtil } from "../../../Uteis/progress";
-import { formatDate } from "../../../Uteis/Uteis";
-import { ModalDoacaoRecebida } from "./ModalDoacaoRecebida";
-
-export default function DoacoesRecebidas({ eventoid }) {
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(false);
-
+function DoacoesRecebidasPage(props) {
+  const { id } = useParams();
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+
+  const [inputTipoDoacaoEventoid, setTipoDoacaoEventoid] = useState("");
+  const [inputQuantidade, setQuantidade] = useState("");
+  const [inputPessoaid, setPessoaid] = useState("");
+  const [inputDataDoacao, setDataDoacao] = useState("");
+
+  const [tipoDoacaoes, setTipoDoacoes] = useState([]);
+  const [pessoas, setPessoas] = useState([]);
+
+  const Eventoid = props.eventoid.eventoid;
+
+  const handleChange = (value) => setQuantidade(value);
 
   useEffect(() => {
     (async () => {
-      const response = await getDoacaoEvento(eventoid);
-      setResults(response.data);
+      setLoading(true);
+      handleTipoDoacoes();
+      handlePessoas();
+
+      const response = await api.get(`/doacaoeventos/${id}`);
+
+      setTipoDoacaoEventoid(response.data[0].tipodoacaoid);
+      setQuantidade(response.data[0].quantidade);
 
       setLoading(false);
-      setMessage(false);
     })();
-  }, [eventoid]);
+  }, [Eventoid]);
 
-  if (loading) {
-    return <SpinnerUtil />;
+  async function handleTipoDoacoes() {
+    const response = await getTipoDoacaoEventos(Eventoid);
+    setTipoDoacoes(response.data);
   }
 
-  async function handleEdit(id) {
-    navigate(`/pessoas/edit/${id}`);
+  async function handlePessoas() {
+    const response = await getPessoas();
+    setPessoas(response.data);
   }
-  async function handleDelete(id) {
-    api
-      .delete(`/doacaoeventos/${id}`, {})
-      .then(() => {
-        window.location.reload(true);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+
+  const handleSubmit = async () => {
+    if (id != undefined) {
+      return api
+        .post(`/doacaoeventos/`, {
+          tipodoacaoeventoid: inputTipoDoacaoEventoid,
+          pessoaid: inputPessoaid,
+          datadoacao: inputDataDoacao,
+          quantidade: inputQuantidade,
+        })
+        .then(() => {})
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      return api
+        .put(`/doacaoeventos/${id}`, {
+          tipodoacaoeventoid: 64,
+          pessoaid: inputPessoaid,
+          datadoacao: inputDataDoacao,
+          quantidade: inputQuantidade,
+        })
+        .then(() => {
+          navigate("/eventos");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
 
   return (
     <>
-      <Container fluid="md">
-        <Box bg="gray.600" w="100%" p={4} color="white">
-          <HStack spacing="4" justify={"center"}>
-            <Heading
-              size={{
-                base: "xs",
-                md: "md",
+      <FormControl display="flex" flexDir="column" gap="1">
+        <HStack spacing={4}>
+          <Box w="80%">
+            <FormLabel htmlFor="tipodoacaoid">Tipo de Doação</FormLabel>
+            <Select
+              id="tipodoacaoid"
+              size={"xs"}
+              borderRadius={5}
+              placeholder="Selecione"
+              value={inputTipoDoacaoEventoid}
+              onChange={(event) => {
+                setTipoDoacaoEventoid(event.target.value);
               }}
             >
-              Doações Recebidas
-            </Heading>
-          </HStack>
-        </Box>
+              {tipoDoacaoes.map((result) => (
+                <option
+                  key={result.tipodoacaoeventoid}
+                  value={result.tipodoacaoeventoid}
+                >
+                  {result.descricao}
+                </option>
+              ))}
+            </Select>
+          </Box>
+          <Box w="20%">
+            <FormLabel htmlFor="qtd">Quantidade</FormLabel>
+            <NumberInput
+              id="qtd"
+              size={"xs"}
+              step={1}
+              defaultValue={1}
+              min={1}
+              max={999}
+              value={inputQuantidade}
+              onChange={handleChange}
+            >
+              <NumberInputField borderRadius={5} />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </Box>
+        </HStack>
+        <HStack spacing={4}>
+          <Box w="80%">
+            <FormLabel htmlFor="pessoaid">Doador</FormLabel>
+            <Select
+              id="pessoaid"
+              size={"xs"}
+              borderRadius={5}
+              placeholder="Selecione"
+              value={inputPessoaid}
+              onChange={(event) => {
+                setPessoaid(event.target.value);
+              }}
+            >
+              {pessoas.map((result) => (
+                <option key={result.pessoaid} value={result.pessoaid}>
+                  {result.nome}
+                </option>
+              ))}
+            </Select>
+          </Box>
+          <Box w="20%">
+            <FormLabel htmlFor="dtnascimento">Data Doação</FormLabel>
+            <Input
+              id="dtnascimento"
+              size="xs"
+              borderRadius={5}
+              value={inputDataDoacao}
+              onChange={(event) => {
+                setDataDoacao(event.target.value);
+              }}
+              type="date"
+            />
+          </Box>
+        </HStack>
 
-        <HStack spacing="4" justify={"right"}>
+        <HStack marginTop={5} spacing="4" justify={"right"}>
           <Button
-            variant="outline"
-            colorScheme="gray"
-            gap={2}
-            size="sm"
-            marginTop={2}
-            marginBottom={2}
+            w={240}
+            p="6"
+            type="submit"
+            bg="blue.600"
+            color="white"
+            fontWeight="bold"
+            fontSize="x1"
+            _hover={{ bg: "blue.800" }}
+            onClick={handleSubmit}
           >
-            <ModalDoacaoRecebida eventoid={eventoid} />
+            Salvar
           </Button>
         </HStack>
-        <TableContainer>
-          <Table variant="simple" size="sm">
-            <TableCaption>Quantidade: {results.length}</TableCaption>
-            <Thead>
-              <Tr>
-                <Th>Descrição</Th>
-                <Th>Quantidade</Th>
-                <Th>Doador</Th>
-                <Th>Data Doação</Th>
-                <Th>Telefone</Th>
-                <Th>E-mail</Th>
-                <Th>Ação</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {results.map((result) => (
-                <Tr>
-                  <Td>{result.tipodoacaodescricao}</Td>
-                  <Td>{result.doacaoeventoquantidade}</Td>
-                  <Td>{result.pessoanome}</Td>
-                  <Td>{formatDate(result.doacaoeventodatadoacao)}</Td>
-                  <Td>{result.pessoatelefone}</Td>
-                  <Td>{result.pessoaemail}</Td>
-
-                  <Td>
-                    {/* <Button size={"xs"} bg={"write"}>
-                      <EditIcon
-                        color={"blue.800"}
-                        boxSize={5}
-                        onClick={(e) => handleEdit(result.doacaoeventoid, e)}
-                      />
-                    </Button> */}
-                    <Button size={"xs"} bg={"write"}>
-                      <DeleteIcon
-                        color={"red.500"}
-                        boxSize={5}
-                        onClick={(e) => handleDelete(result.doacaoeventoid, e)}
-                      />
-                    </Button>
-                  </Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
-      </Container>
+      </FormControl>
     </>
   );
 }
+
+export default DoacoesRecebidasPage;

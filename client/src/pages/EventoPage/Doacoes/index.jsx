@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import SpinnerUtil from "../../Uteis/progress";
 
-import DoacoesNecessarias from "./DoacoesNecessarias/DoacoesNecessariasPage";
-import DoacoesRecebidas from "./DoacoesRecebidas/DoacoesRecebidasPage";
+import DoacoesNecessarias from "./DoacoesNecessarias/";
+import DoacoesRecebidas from "./DoacoesRecebidas/";
 
 export default function Doacoes({ eventoid }) {
   const [loading, setLoading] = useState(false);

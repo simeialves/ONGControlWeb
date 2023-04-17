@@ -1,10 +1,3 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-
-import "bootstrap/dist/css/bootstrap.min.css";
-
-import "bootstrap/dist/css/bootstrap.min.css";
-import React from "react";
-
 import {
   Modal,
   ModalBody,
@@ -16,9 +9,10 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import React from "react";
 
 import { AddIcon } from "@chakra-ui/icons";
-import DoacoesRecebidasPage from ".";
+import DoacoesRecebidasPage from "./DoacoesRecebidasPage";
 
 export const ModalDoacaoRecebida = (eventoid) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -48,29 +42,15 @@ export const ModalDoacaoRecebida = (eventoid) => {
           <ModalHeader>Doações Recebidas</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <DoacoesRecebidasPage
-              eventoid={eventoid}
-              handleCloseModal={handleCloseModal}
-            />
+            {
+              <DoacoesRecebidasPage
+                eventoid={eventoid}
+                handleCloseModal={handleCloseModal}
+              />
+            }
           </ModalBody>
 
-          <ModalFooter>
-            {
-              /* <Button
-              w={240}
-              p="6"
-              type="submit"
-              bg="blue.600"
-              color="white"
-              fontWeight="bold"
-              fontSize="x1"
-              _hover={{ bg: "blue.800" }}
-            >
-              Salvaraa
-            </Button>*/
-              // <Button onClick={handleCloseModal}>Cancel</Button>
-            }
-          </ModalFooter>
+          <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>
     </>

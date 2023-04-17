@@ -18,7 +18,7 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { AddIcon } from "@chakra-ui/icons";
-import DoacoesNecessariasPage from ".";
+import DoacoesNecessariasPage from "./DoacoesNecessariasPage";
 
 export const ModalDoacaoNecessaria = (eventoid) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
