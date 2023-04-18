@@ -1,8 +1,12 @@
 import {
-  Box,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Button,
-  Heading,
-  HStack,
   Link,
   Table,
   TableCaption,
@@ -12,7 +16,11 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
+
+import { Box, Heading, HStack } from "@chakra-ui/react";
 
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
@@ -30,7 +38,13 @@ export default function DoacoesNecessarias({ eventoid }) {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = React.useRef();
+  const [id, setId] = useState("");
+
   const navigate = useNavigate();
+
+  const toast = useToast();
 
   async function fetchData() {
     const response = await getTipoDoacaoEventos(eventoid);
@@ -49,11 +63,18 @@ export default function DoacoesNecessarias({ eventoid }) {
     navigate(`/pessoas/edit/${id}`);
   }
 
-  async function handleDelete(id) {
-    api
+  async function handleDelete() {
+    await api
       .delete(`/tipodoacaoeventos/${id}`, {})
       .then(() => {
+        toast({
+          title: "Registro excluído com sucesso",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
         fetchData();
+        onClose();
       })
       .catch((err) => {
         console.log(err);
@@ -63,6 +84,11 @@ export default function DoacoesNecessarias({ eventoid }) {
   function handleModalClose() {
     setIsModalOpen(false);
     fetchData();
+  }
+
+  async function handleOpenDialog(id) {
+    setId(id);
+    onOpen();
   }
 
   return (
@@ -137,7 +163,7 @@ export default function DoacoesNecessarias({ eventoid }) {
                         color={"red.500"}
                         boxSize={5}
                         onClick={(e) =>
-                          handleDelete(result.tipodoacaoeventoid, e)
+                          handleOpenDialog(result.tipodoacaoeventoid, e)
                         }
                       />
                     </Button>
@@ -148,6 +174,32 @@ export default function DoacoesNecessarias({ eventoid }) {
           </Table>
         </TableContainer>
       </Container>
+
+      <AlertDialog
+        motionPreset="slideInBottom"
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isOpen={isOpen}
+        isCentered
+      >
+        <AlertDialogOverlay />
+
+        <AlertDialogContent>
+          <AlertDialogHeader>Apagar registro?</AlertDialogHeader>
+          <AlertDialogCloseButton />
+          <AlertDialogBody>
+            Tem certeza que deseja apagar o registro selecionado?
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <Button colorScheme="red" ml={3} onClick={handleDelete}>
+              Sim
+            </Button>
+            <Button ref={cancelRef} ml={3} onClick={onClose}>
+              Cancelar
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

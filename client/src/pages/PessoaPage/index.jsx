@@ -47,10 +47,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const Pessoa = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(false);
   const [inputNome, setInputNome] = useState("");
-  const [inputAtivo, setInputAtivo] = useState(1);
-  const [data, setData] = useState([]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
@@ -106,12 +103,10 @@ const Pessoa = () => {
       })
       .then((response) => {
         setResults(response.data);
-        setMessage(false);
         setLoading(false);
         setInputNome("");
       })
       .catch(() => {
-        setMessage(true);
         setLoading(false);
       });
   }
@@ -223,6 +218,7 @@ const Pessoa = () => {
           </Table>
         </TableContainer>
       </Container>
+
       <AlertDialog
         motionPreset="slideInBottom"
         leastDestructiveRef={cancelRef}
