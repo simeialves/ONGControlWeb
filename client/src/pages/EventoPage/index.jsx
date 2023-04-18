@@ -48,6 +48,7 @@ import Container from "react-bootstrap/Container";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getEventos } from "../../shared/services/Evento";
+import { Footer } from "../Footer";
 
 const Evento = () => {
   const [results, setResults] = useState([]);
@@ -265,6 +266,7 @@ const Evento = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      <Footer />
     </>
   );
 };

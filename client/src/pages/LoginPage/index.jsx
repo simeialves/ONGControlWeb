@@ -62,27 +62,21 @@ const LoginPage = () => {
 
   return (
     <>
-      <Box h="100vh">
-        <Center
-          as="header"
-          h={"100%"}
-          bg="gray.100"
-          color={"blue.800"}
-          fontWeight="bold"
-          fontSize={"4x1"}
-          pb="8"
-        ></Center>
+      <Box
+        width="100%"
+        height="100vh"
+        bgGradient="linear(to-r, red.600, red.600)"
+      >
         <Flex
-          align="center"
-          justify="center"
-          bg="blackAlpha.200"
-          h="calc(100vh-150px)"
+          height="100vh"
+          display="flex"
+          flex-direction="column"
+          justifyContent="center"
+          alignItems="center"
         >
           <Center
-            w="100%"
-            maxW={500}
+            width={"500px"}
             bg="white"
-            top={150}
             position="absolute"
             borderRadius={20}
             p="6"

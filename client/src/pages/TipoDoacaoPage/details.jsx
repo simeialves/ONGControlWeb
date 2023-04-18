@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { STATUS_ATIVO, STATUS_INATIVO } from "../../includes/const";
+import { Footer } from "../Footer";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 
@@ -175,6 +176,7 @@ const New = () => {
           </Center>
         </Flex>
       </Box>
+      <Footer />
     </>
   );
 };

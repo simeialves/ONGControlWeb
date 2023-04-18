@@ -43,6 +43,7 @@ import Container from "react-bootstrap/Container";
 import { getPessoas } from "../../shared/services/Pessoas";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Footer } from "../Footer";
 
 const Pessoa = () => {
   const [results, setResults] = useState([]);
@@ -244,6 +245,7 @@ const Pessoa = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      <Footer />
     </>
   );
 };

@@ -30,6 +30,7 @@ import Container from "react-bootstrap/esm/Container";
 import { STATUS_ATIVO, STATUS_INATIVO } from "../../includes/const";
 import { getLocalEventos } from "../../shared/services/LocalEvento";
 import { getProjetos } from "../../shared/services/Projeto/Index";
+import { Footer } from "../Footer";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 import Beneficiarios from "./Beneficiarios";
@@ -384,6 +385,7 @@ const Evento = () => {
           </TabPanels>
         </Tabs>
       </Container>
+      <Footer />
     </>
   );
 };

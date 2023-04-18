@@ -9,6 +9,10 @@ export const Footer = () => {
         background="red.800"
         width={"100%"}
         height={2}
+        as="footer"
+        position="fixed"
+        bottom="0"
+        color="white"
       ></Box>
     </>
   );

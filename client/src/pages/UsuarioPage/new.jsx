@@ -15,6 +15,7 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { Footer } from "../Footer";
 import Headers from "../Headers";
 
 const NewUsuarioPage = () => {
@@ -195,6 +196,7 @@ const NewUsuarioPage = () => {
           </Center>
         </Flex>
       </Box>
+      <Footer />
     </>
   );
 };

@@ -44,6 +44,7 @@ import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ADMINISTRADOR } from "../../includes/const";
 import { getUsuarios } from "../../shared/services/Usuarios/Index";
+import { Footer } from "../Footer";
 
 const Usuario = () => {
   const [results, setResults] = useState([]);
@@ -296,6 +297,7 @@ const Usuario = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      <Footer />
     </>
   );
 };

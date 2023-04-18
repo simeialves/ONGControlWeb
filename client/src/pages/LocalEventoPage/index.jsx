@@ -38,6 +38,7 @@ import Container from "react-bootstrap/Container";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getLocalEventos } from "../../shared/services/LocalEvento";
+import { Footer } from "../Footer";
 
 const LocalEvento = () => {
   const [results, setResults] = useState([]);
@@ -242,6 +243,7 @@ const LocalEvento = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      <Footer />
     </>
   );
 };

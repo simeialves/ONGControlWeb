@@ -48,6 +48,7 @@ import SpinnerUtil from "../Uteis/progress";
 
 import Container from "react-bootstrap/Container";
 import { STATUS_ATIVO } from "../../includes/const";
+import { Footer } from "../Footer";
 
 const TipoColaborador = () => {
   const [results, setResults] = useState([]);
@@ -263,6 +264,7 @@ const TipoColaborador = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      <Footer />
     </>
   );
 };

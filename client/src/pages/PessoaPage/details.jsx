@@ -18,6 +18,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { Footer } from "../Footer";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 
@@ -412,6 +413,7 @@ const New = () => {
           </Center>
         </Flex>
       </Box>
+      <Footer />
     </>
   );
 };

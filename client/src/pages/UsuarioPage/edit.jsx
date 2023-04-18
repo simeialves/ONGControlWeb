@@ -15,6 +15,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ADMINISTRADOR, STATUS_INATIVO } from "../../includes/const";
 import { api } from "../../shared/services/api";
+import { Footer } from "../Footer";
 import Headers from "../Headers";
 
 const Edit = () => {
@@ -257,6 +258,7 @@ const Edit = () => {
             </FormControl>
           </Center>
         </Flex>
+        <Footer />
       </Box>
     </>
   );
