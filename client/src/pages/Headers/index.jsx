@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -93,6 +93,12 @@ const Headers = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+      <Box
+        colorScheme={"red"}
+        background="red.800"
+        width={"100%"}
+        height={2}
+      ></Box>
     </>
   );
 };

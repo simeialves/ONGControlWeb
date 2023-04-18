@@ -94,85 +94,88 @@ export default function DoacoesNecessarias({ eventoid }) {
   return (
     <>
       <Container fluid="md">
-        <Box bg="gray.600" w="100%" p={4} color="white">
-          <HStack spacing="4" justify={"center"}>
-            <Heading
-              size={{
-                base: "xs",
-                md: "md",
-              }}
-            >
-              Doações Necessárias
-            </Heading>
-          </HStack>
-        </Box>
+        <Box boxShadow={"lg"} marginBottom={2}>
+          <Box bg="gray.600" w="100%" p={4} color="white">
+            <HStack spacing="4" justify={"center"}>
+              <Heading
+                size={{
+                  base: "xs",
+                  md: "md",
+                }}
+              >
+                Doações Necessárias
+              </Heading>
+            </HStack>
+          </Box>
 
-        <HStack spacing="4" justify={"right"}>
-          <Button
-            variant="outline"
-            colorScheme="gray"
-            gap={2}
-            size="sm"
-            marginTop={2}
-            marginBottom={2}
-          >
-            <ModalDoacaoNecessaria
-              eventoid={eventoid}
-              isOpen={isModalOpen}
-              onClose={handleModalClose}
-            />
-          </Button>
-        </HStack>
-        <TableContainer>
-          <Table variant="simple" size="sm">
-            <TableCaption>Quantidade: {results.length}</TableCaption>
-            <Thead>
-              <Tr>
-                <Th>Descrição</Th>
-                <Th>Qtd. Necessárias</Th>
-                <Th>Qtd. Doações Recebidas</Th>
-                <Th>Qtd. Doações Realizadas</Th>
-                <Th>Saldo</Th>
-                <Th>Ação</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {results.map((result) => (
+          <HStack spacing="4" justify={"right"}>
+            <Button
+              variant="outline"
+              colorScheme="gray"
+              gap={2}
+              size="sm"
+              marginTop={2}
+              marginBottom={2}
+              marginRight={2}
+            >
+              <ModalDoacaoNecessaria
+                eventoid={eventoid}
+                isOpen={isModalOpen}
+                onClose={handleModalClose}
+              />
+            </Button>
+          </HStack>
+          <TableContainer>
+            <Table variant="simple" size="sm">
+              <TableCaption>Quantidade: {results.length}</TableCaption>
+              <Thead>
                 <Tr>
-                  <Td>
-                    <Link href={`/pessoas/edit/${result.pessoaid}`}>
-                      {result.descricao}
-                    </Link>
-                  </Td>
-                  <Td>{result.quantidade}</Td>
-                  <Td>{result.quantidaderecebidas}</Td>
-                  <Td>{result.quantidaderealizadas}</Td>
-                  <Td>
-                    {result.quantidaderecebidas - result.quantidaderealizadas}
-                  </Td>
-                  <Td>
-                    <Button size={"xs"} bg={"write"}>
-                      <EditIcon
-                        color={"blue.800"}
-                        boxSize={5}
-                        onClick={(e) => handleEdit(result.pessoaeventoid, e)}
-                      />
-                    </Button>
-                    <Button size={"xs"} bg={"write"}>
-                      <DeleteIcon
-                        color={"red.500"}
-                        boxSize={5}
-                        onClick={(e) =>
-                          handleOpenDialog(result.tipodoacaoeventoid, e)
-                        }
-                      />
-                    </Button>
-                  </Td>
+                  <Th>Descrição</Th>
+                  <Th>Qtd. Necessárias</Th>
+                  <Th>Qtd. Doações Recebidas</Th>
+                  <Th>Qtd. Doações Realizadas</Th>
+                  <Th>Saldo</Th>
+                  <Th>Ação</Th>
                 </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
+              </Thead>
+              <Tbody>
+                {results.map((result) => (
+                  <Tr>
+                    <Td>
+                      <Link href={`/pessoas/edit/${result.pessoaid}`}>
+                        {result.descricao}
+                      </Link>
+                    </Td>
+                    <Td>{result.quantidade}</Td>
+                    <Td>{result.quantidaderecebidas}</Td>
+                    <Td>{result.quantidaderealizadas}</Td>
+                    <Td>
+                      {result.quantidaderecebidas - result.quantidaderealizadas}
+                    </Td>
+                    <Td>
+                      <Button size={"xs"} bg={"write"}>
+                        <EditIcon
+                          color={"blue.800"}
+                          boxSize={5}
+                          onClick={(e) => handleEdit(result.pessoaeventoid, e)}
+                        />
+                      </Button>
+                      <Button size={"xs"} bg={"write"}>
+                        <DeleteIcon
+                          color={"red.500"}
+                          boxSize={5}
+                          onClick={(e) =>
+                            handleOpenDialog(result.tipodoacaoeventoid, e)
+                          }
+                        />
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </Box>
       </Container>
 
       <AlertDialog

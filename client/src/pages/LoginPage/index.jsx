@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../shared/contexts/auth";
-import { retiraAspas } from "../Uteis/Uteis";
+import { removeAspas } from "../Uteis/Uteis";
 
 const LoginPage = () => {
   const { login } = useContext(AuthContext);
@@ -27,14 +27,15 @@ const LoginPage = () => {
   const handleSubmit = (e) => {
     login(email, password)
       .then(() => {
-        const nameUser = retiraAspas(localStorage.getItem("name"));
-
+        const nameUser = removeAspas(localStorage.getItem("name"));
+        const message = `Bem vindo, ${nameUser}.`;
+        const status = "success";
         toast({
-          title: `Bem vindo, ${nameUser}.`,
-          status: "success",
+          title: message,
+          status: status,
           duration: 3000,
           isClosable: true,
-          position: "top-left",
+          position: "bottom-left",
         });
       })
       .catch((error) => {
@@ -48,7 +49,7 @@ const LoginPage = () => {
           status: status,
           duration: 3000,
           isClosable: true,
-          position: "top-left",
+          position: "bottom-left",
         });
       });
   };

@@ -18,6 +18,6 @@ export function removeCaracter(valor) {
 }
 
 /*Retirar aspas de uma determinada string*/
-export function retiraAspas(valor) {
+export function removeAspas(valor) {
   return valor.replace(/["]/g, "");
 }

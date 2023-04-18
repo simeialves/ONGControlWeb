@@ -60,73 +60,76 @@ export default function ColaboradoresNecessariosPage({ eventoid }) {
   return (
     <>
       <Container fluid="md">
-        <Box bg="gray.600" w="100%" p={4} color="white">
-          <HStack spacing="4" justify={"center"}>
-            <Heading
-              size={{
-                base: "xs",
-                md: "md",
-              }}
+        <Box boxShadow={"lg"} marginBottom={2}>
+          <Box bg="gray.600" w="100%" p={4} color="white">
+            <HStack spacing="4" justify={"center"}>
+              <Heading
+                size={{
+                  base: "xs",
+                  md: "md",
+                }}
+              >
+                Colaboradores Necessários
+              </Heading>
+            </HStack>
+          </Box>
+          <HStack spacing="4" justify={"right"}>
+            <Button
+              variant="outline"
+              colorScheme="gray"
+              gap={2}
+              size="sm"
+              marginTop={2}
+              marginBottom={2}
+              marginRight={2}
             >
-              Colaboradores Necessários
-            </Heading>
+              <ModalColaboradorNecessario eventoid={eventoid} />
+            </Button>
           </HStack>
-        </Box>
-        <HStack spacing="4" justify={"right"}>
-          <Button
-            variant="outline"
-            colorScheme="gray"
-            gap={2}
-            size="sm"
-            marginTop={2}
-            marginBottom={2}
-          >
-            <ModalColaboradorNecessario eventoid={eventoid} />
-          </Button>
-        </HStack>
-        <TableContainer>
-          <Table variant="simple" size="sm">
-            <TableCaption>Quantidade: {results.length}</TableCaption>
-            <Thead>
-              <Tr>
-                <Th>Descrição</Th>
-                <Th>Qtd. Necessárias</Th>
-                <Th>Qtd. Inscritos</Th>
-                <Th>Ação</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {results.map((result) => (
+          <TableContainer>
+            <Table variant="simple" size="sm">
+              <TableCaption>Quantidade: {results.length}</TableCaption>
+              <Thead>
                 <Tr>
-                  <Td>{result.descricao}</Td>
-                  <Td>{result.quantidade}</Td>
-                  <Td>{result.quantidadeinscritos}</Td>
-
-                  <Td>
-                    <Button size={"xs"} bg={"write"}>
-                      <EditIcon
-                        color={"blue.800"}
-                        boxSize={5}
-                        onClick={(e) =>
-                          handleEdit(result.tipocolaboradoreventoid, e)
-                        }
-                      />
-                    </Button>
-                    <Button size={"xs"} bg={"write"}>
-                      <DeleteIcon
-                        color={"red.500"}
-                        boxSize={5}
-                        onClick={(e) =>
-                          handleDelete(result.tipocolaboradoreventoid, e)
-                        }
-                      />
-                    </Button>
-                  </Td>
+                  <Th>Descrição</Th>
+                  <Th>Qtd. Necessárias</Th>
+                  <Th>Qtd. Inscritos</Th>
+                  <Th>Ação</Th>
                 </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
+              </Thead>
+              <Tbody>
+                {results.map((result) => (
+                  <Tr>
+                    <Td>{result.descricao}</Td>
+                    <Td>{result.quantidade}</Td>
+                    <Td>{result.quantidadeinscritos}</Td>
+
+                    <Td>
+                      <Button size={"xs"} bg={"write"}>
+                        <EditIcon
+                          color={"blue.800"}
+                          boxSize={5}
+                          onClick={(e) =>
+                            handleEdit(result.tipocolaboradoreventoid, e)
+                          }
+                        />
+                      </Button>
+                      <Button size={"xs"} bg={"write"}>
+                        <DeleteIcon
+                          color={"red.500"}
+                          boxSize={5}
+                          onClick={(e) =>
+                            handleDelete(result.tipocolaboradoreventoid, e)
+                          }
+                        />
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </Box>
       </Container>
     </>
   );

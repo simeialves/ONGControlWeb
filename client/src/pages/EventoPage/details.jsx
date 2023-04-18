@@ -26,6 +26,7 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import Container from "react-bootstrap/esm/Container";
 import { STATUS_ATIVO, STATUS_INATIVO } from "../../includes/const";
 import { getLocalEventos } from "../../shared/services/LocalEvento";
 import { getProjetos } from "../../shared/services/Projeto/Index";
@@ -146,238 +147,243 @@ const Evento = () => {
   return (
     <>
       <Headers />
-      <Tabs variant="enclosed">
-        <TabList>
-          <Tab>Evento</Tab>
-          <Tab>Beneficiários</Tab>
-          <Tab>Colaboradores</Tab>
-          <Tab>Doações</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel>
-            <Box h="100vh">
-              <Center
-                as="header"
-                h={150}
-                bg="gray.100"
-                color={"blue.800"}
-                fontWeight="bold"
-                fontSize={"4x1"}
-                pb="8"
-              >
-                Cadastro de Eventos
-              </Center>
-              <Flex
-                align="center"
-                justify="center"
-                bg="blackAlpha.200"
-                h="calc(100vh-150px)"
-              >
+
+      <Container fluid="md">
+        <Tabs variant="enclosed">
+          <TabList>
+            <Tab>Evento</Tab>
+            <Tab>Beneficiários</Tab>
+            <Tab>Colaboradores</Tab>
+            <Tab>Doações</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <Box h="100vh">
                 <Center
-                  w="100%"
-                  maxW={800}
-                  bg="white"
-                  top={150}
-                  position="absolute"
-                  borderRadius={5}
-                  p="6"
-                  boxShadow="0 1px 2px #ccc"
+                  as="header"
+                  h={150}
+                  bg="gray.100"
+                  color={"blue.800"}
+                  fontWeight="bold"
+                  fontSize={"4x1"}
+                  pb="8"
                 >
-                  <FormControl display="flex" flexDir="column" gap="4">
-                    <HStack spacing={4}>
-                      <Box w="90%">
-                        <FormLabel htmlFor="descricao">Descrição</FormLabel>
-                        <Input
-                          id="descricao"
-                          size="xs"
-                          borderRadius={5}
-                          value={inputDescricao}
-                          onChange={(event) => {
-                            setInputDescricao(event.target.value);
-                          }}
-                        />
-                      </Box>
-                      <Box w="10%">
-                        <Checkbox
-                          id="ativo"
-                          size="md"
-                          borderRadius={5}
-                          paddingTop={8}
-                          onChange={handleClick}
-                          isChecked={inputAtivo == STATUS_ATIVO ? true : false}
-                        >
-                          Ativo
-                        </Checkbox>
-                      </Box>
-                    </HStack>
-
-                    <HStack spacing={4}>
-                      <Box w="40%">
-                        <FormLabel htmlFor="projetoid">Projeto</FormLabel>
-                        <Select
-                          id="projetoid"
-                          size={"xs"}
-                          borderRadius={5}
-                          placeholder="Selecione"
-                          value={inputProjetoId}
-                          onChange={(event) => {
-                            setInputProjetoId(event.target.value);
-                          }}
-                        >
-                          {resultsProjetos.map((result) => (
-                            <option
-                              key={result.projetoid}
-                              value={result.projetoid}
-                            >
-                              {result.descricao}
-                            </option>
-                          ))}
-                        </Select>
-                      </Box>
-
-                      <Box w="30%">
-                        <FormLabel htmlFor="datainicio">
-                          Data de Início
-                        </FormLabel>
-                        <Input
-                          id="datainicio"
-                          size="xs"
-                          borderRadius={5}
-                          value={inputDataInicio}
-                          onChange={(event) => {
-                            setInputDataInicio(event.target.value);
-                          }}
-                          type="date"
-                        />
-                      </Box>
-                      <Box w="30%">
-                        <FormLabel htmlFor="datafim">Data de Término</FormLabel>
-                        <Input
-                          size="xs"
-                          borderRadius={5}
-                          value={inputDataFim}
-                          onChange={(event) => {
-                            setInputDataFim(event.target.value);
-                          }}
-                          type="date"
-                        />
-                      </Box>
-                    </HStack>
-
-                    <HStack spacing={4}>
-                      <Box w="100%">
-                        <FormLabel htmlFor="localeventoid">
-                          Local do Evento
-                        </FormLabel>
-                        <Select
-                          id="localeventoid"
-                          size={"xs"}
-                          borderRadius={5}
-                          placeholder="Selecione"
-                          value={inputLocalEventoId}
-                          onChange={(event) => {
-                            setInputLocalEventoId(event.target.value);
-                          }}
-                        >
-                          {resultsLocalEventos.map((result) => (
-                            <option
-                              key={result.localeventoid}
-                              value={result.localeventoid}
-                            >
-                              {result.nome}
-                            </option>
-                          ))}
-                        </Select>
-                      </Box>
-                    </HStack>
-
-                    <HStack spacing={4}>
-                      <Box w="80%">
-                        <FormLabel htmlFor="formularionivelamento">
-                          Formulário Nivelamento
-                        </FormLabel>
-                        <Input
-                          id="formularionivelamento"
-                          size="xs"
-                          borderRadius={5}
-                          value={inputFormularioNivelamento}
-                          onChange={(event) => {
-                            setInputFormularioNivelamento(event.target.value);
-                          }}
-                        />
-                      </Box>
-                      <Box w="20%">
-                        <FormLabel htmlFor="nivel">Nível</FormLabel>
-                        <NumberInput
-                          id="nivel"
-                          size={"xs"}
-                          step={1}
-                          defaultValue={1}
-                          min={1}
-                          max={999}
-                          value={inputNivel}
-                          onChange={handleChange}
-                        >
-                          <NumberInputField borderRadius={5} />
-                          <NumberInputStepper>
-                            <NumberIncrementStepper />
-                            <NumberDecrementStepper />
-                          </NumberInputStepper>
-                        </NumberInput>
-                      </Box>
-                    </HStack>
-
-                    <HStack spacing="4" justify={"right"}>
-                      <Button
-                        w={240}
-                        p="6"
-                        type="submit"
-                        bg="blue.600"
-                        color="white"
-                        fontWeight="bold"
-                        fontSize="x1"
-                        _hover={{ bg: "blue.800" }}
-                        onClick={handleSubmit}
-                      >
-                        Salvar
-                      </Button>
-                      <Button
-                        w={100}
-                        p="5"
-                        type="submit"
-                        colorScheme="gray"
-                        bg="gray.100"
-                        color="black"
-                        variant="outline"
-                        fontWeight="bold"
-                        fontSize="x1"
-                        _hover={{ bg: "gray.300" }}
-                        onClick={handleVoltar}
-                        gap={2}
-                        size="xs"
-                        marginBottom={2}
-                      >
-                        Cancelar
-                      </Button>
-                    </HStack>
-                  </FormControl>
+                  Cadastro de Eventos
                 </Center>
-              </Flex>
-            </Box>
-          </TabPanel>
-          <TabPanel>
-            <>
+                <Flex
+                  align="center"
+                  justify="center"
+                  bg="blackAlpha.200"
+                  h="calc(100vh-150px)"
+                >
+                  <Center
+                    w="100%"
+                    maxW={800}
+                    bg="white"
+                    top={150}
+                    position="absolute"
+                    borderRadius={5}
+                    p="6"
+                    boxShadow="0 1px 2px #ccc"
+                  >
+                    <FormControl display="flex" flexDir="column" gap="4">
+                      <HStack spacing={4}>
+                        <Box w="90%">
+                          <FormLabel htmlFor="descricao">Descrição</FormLabel>
+                          <Input
+                            id="descricao"
+                            size="xs"
+                            borderRadius={5}
+                            value={inputDescricao}
+                            onChange={(event) => {
+                              setInputDescricao(event.target.value);
+                            }}
+                          />
+                        </Box>
+                        <Box w="10%">
+                          <Checkbox
+                            id="ativo"
+                            size="md"
+                            borderRadius={5}
+                            paddingTop={8}
+                            onChange={handleClick}
+                            isChecked={
+                              inputAtivo == STATUS_ATIVO ? true : false
+                            }
+                          >
+                            Ativo
+                          </Checkbox>
+                        </Box>
+                      </HStack>
+
+                      <HStack spacing={4}>
+                        <Box w="40%">
+                          <FormLabel htmlFor="projetoid">Projeto</FormLabel>
+                          <Select
+                            id="projetoid"
+                            size={"xs"}
+                            borderRadius={5}
+                            placeholder="Selecione"
+                            value={inputProjetoId}
+                            onChange={(event) => {
+                              setInputProjetoId(event.target.value);
+                            }}
+                          >
+                            {resultsProjetos.map((result) => (
+                              <option
+                                key={result.projetoid}
+                                value={result.projetoid}
+                              >
+                                {result.descricao}
+                              </option>
+                            ))}
+                          </Select>
+                        </Box>
+
+                        <Box w="30%">
+                          <FormLabel htmlFor="datainicio">
+                            Data de Início
+                          </FormLabel>
+                          <Input
+                            id="datainicio"
+                            size="xs"
+                            borderRadius={5}
+                            value={inputDataInicio}
+                            onChange={(event) => {
+                              setInputDataInicio(event.target.value);
+                            }}
+                            type="date"
+                          />
+                        </Box>
+                        <Box w="30%">
+                          <FormLabel htmlFor="datafim">
+                            Data de Término
+                          </FormLabel>
+                          <Input
+                            size="xs"
+                            borderRadius={5}
+                            value={inputDataFim}
+                            onChange={(event) => {
+                              setInputDataFim(event.target.value);
+                            }}
+                            type="date"
+                          />
+                        </Box>
+                      </HStack>
+
+                      <HStack spacing={4}>
+                        <Box w="100%">
+                          <FormLabel htmlFor="localeventoid">
+                            Local do Evento
+                          </FormLabel>
+                          <Select
+                            id="localeventoid"
+                            size={"xs"}
+                            borderRadius={5}
+                            placeholder="Selecione"
+                            value={inputLocalEventoId}
+                            onChange={(event) => {
+                              setInputLocalEventoId(event.target.value);
+                            }}
+                          >
+                            {resultsLocalEventos.map((result) => (
+                              <option
+                                key={result.localeventoid}
+                                value={result.localeventoid}
+                              >
+                                {result.nome}
+                              </option>
+                            ))}
+                          </Select>
+                        </Box>
+                      </HStack>
+
+                      <HStack spacing={4}>
+                        <Box w="80%">
+                          <FormLabel htmlFor="formularionivelamento">
+                            Formulário Nivelamento
+                          </FormLabel>
+                          <Input
+                            id="formularionivelamento"
+                            size="xs"
+                            borderRadius={5}
+                            value={inputFormularioNivelamento}
+                            onChange={(event) => {
+                              setInputFormularioNivelamento(event.target.value);
+                            }}
+                          />
+                        </Box>
+                        <Box w="20%">
+                          <FormLabel htmlFor="nivel">Nível</FormLabel>
+                          <NumberInput
+                            id="nivel"
+                            size={"xs"}
+                            step={1}
+                            defaultValue={1}
+                            min={1}
+                            max={999}
+                            value={inputNivel}
+                            onChange={handleChange}
+                          >
+                            <NumberInputField borderRadius={5} />
+                            <NumberInputStepper>
+                              <NumberIncrementStepper />
+                              <NumberDecrementStepper />
+                            </NumberInputStepper>
+                          </NumberInput>
+                        </Box>
+                      </HStack>
+
+                      <HStack spacing="4" justify={"right"}>
+                        <Button
+                          w={240}
+                          p="6"
+                          type="submit"
+                          bg="blue.600"
+                          color="white"
+                          fontWeight="bold"
+                          fontSize="x1"
+                          _hover={{ bg: "blue.800" }}
+                          onClick={handleSubmit}
+                        >
+                          Salvar
+                        </Button>
+                        <Button
+                          w={100}
+                          p="5"
+                          type="submit"
+                          colorScheme="gray"
+                          bg="gray.100"
+                          color="black"
+                          variant="outline"
+                          fontWeight="bold"
+                          fontSize="x1"
+                          _hover={{ bg: "gray.300" }}
+                          onClick={handleVoltar}
+                          gap={2}
+                          size="xs"
+                          marginBottom={2}
+                        >
+                          Cancelar
+                        </Button>
+                      </HStack>
+                    </FormControl>
+                  </Center>
+                </Flex>
+              </Box>
+            </TabPanel>
+            <TabPanel>
               <Beneficiarios eventoid={eventoId} />
-            </>
-          </TabPanel>
-          <TabPanel>
-            <Colaboradores eventoid={eventoId} />
-          </TabPanel>
-          <TabPanel>
-            <Doacoes eventoid={eventoId} />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+            </TabPanel>
+            <TabPanel>
+              <Colaboradores eventoid={eventoId} />
+            </TabPanel>
+            <TabPanel>
+              <Doacoes eventoid={eventoId} />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </Container>
     </>
   );
 };

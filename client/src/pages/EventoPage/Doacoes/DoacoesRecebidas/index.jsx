@@ -62,76 +62,81 @@ export default function DoacoesRecebidas({ eventoid }) {
   return (
     <>
       <Container fluid="md">
-        <Box bg="gray.600" w="100%" p={4} color="white">
-          <HStack spacing="4" justify={"center"}>
-            <Heading
-              size={{
-                base: "xs",
-                md: "md",
-              }}
+        <Box boxShadow={"lg"} marginBottom={2}>
+          <Box bg="gray.600" w="100%" p={4} color="white">
+            <HStack spacing="4" justify={"center"}>
+              <Heading
+                size={{
+                  base: "xs",
+                  md: "md",
+                }}
+              >
+                Doações Recebidas
+              </Heading>
+            </HStack>
+          </Box>
+
+          <HStack spacing="4" justify={"right"}>
+            <Button
+              variant="outline"
+              colorScheme="gray"
+              gap={2}
+              size="sm"
+              marginTop={2}
+              marginBottom={2}
+              marginRight={2}
             >
-              Doações Recebidas
-            </Heading>
+              <ModalDoacaoRecebida eventoid={eventoid} />
+            </Button>
           </HStack>
-        </Box>
-
-        <HStack spacing="4" justify={"right"}>
-          <Button
-            variant="outline"
-            colorScheme="gray"
-            gap={2}
-            size="sm"
-            marginTop={2}
-            marginBottom={2}
-          >
-            <ModalDoacaoRecebida eventoid={eventoid} />
-          </Button>
-        </HStack>
-        <TableContainer>
-          <Table variant="simple" size="sm">
-            <TableCaption>Quantidade: {results.length}</TableCaption>
-            <Thead>
-              <Tr>
-                <Th>Descrição</Th>
-                <Th>Quantidade</Th>
-                <Th>Doador</Th>
-                <Th>Data Doação</Th>
-                <Th>Telefone</Th>
-                <Th>E-mail</Th>
-                <Th>Ação</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {results.map((result) => (
+          <TableContainer>
+            <Table variant="simple" size="sm">
+              <TableCaption>Quantidade: {results.length}</TableCaption>
+              <Thead>
                 <Tr>
-                  <Td>{result.tipodoacaodescricao}</Td>
-                  <Td>{result.doacaoeventoquantidade}</Td>
-                  <Td>{result.pessoanome}</Td>
-                  <Td>{formatDate(result.doacaoeventodatadoacao)}</Td>
-                  <Td>{result.pessoatelefone}</Td>
-                  <Td>{result.pessoaemail}</Td>
+                  <Th>Descrição</Th>
+                  <Th>Quantidade</Th>
+                  <Th>Doador</Th>
+                  <Th>Data Doação</Th>
+                  <Th>Telefone</Th>
+                  <Th>E-mail</Th>
+                  <Th>Ação</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {results.map((result) => (
+                  <Tr>
+                    <Td>{result.tipodoacaodescricao}</Td>
+                    <Td>{result.doacaoeventoquantidade}</Td>
+                    <Td>{result.pessoanome}</Td>
+                    <Td>{formatDate(result.doacaoeventodatadoacao)}</Td>
+                    <Td>{result.pessoatelefone}</Td>
+                    <Td>{result.pessoaemail}</Td>
 
-                  <Td>
-                    {/* <Button size={"xs"} bg={"write"}>
+                    <Td>
+                      {/* <Button size={"xs"} bg={"write"}>
                       <EditIcon
                         color={"blue.800"}
                         boxSize={5}
                         onClick={(e) => handleEdit(result.doacaoeventoid, e)}
                       />
                     </Button> */}
-                    <Button size={"xs"} bg={"write"}>
-                      <DeleteIcon
-                        color={"red.500"}
-                        boxSize={5}
-                        onClick={(e) => handleDelete(result.doacaoeventoid, e)}
-                      />
-                    </Button>
-                  </Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
+                      <Button size={"xs"} bg={"write"}>
+                        <DeleteIcon
+                          color={"red.500"}
+                          boxSize={5}
+                          onClick={(e) =>
+                            handleDelete(result.doacaoeventoid, e)
+                          }
+                        />
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </Box>
       </Container>
     </>
   );
