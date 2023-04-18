@@ -34,6 +34,7 @@ class LoginController {
               success: true,
               message: SUCCESS_LOGGED,
               id: usuario.usuarioid,
+              nome: usuario.nome,
               email: usuario.login,
               access_token: tokenJWT,
             });

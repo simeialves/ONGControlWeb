@@ -11,17 +11,46 @@ import {
   Image,
   Input,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../shared/contexts/auth";
+import { retiraAspas } from "../Uteis/Uteis";
 
 const LoginPage = () => {
   const { login } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const toast = useToast();
+
   const handleSubmit = (e) => {
-    login(email, password);
+    login(email, password)
+      .then(() => {
+        const nameUser = retiraAspas(localStorage.getItem("name"));
+
+        toast({
+          title: `Bem vindo, ${nameUser}.`,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top-left",
+        });
+      })
+      .catch((error) => {
+        const message = error.response
+          ? error.response.data.message
+          : error.message;
+        const status = error.response ? "error" : "warning";
+
+        toast({
+          title: message,
+          status: status,
+          duration: 3000,
+          isClosable: true,
+          position: "top-left",
+        });
+      });
   };
 
   function handleKeyPress(event) {

@@ -16,3 +16,8 @@ export function formatDateNoTime(dateInput) {
 export function removeCaracter(valor) {
   return valor.replace(/\D/g, "");
 }
+
+/*Retirar aspas de uma determinada string*/
+export function retiraAspas(valor) {
+  return valor.replace(/["]/g, "");
+}
