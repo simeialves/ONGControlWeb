@@ -126,99 +126,99 @@ const Pessoa = () => {
   return (
     <>
       <Headers />
-      <br></br>
-
-      <Container fluid="md">
-        <HStack spacing="4" justify={"right"}>
-          <Button
-            id="btnNovo"
-            variant="outline"
-            colorScheme="gray"
-            gap={2}
-            onClick={handleNew}
-            size="sm"
-            marginBottom={2}
-          >
-            <AddIcon /> Nova
-          </Button>
-        </HStack>
-        <HStack>
-          <Box w="70%">
-            <InputGroup>
-              <Input
-                onChange={(event) => {
-                  setInputNome(event.target.value);
-                }}
-                placeholder="Pesquisar por nome"
-                size="sm"
-                borderRadius={5}
-              />
-              <InputRightElement>
-                <SmallCloseIcon justify={"right"} onClick={handleClear} />
-              </InputRightElement>
-            </InputGroup>
-          </Box>
-          <Button
-            variant="solid"
-            gap={2}
-            w={120}
-            p="1"
-            bg="gray.600"
-            color="white"
-            fontSize="x1"
-            _hover={{ bg: "gray.800" }}
-            onClick={handleClick}
-            size="sm"
-          >
-            <SearchIcon />
-            Pesquisar
-          </Button>
-        </HStack>
-        <br></br>
-        <TableContainer>
-          <Table variant="simple" size="sm">
-            <TableCaption>Quantidade: {results.length}</TableCaption>
-            <Thead>
-              <Tr>
-                <Th>Nome</Th>
-                <Th>Documento</Th>
-                <Th>Telefone</Th>
-                <Th>Ação</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {results.map((result) => (
-                <Tr key={result.pessoaid}>
-                  <Td>
-                    <Link href={`/pessoas/edit/${result.pessoaid}`}>
-                      {result.nome}
-                    </Link>
-                  </Td>
-                  <Td>{result.documento}</Td>
-                  <Td>{result.telefone}</Td>
-                  <Td>
-                    <Button size={"xs"} bg={"write"}>
-                      <EditIcon
-                        name="btnEditar"
-                        color={"blue.800"}
-                        boxSize={5}
-                        onClick={(e) => handleEdit(result.pessoaid, e)}
-                      />
-                    </Button>
-                    <Button size={"xs"} bg={"write"} name="btnDelete">
-                      <DeleteIcon
-                        color={"red.500"}
-                        boxSize={5}
-                        onClick={(e) => handleOpenDialog(result.pessoaid, e)}
-                      />
-                    </Button>
-                  </Td>
+      <Box paddingTop={100} paddingBottom={5}>
+        <Container fluid="md">
+          <HStack spacing="4" justify={"right"}>
+            <Button
+              id="btnNovo"
+              variant="outline"
+              colorScheme="gray"
+              gap={2}
+              onClick={handleNew}
+              size="sm"
+              marginBottom={2}
+            >
+              <AddIcon /> Nova
+            </Button>
+          </HStack>
+          <HStack>
+            <Box w="70%">
+              <InputGroup>
+                <Input
+                  onChange={(event) => {
+                    setInputNome(event.target.value);
+                  }}
+                  placeholder="Pesquisar por nome"
+                  size="sm"
+                  borderRadius={5}
+                />
+                <InputRightElement>
+                  <SmallCloseIcon justify={"right"} onClick={handleClear} />
+                </InputRightElement>
+              </InputGroup>
+            </Box>
+            <Button
+              variant="solid"
+              gap={2}
+              w={120}
+              p="1"
+              bg="gray.600"
+              color="white"
+              fontSize="x1"
+              _hover={{ bg: "gray.800" }}
+              onClick={handleClick}
+              size="sm"
+            >
+              <SearchIcon />
+              Pesquisar
+            </Button>
+          </HStack>
+          <br></br>
+          <TableContainer>
+            <Table variant="simple" size="sm">
+              <TableCaption>Quantidade: {results.length}</TableCaption>
+              <Thead>
+                <Tr>
+                  <Th>Nome</Th>
+                  <Th>Documento</Th>
+                  <Th>Telefone</Th>
+                  <Th>Ação</Th>
                 </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
-      </Container>
+              </Thead>
+              <Tbody>
+                {results.map((result) => (
+                  <Tr key={result.pessoaid}>
+                    <Td>
+                      <Link href={`/pessoas/edit/${result.pessoaid}`}>
+                        {result.nome}
+                      </Link>
+                    </Td>
+                    <Td>{result.documento}</Td>
+                    <Td>{result.telefone}</Td>
+                    <Td>
+                      <Button size={"xs"} bg={"write"}>
+                        <EditIcon
+                          name="btnEditar"
+                          color={"blue.800"}
+                          boxSize={5}
+                          onClick={(e) => handleEdit(result.pessoaid, e)}
+                        />
+                      </Button>
+                      <Button size={"xs"} bg={"write"} name="btnDelete">
+                        <DeleteIcon
+                          color={"red.500"}
+                          boxSize={5}
+                          onClick={(e) => handleOpenDialog(result.pessoaid, e)}
+                        />
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </Container>
+      </Box>
 
       <AlertDialog
         motionPreset="slideInBottom"

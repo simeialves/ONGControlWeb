@@ -103,10 +103,6 @@ const Headers = () => {
           height={2}
         ></Box>
       </Box>
-      <br />
-      <br />
-      <br />
-      <br />
     </>
   );
 };

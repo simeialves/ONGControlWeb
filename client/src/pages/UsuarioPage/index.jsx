@@ -118,160 +118,106 @@ const Usuario = () => {
     onOpen();
   }
   return (
-    // <>
-    //   <Headers />
-    //   <br></br>
-    //   <Container fluid="md">
-    //     <Button href="/usuarios/new">Novo</Button>
-    //     <br />
-    //     <br />
-    //     <Row>
-    //       <Table striped bordered hover size="sm">
-    //         <thead>
-    //           <tr>
-    //             <th scope="col">Nome</th>
-    //             <th scope="col">Login</th>
-    //             <th scope="col">Administrador</th>
-    //             <th colspan="2">Ação</th>
-    //           </tr>
-    //         </thead>
-    //         <tbody>
-    //           {results.map((result) => (
-    //             <tr>
-    //               <td>{result.nome}</td>
-    //               <td>{result.login}</td>
-    //               <td>
-    //                 <Checkbox
-    //                   isChecked={
-    //                     result.administrador == ADMINISTRADOR ? true : false
-    //                   }
-    //                   isDisabled
-    //                 />
-    //               </td>
-    //               <td>
-    //                 <button
-    //                   class="btn btn-primary"
-    //                   onClick={(e) => handleEdit(result.usuarioid, e)}
-    //                 >
-    //                   Editar
-    //                 </button>
-    //               </td>
-    //               <td>
-    //                 <button
-    //                   class="btn btn-danger"
-    //                   onClick={(e) => handleDelete(result.usuarioid, e)}
-    //                 >
-    //                   Excluir
-    //                 </button>
-    //               </td>
-    //             </tr>
-    //           ))}
-    //         </tbody>
-    //       </Table>
-    //     </Row>
-    //     <label>Quantidade: {results.length}</label>
-    //   </Container>
-    // </>
     <>
       <Headers />
-      <br></br>
-
-      <Container fluid="md">
-        <HStack spacing="4" justify={"right"}>
-          <Button
-            variant="outline"
-            colorScheme="gray"
-            gap={2}
-            onClick={handleNew}
-            size="sm"
-            marginBottom={2}
-          >
-            <AddIcon /> Nova
-          </Button>
-        </HStack>
-        <HStack>
-          <Box w="70%">
-            <InputGroup>
-              <Input
-                onChange={(event) => {
-                  setInputNome(event.target.value);
-                }}
-                placeholder="Pesquisar por nome"
-                size="sm"
-                borderRadius={5}
-              />
-              <InputRightElement>
-                <SmallCloseIcon justify={"right"} onClick={handleClear} />
-              </InputRightElement>
-            </InputGroup>
-          </Box>
-          <Button
-            variant="solid"
-            gap={2}
-            w={120}
-            p="1"
-            bg="gray.600"
-            color="white"
-            fontSize="x1"
-            _hover={{ bg: "gray.800" }}
-            onClick={handleClick}
-            size="sm"
-          >
-            <SearchIcon />
-            Pesquisar
-          </Button>
-        </HStack>
-        <br></br>
-        <TableContainer>
-          <Table variant="simple" size="sm">
-            <TableCaption>Quantidade: {results.length}</TableCaption>
-            <Thead>
-              <Tr>
-                <Th>Nome</Th>
-                <Th>Login</Th>
-                <Th>Administrador</Th>
-                <Th>Ação</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {results.map((result) => (
+      <Box paddingTop={100} paddingBottom={5}>
+        <Container fluid="md">
+          <HStack spacing="4" justify={"right"}>
+            <Button
+              variant="outline"
+              colorScheme="gray"
+              gap={2}
+              onClick={handleNew}
+              size="sm"
+              marginBottom={2}
+            >
+              <AddIcon /> Nova
+            </Button>
+          </HStack>
+          <HStack>
+            <Box w="70%">
+              <InputGroup>
+                <Input
+                  onChange={(event) => {
+                    setInputNome(event.target.value);
+                  }}
+                  placeholder="Pesquisar por nome"
+                  size="sm"
+                  borderRadius={5}
+                />
+                <InputRightElement>
+                  <SmallCloseIcon justify={"right"} onClick={handleClear} />
+                </InputRightElement>
+              </InputGroup>
+            </Box>
+            <Button
+              variant="solid"
+              gap={2}
+              w={120}
+              p="1"
+              bg="gray.600"
+              color="white"
+              fontSize="x1"
+              _hover={{ bg: "gray.800" }}
+              onClick={handleClick}
+              size="sm"
+            >
+              <SearchIcon />
+              Pesquisar
+            </Button>
+          </HStack>
+          <br></br>
+          <TableContainer>
+            <Table variant="simple" size="sm">
+              <TableCaption>Quantidade: {results.length}</TableCaption>
+              <Thead>
                 <Tr>
-                  <Td>
-                    <a href={`/usuarios/edit/${result.usuarioid}`}>
-                      {result.nome}
-                    </a>
-                  </Td>
-                  <Td>{result.login}</Td>
-                  <Td>
-                    <Checkbox
-                      isChecked={
-                        result.administrador == ADMINISTRADOR ? true : false
-                      }
-                      isDisabled
-                    />
-                  </Td>
-                  <Td>
-                    <Button size={"xs"} bg={"write"}>
-                      <EditIcon
-                        color={"blue.800"}
-                        boxSize={5}
-                        onClick={(e) => handleEdit(result.usuarioid, e)}
-                      />
-                    </Button>
-                    <Button size={"xs"} bg={"write"}>
-                      <DeleteIcon
-                        color={"red.500"}
-                        boxSize={5}
-                        onClick={(e) => handleOpenDialog(result.usuarioid, e)}
-                      />
-                    </Button>
-                  </Td>
+                  <Th>Nome</Th>
+                  <Th>Login</Th>
+                  <Th>Administrador</Th>
+                  <Th>Ação</Th>
                 </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
-      </Container>
+              </Thead>
+              <Tbody>
+                {results.map((result) => (
+                  <Tr>
+                    <Td>
+                      <a href={`/usuarios/edit/${result.usuarioid}`}>
+                        {result.nome}
+                      </a>
+                    </Td>
+                    <Td>{result.login}</Td>
+                    <Td>
+                      <Checkbox
+                        isChecked={
+                          result.administrador == ADMINISTRADOR ? true : false
+                        }
+                        isDisabled
+                      />
+                    </Td>
+                    <Td>
+                      <Button size={"xs"} bg={"write"}>
+                        <EditIcon
+                          color={"blue.800"}
+                          boxSize={5}
+                          onClick={(e) => handleEdit(result.usuarioid, e)}
+                        />
+                      </Button>
+                      <Button size={"xs"} bg={"write"}>
+                        <DeleteIcon
+                          color={"red.500"}
+                          boxSize={5}
+                          onClick={(e) => handleOpenDialog(result.usuarioid, e)}
+                        />
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </Container>
+      </Box>
       <AlertDialog
         motionPreset="slideInBottom"
         leastDestructiveRef={cancelRef}

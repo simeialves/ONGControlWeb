@@ -84,17 +84,6 @@ const New = () => {
     <>
       <Headers />
       <Box h="100vh">
-        <Center
-          as="header"
-          h={150}
-          bg="gray.100"
-          color={"blue.800"}
-          fontWeight="bold"
-          fontSize={"4x1"}
-          pb="8"
-        >
-          Cadastro de Tipo de Colaboradores
-        </Center>
         <Flex
           align="center"
           justify="center"

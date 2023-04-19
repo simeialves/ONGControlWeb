@@ -135,112 +135,112 @@ const Evento = () => {
   return (
     <>
       <Headers />
-      <br></br>
+      <Box paddingTop={100} paddingBottom={5}>
+        <Container fluid="md">
+          <HStack spacing="4" justify={"right"}>
+            <Button
+              variant="outline"
+              colorScheme="gray"
+              gap={2}
+              onClick={handleNew}
+              size="sm"
+              marginBottom={2}
+            >
+              <AddIcon /> Nova
+            </Button>
+          </HStack>
+          <barradeBotoesSuperior />
+          <HStack>
+            <Box w="70%">
+              <InputGroup>
+                <Input
+                  onChange={(event) => {
+                    setInputDescricao(event.target.value);
+                  }}
+                  placeholder="Pesquisar pela descrição"
+                  size="sm"
+                  borderRadius={5}
+                />
+                <InputRightElement>
+                  <SmallCloseIcon justify={"right"} onClick={handleClear} />
+                </InputRightElement>
+              </InputGroup>
+            </Box>
+            <Box w="30%">
+              <RadioGroup onChange={setInputAtivo} value={inputAtivo}>
+                <Stack direction="row">
+                  <HStack spacing={4}>
+                    <Radio value="1">Ativo</Radio>
+                    <Radio value="0">Inativo</Radio>
+                  </HStack>
+                </Stack>
+              </RadioGroup>
+            </Box>
 
-      <Container fluid="md">
-        <HStack spacing="4" justify={"right"}>
-          <Button
-            variant="outline"
-            colorScheme="gray"
-            gap={2}
-            onClick={handleNew}
-            size="sm"
-            marginBottom={2}
-          >
-            <AddIcon /> Nova
-          </Button>
-        </HStack>
-        <barradeBotoesSuperior />
-        <HStack>
-          <Box w="70%">
-            <InputGroup>
-              <Input
-                onChange={(event) => {
-                  setInputDescricao(event.target.value);
-                }}
-                placeholder="Pesquisar pela descrição"
-                size="sm"
-                borderRadius={5}
-              />
-              <InputRightElement>
-                <SmallCloseIcon justify={"right"} onClick={handleClear} />
-              </InputRightElement>
-            </InputGroup>
-          </Box>
-          <Box w="30%">
-            <RadioGroup onChange={setInputAtivo} value={inputAtivo}>
-              <Stack direction="row">
-                <HStack spacing={4}>
-                  <Radio value="1">Ativo</Radio>
-                  <Radio value="0">Inativo</Radio>
-                </HStack>
-              </Stack>
-            </RadioGroup>
-          </Box>
-
-          <Button
-            variant="solid"
-            gap={2}
-            w={120}
-            p="1"
-            bg="gray.600"
-            color="white"
-            fontSize="x1"
-            _hover={{ bg: "gray.800" }}
-            onClick={handleClick}
-            size="sm"
-          >
-            <SearchIcon />
-            Pesquisar
-          </Button>
-        </HStack>
-        <br></br>
-        <TableContainer>
-          <Table variant="simple" size="sm">
-            <TableCaption>Quantidade: {results.length}</TableCaption>
-            <Thead>
-              <Tr>
-                <Th>Descrição</Th>
-                <Th>Ativo</Th>
-                <Th>Ação</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {results.map((result) => (
+            <Button
+              variant="solid"
+              gap={2}
+              w={120}
+              p="1"
+              bg="gray.600"
+              color="white"
+              fontSize="x1"
+              _hover={{ bg: "gray.800" }}
+              onClick={handleClick}
+              size="sm"
+            >
+              <SearchIcon />
+              Pesquisar
+            </Button>
+          </HStack>
+          <br></br>
+          <TableContainer>
+            <Table variant="simple" size="sm">
+              <TableCaption>Quantidade: {results.length}</TableCaption>
+              <Thead>
                 <Tr>
-                  <Td>
-                    <Link href={`/eventos/edit/${result.eventoid}`}>
-                      {result.descricao}
-                    </Link>
-                  </Td>
-                  <Td>
-                    <Checkbox
-                      isChecked={result.ativo == STATUS_ATIVO ? true : false}
-                      isDisabled
-                    />
-                  </Td>
-                  <Td>
-                    <Button size={"xs"} bg={"write"}>
-                      <EditIcon
-                        color={"blue.800"}
-                        boxSize={5}
-                        onClick={(e) => handleEdit(result.eventoid, e)}
-                      />
-                    </Button>
-                    <Button size={"xs"} bg={"write"}>
-                      <DeleteIcon
-                        color={"red.500"}
-                        boxSize={5}
-                        onClick={(e) => handleOpenDialog(result.eventoid, e)}
-                      />
-                    </Button>
-                  </Td>
+                  <Th>Descrição</Th>
+                  <Th>Ativo</Th>
+                  <Th>Ação</Th>
                 </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
-      </Container>
+              </Thead>
+              <Tbody>
+                {results.map((result) => (
+                  <Tr>
+                    <Td>
+                      <Link href={`/eventos/edit/${result.eventoid}`}>
+                        {result.descricao}
+                      </Link>
+                    </Td>
+                    <Td>
+                      <Checkbox
+                        isChecked={result.ativo == STATUS_ATIVO ? true : false}
+                        isDisabled
+                      />
+                    </Td>
+                    <Td>
+                      <Button size={"xs"} bg={"write"}>
+                        <EditIcon
+                          color={"blue.800"}
+                          boxSize={5}
+                          onClick={(e) => handleEdit(result.eventoid, e)}
+                        />
+                      </Button>
+                      <Button size={"xs"} bg={"write"}>
+                        <DeleteIcon
+                          color={"red.500"}
+                          boxSize={5}
+                          onClick={(e) => handleOpenDialog(result.eventoid, e)}
+                        />
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </Container>
+      </Box>
       <AlertDialog
         motionPreset="slideInBottom"
         leastDestructiveRef={cancelRef}
