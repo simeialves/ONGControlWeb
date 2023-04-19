@@ -95,7 +95,7 @@ export default function DoacoesNecessarias({ eventoid }) {
     <>
       <Container fluid="md">
         <Box boxShadow={"lg"} marginBottom={2}>
-          <Box bg="gray.600" w="100%" p={4} color="white">
+          <Box bg="red.800" w="100%" p={4} color="white">
             <HStack spacing="4" justify={"center"}>
               <Heading
                 size={{

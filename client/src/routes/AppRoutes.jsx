@@ -7,6 +7,8 @@ import {
 } from "react-router-dom";
 import { AuthContext, AuthProvider } from "../shared/contexts/auth";
 
+import Contatos from "../pages/Contatos";
+
 import Evento from "../pages/EventoPage";
 import {
   default as EditEventoPage,
@@ -244,6 +246,15 @@ const AppRouters = () => {
             element={
               <Private>
                 <EditLocalEventoPage />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/contatos"
+            element={
+              <Private>
+                <Contatos />
               </Private>
             }
           />

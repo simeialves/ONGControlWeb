@@ -65,7 +65,7 @@ const LoginPage = () => {
       <Box
         width="100%"
         height="100vh"
-        bgGradient="linear(to-r, red.600, red.600)"
+        bgGradient="linear(to-r, red.600, red.900)"
       >
         <Flex
           height="100vh"
@@ -80,7 +80,7 @@ const LoginPage = () => {
             position="absolute"
             borderRadius={20}
             p="6"
-            boxShadow="0 1px 2px #ccc"
+            boxShadow="0px 0px 0px rgba(255, 255, 255, 0.5)"
           >
             <FormControl display="flex" flexDir="column" gap="4">
               <HStack justify={"center"}>
