@@ -1,6 +1,11 @@
 apps:
-  - script: npm start
-    name: 'lyoncontrol'
+  - script: serve
+    name: "ongcontrolcliente"
+    args:
+      - "-s"
+      - "build"
+      - "-l"
+      - "3006"
     instances: 1
     exec_mode: cluster
     max_memory_restart: 500M
