@@ -82,7 +82,7 @@ export const CardEvento = () => {
                 <Divider />
                 <CardFooter>
                   <ButtonGroup spacing="2">
-                    <Link href={`/eventos/edit/${result.eventoid}`}>
+                    <Link href={`/eventos/details/${result.eventoid}`}>
                       <Button
                         variant="solid"
                         colorScheme="red"

@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import {
-  BrowserRouter as Router,
   Navigate,
   Route,
+  BrowserRouter as Router,
   Routes,
 } from "react-router-dom";
 import { AuthContext, AuthProvider } from "../shared/contexts/auth";
@@ -12,6 +12,7 @@ import {
   default as EditEventoPage,
   default as NewEventoPage,
 } from "../pages/EventoPage/details";
+import DetalheEventoPage from "../pages/EventoPage/eventodetails";
 
 import HomePage from "../pages/HomePage";
 
@@ -207,6 +208,15 @@ const AppRouters = () => {
             element={
               <Private>
                 <EditEventoPage />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/eventos/details/:id"
+            element={
+              <Private>
+                <DetalheEventoPage />
               </Private>
             }
           />

@@ -15,31 +15,11 @@ import {
   Radio,
   RadioGroup,
   Stack,
-  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { Footer } from "../Footer";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
-
-function ToastExample() {
-  const toast = useToast();
-  return (
-    // <Button
-    //   onClick={() =>
-    toast({
-      title: "Account created.",
-      description: "We've created your account for you.",
-      status: "success",
-      duration: 9000,
-      isClosable: true,
-    })
-    //   }
-    // >
-    //   Show Toast
-    // </Button>
-  );
-}
 
 const New = () => {
   const { id } = useParams();
