@@ -22,6 +22,7 @@ jobs:
       - name: Deploy to Elastic Beanstalk
         run: |
           npm install
-          zip -r ongcontrolweb-$GITHUB_SHA.zip .
+          zip -r ongcontrolweb-$GITHUB_SHA.zip .          
+          aws s3 cp ongcontrolweb-$GITHUB_SHA.zip s3://elasticbeanstalk-us-east-1-166115332584/ongcontrolweb-$GITHUB_SHA.zip
           aws elasticbeanstalk create-application-version --application-name ongcontrolweb --version-label $GITHUB_SHA --source-bundle S3Bucket=elasticbeanstalk-us-east-1-166115332584,S3Key=ongcontrolweb-$GITHUB_SHA.zip
           aws elasticbeanstalk update-environment --environment-name Ongcontrolweb-env --version-label $GITHUB_SHA
