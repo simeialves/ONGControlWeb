@@ -23,5 +23,5 @@ jobs:
         run: |
           npm install
           zip -r my-app-$GITHUB_SHA.zip .
-          aws elasticbeanstalk create-application-version --application-name my-app --version-label $GITHUB_SHA --source-bundle S3Bucket=elasticbeanstalk-us-east-1-1234567890,S3Key=my-app-$GITHUB_SHA.zip
-          aws elasticbeanstalk update-environment --environment-name my-env --version-label $GITHUB_SHA
+          aws elasticbeanstalk create-application-version --application-name ongcontrolweb --version-label $GITHUB_SHA --source-bundle S3Bucket=elasticbeanstalk-us-east-1-1234567890,S3Key=my-app-$GITHUB_SHA.zip
+          aws elasticbeanstalk update-environment --environment-name Ongcontrolweb-env --version-label $GITHUB_SHA
