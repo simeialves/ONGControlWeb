@@ -22,7 +22,15 @@ const localeventoRoutes = require("./routes/localEventoRoutes");
 const parametrosRoutes = require("./routes/parametroRoutes");
 const projetoRoutes = require("./routes/projetoRoutes");
 const app = express();
-require("dotenv").config();
+
+const envpath =
+  process.env.NODE_ENV === undefined
+    ? ".env.development"
+    : `.env.${process.env.NODE_ENV}`;
+
+require("dotenv").config({
+  path: envpath,
+});
 
 app.use(morgan("common"));
 
