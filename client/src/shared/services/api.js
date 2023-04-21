@@ -4,7 +4,7 @@ import { removeCaracter } from "../../pages/Uteis/Uteis";
 export const token = localStorage.getItem("access_token");
 
 export const api = axios.create({
-  baseURL: "http://52.2.207.251/",
+  baseURL: "http://35.169.154.37/",
   headers: { "x-access-token": token },
 });
 
