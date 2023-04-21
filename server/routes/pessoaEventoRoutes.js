@@ -2,7 +2,7 @@ const express = require("express");
 const appRoutes = express.Router();
 const bodyParser = require("body-parser");
 const { verifyJWT } = require("./../includes/Uteis");
-const PessoaEventoController = require("../Controllers/PessoaEventoController");
+const PessoaEventoController = require("../controllers/PessoaEventoController");
 
 appRoutes.use(bodyParser.json());
 

@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const db = require("../config/db");
-const PessoaController = require("../Controllers/PessoaController");
+const PessoaController = require("../controllers/PessoaController");
 const appRoutes = express.Router();
 const bodyParser = require("body-parser");
 const { verifyJWT } = require("./../includes/Uteis");
