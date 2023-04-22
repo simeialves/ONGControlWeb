@@ -30,7 +30,6 @@ jobs:
       - name: Deploy to Elastic Beanstalk - ONGControlClient
         run: |
           npm install
-          cd ..
           cd client
           zip -r ongcontrolweb-client.zip *
           aws s3 cp ongcontrolweb-client.zip s3://elasticbeanstalk-us-east-1-166115332584/ongcontrolweb-client.zip
