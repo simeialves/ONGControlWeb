@@ -15,7 +15,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { STATUS_ATIVO } from "../../../../includes/const";
-import { getTipoDoacoes } from "../../../../shared/services/TipoDoacao";
+import { getTipoDoacoes } from "../../../../shared/services/TipoDoacao/Index";
 import { api } from "../../../../shared/services/api";
 
 function DoacoesNecessariasPage(props) {
