@@ -1,4 +1,4 @@
-name: Deploy to Elastic Beanstalk - Client
+name: Deploy to Elastic Beanstalk - Client2
 on:
   push:
     branches:
