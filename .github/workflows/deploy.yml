@@ -23,7 +23,7 @@ jobs:
         run: |
           npm install
           cd server
-          zip -r ongcontrolweb-server.zip .*
+          zip -r ongcontrolweb-server.zip *
           aws s3 cp ongcontrolweb-server.zip s3://elasticbeanstalk-us-east-1-166115332584/ongcontrolweb-server.zip
           aws elasticbeanstalk create-application-version --application-name ongcontrol-server --version-label $GITHUB_SHA --source-bundle S3Bucket="elasticbeanstalk-us-east-1-166115332584",S3Key="ongcontrolweb-server.zip"
           aws elasticbeanstalk update-environment --environment-name Ongcontrolserver-env --version-label $GITHUB_SHA
@@ -31,7 +31,7 @@ jobs:
         run: |
           npm install
           cd client
-          zip -r ongcontrolweb-client.zip .*
+          zip -r ongcontrolweb-client.zip *
           aws s3 cp ongcontrolweb-client.zip s3://elasticbeanstalk-us-east-1-166115332584/ongcontrolweb-client.zip
           aws elasticbeanstalk create-application-version --application-name ongcontrol-client --version-label $GITHUB_SHA --source-bundle S3Bucket="elasticbeanstalk-us-east-1-166115332584",S3Key="ongcontrolweb-client.zip"
           aws elasticbeanstalk update-environment --environment-name Ongcontrolclient-env --version-label $GITHUB_SHA
