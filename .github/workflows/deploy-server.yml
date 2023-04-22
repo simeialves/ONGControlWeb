@@ -21,9 +21,13 @@ jobs:
           node-version: "14.x"
       - name: Deploy to Elastic Beanstalk - ONGControlServer
         run: |
+          set environment_name=Ongcontrolwebserver-env
+          set application_name=ongcontrolweb-server
+          set filezip=ongcontrolweb-server.zip
+          set buckets3_name=elasticbeanstalk-us-east-1-166115332584
           npm install
           cd server
-          zip -r ongcontrolweb-server.zip *
-          aws s3 cp ongcontrolweb-server.zip s3://elasticbeanstalk-us-east-1-166115332584/ongcontrolweb-server.zip
-          aws elasticbeanstalk create-application-version --application-name ongcontrolweb-server --version-label $GITHUB_SHA --source-bundle S3Bucket="elasticbeanstalk-us-east-1-166115332584",S3Key="ongcontrolweb-server.zip"
-          aws elasticbeanstalk update-environment --environment-name Ongcontrolwebserver-env --version-label $GITHUB_SHA
+          zip -r %filezip% *
+          aws s3 cp %filezip% s3://%buckets3_name%/%filezip%
+          aws elasticbeanstalk create-application-version --application-name %application_name% --version-label $GITHUB_SHA --source-bundle S3Bucket="%buckets3_name%",S3Key="%filezip%"
+          aws elasticbeanstalk update-environment --environment-name %environment_name% --version-label $GITHUB_SHA
