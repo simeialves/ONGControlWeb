@@ -13,21 +13,22 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: us-east-1
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
           node-version: "14.x"
       - name: Deploy to Elastic Beanstalk - ONGControlServer
+        env:
+          ENVIRONMENT_NAME: "Ongcontrolwebserver-env"
+          APPLICATION_NAME: "ongcontrolweb-server"
+          FILE_ZIP: "ongcontrolweb-server.zip"
+          BUCKET_S3_NAME: "elasticbeanstalk-us-east-1-166115332584"
         run: |
-          set $environment_name=Ongcontrolwebserver-env
-          set $application_name=ongcontrolweb-server
-          set $filezip=ongcontrolweb-server.zip
-          set $buckets3_name=elasticbeanstalk-us-east-1-166115332584
           npm install
           cd server
-          zip -r %filezip% *
-          aws s3 cp %filezip% s3://%buckets3_name%/%filezip%
-          aws elasticbeanstalk create-application-version --application-name %application_name% --version-label $GITHUB_SHA --source-bundle S3Bucket="%buckets3_name%",S3Key="%filezip%"
-          aws elasticbeanstalk update-environment --environment-name %environment_name% --version-label $GITHUB_SHA
+          zip -r $FILE_ZIP *
+          aws s3 cp $FILE_ZIP s3://$BUCKET_S3_NAME/$FILE_ZIP
+          aws elasticbeanstalk create-application-version --application-name $APPLICATION_NAME --version-label $GITHUB_SHA --source-bundle S3Bucket=$BUCKET_S3_NAME,S3Key=$FILE_ZIP
+          aws elasticbeanstalk update-environment --environment-name $ENVIRONMENT_NAME --version-label $GITHUB_SHA
