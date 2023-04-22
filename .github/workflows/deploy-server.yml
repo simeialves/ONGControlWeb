@@ -21,10 +21,10 @@ jobs:
           node-version: "14.x"
       - name: Deploy to Elastic Beanstalk - ONGControlServer
         run: |
-          set environment_name=Ongcontrolwebserver-env
-          set application_name=ongcontrolweb-server
-          set filezip=ongcontrolweb-server.zip
-          set buckets3_name=elasticbeanstalk-us-east-1-166115332584
+          set $environment_name=Ongcontrolwebserver-env
+          set $application_name=ongcontrolweb-server
+          set $filezip=ongcontrolweb-server.zip
+          set $buckets3_name=elasticbeanstalk-us-east-1-166115332584
           npm install
           cd server
           zip -r %filezip% *
