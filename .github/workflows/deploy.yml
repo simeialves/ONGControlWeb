@@ -19,11 +19,11 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "14.x"
-      - name: Deploy to Elastic Beanstalk - ONGControlServer
+      - name: Deploy to Elastic Beanstalk - ONGControlClient
         run: |
           npm install
-          cd server
-          zip -r ongcontrolweb-server.zip *
-          aws s3 cp ongcontrolweb-server.zip s3://elasticbeanstalk-us-east-1-166115332584/ongcontrolweb-server.zip
-          aws elasticbeanstalk create-application-version --application-name ongcontrolweb-server --version-label $GITHUB_SHA --source-bundle S3Bucket="elasticbeanstalk-us-east-1-166115332584",S3Key="ongcontrolweb-server.zip"
-          aws elasticbeanstalk update-environment --environment-name Ongcontrolwebserver-env --version-label $GITHUB_SHA
+          cd client
+          zip -r ongcontrolweb-client.zip *
+          aws s3 cp ongcontrolweb-client.zip s3://elasticbeanstalk-us-east-1-166115332584/ongcontrolweb-client.zip
+          aws elasticbeanstalk create-application-version --application-name ongcontrolweb-client --version-label $GITHUB_SHA --source-bundle S3Bucket="elasticbeanstalk-us-east-1-166115332584",S3Key="ongcontrolweb-client.zip"
+          aws elasticbeanstalk update-environment --environment-name Ongcontrolwebclient-env --version-label $GITHUB_SHA
