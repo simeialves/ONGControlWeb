@@ -21,8 +21,8 @@ jobs:
           node-version: "14.x"
       - name: Deploy to Elastic Beanstalk - ONGControlClient
         env:
-          ENVIRONMENT_NAME: "Ongcontrolwebclient-env"
-          APPLICATION_NAME: "ongcontrolweb-client"
+          ENVIRONMENT_NAME: "Client5-env"
+          APPLICATION_NAME: "client5"
           FILE_ZIP: "ongcontrolweb-client.zip"
           BUCKET_S3_NAME: "elasticbeanstalk-us-east-1-166115332584"
         run: |
