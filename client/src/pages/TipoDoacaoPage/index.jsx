@@ -46,7 +46,7 @@ import SpinnerUtil from "../Uteis/progress";
 
 import Container from "react-bootstrap/Container";
 import { STATUS_ATIVO } from "../../includes/const";
-import { getTipoDoacoes } from "../../shared/services/TipoDoacao/Index";
+import { getTipoDoacoes } from "../../shared/services/TipoDoacao/";
 import { Footer } from "../Footer";
 
 const TipoDoacao = () => {
