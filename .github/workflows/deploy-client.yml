@@ -21,21 +21,20 @@ jobs:
           aws-region: us-east-1
       - name: Build and package frontend
         env:
-          FILE_ZIP: "frontend-dist.zip"
+          FILE_ZIP: "ongcontrolweb-client.zip"
           BUCKET_S3_NAME: "elasticbeanstalk-us-east-1-166115332584"
         run: |
           cd client
           npm install
           npm run build
-          zip -r frontend-dist.zip build/
+          zip -r $FILE_ZIP build/
           aws s3 cp $FILE_ZIP s3://$BUCKET_S3_NAME/$FILE_ZIP
       - name: Deploy to Elastic Beanstalk
         env:
           ENVIRONMENT_NAME: "Client7-env"
           APPLICATION_NAME: "client7"
-          FILE_ZIP: "frontend-dist.zip"
+          FILE_ZIP: "ongcontrolweb-client.zip"
           BUCKET_S3_NAME: "elasticbeanstalk-us-east-1-166115332584"
         run: |
-          aws s3 cp $FILE_ZIP s3://$BUCKET_S3_NAME/$FILE_ZIP
           aws elasticbeanstalk create-application-version --application-name $APPLICATION_NAME --version-label $GITHUB_SHA --source-bundle S3Bucket=$BUCKET_S3_NAME,S3Key=$FILE_ZIP
           aws elasticbeanstalk update-environment --environment-name $ENVIRONMENT_NAME --version-label $GITHUB_SHA
