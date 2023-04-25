@@ -42,7 +42,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  return res.status(200).json("Página Inicial do ONGControlWeb - 23");
+  return res.status(200).json("Página Inicial do ONGControlWeb - 24");
 });
 
 //#region routes
