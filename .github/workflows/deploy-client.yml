@@ -14,8 +14,8 @@ jobs:
           node-version: "14.x"
       - name: Build and package frontend
         run: |
-          npm install
           cd client
+          npm install
           npm run build
           zip -r frontend-dist.zip build/
       - name: Configure AWS credentials
