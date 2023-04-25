@@ -27,7 +27,8 @@ jobs:
           cd client
           npm install
           npm run build
-          zip -r $FILE_ZIP build/
+          # zip -r $FILE_ZIP build/
+          zip -r $FILE_ZIP *
           aws s3 cp $FILE_ZIP s3://$BUCKET_S3_NAME/$FILE_ZIP
       - name: Deploy to Elastic Beanstalk
         env:
