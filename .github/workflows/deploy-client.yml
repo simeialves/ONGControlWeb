@@ -15,6 +15,7 @@ jobs:
       - name: Build and package frontend
         run: |
           npm install
+          cd client
           npm run build
           zip -r frontend-dist.zip build/
       - name: Configure AWS credentials
