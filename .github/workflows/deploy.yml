@@ -1,4 +1,4 @@
-name: Deploy to Elastic Beanstalk - Server
+name: Deploy to Elastic Beanstalk
 on:
   push:
     branches:
@@ -35,7 +35,7 @@ jobs:
       - name: Deploy to Elastic Beanstalk - ONGControlClient
         env:
           ENVIRONMENT_NAME: "Client6-env"
-          APPLICATION_NAME: "client6"
+          APPLICATION_NAME: "client-6"
           FILE_ZIP: "ongcontrolweb-client.zip"
           BUCKET_S3_NAME: "elasticbeanstalk-us-east-1-166115332584"
         run: |
