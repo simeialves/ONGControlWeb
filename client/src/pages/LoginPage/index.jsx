@@ -157,7 +157,7 @@ const LoginPage = () => {
                   onClick={handleSubmit}
                   borderRadius="full"
                 >
-                  Logarei
+                  Logar no sistema
                 </Button>
               </HStack>
               <HStack justify="space-between">
