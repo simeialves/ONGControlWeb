@@ -1,4 +1,4 @@
-name: Deploy Frontend to Elastic Beanstalk
+name: Deploy to Elastic Beanstalk - Client
 on:
   push:
     branches:
@@ -13,11 +13,15 @@ jobs:
         with:
           node-version: "14.x"
       - name: Build and package frontend
+        env:
+          FILE_ZIP: "frontend-dist.zip"
+          BUCKET_S3_NAME: "elasticbeanstalk-us-east-1-166115332584"
         run: |
           cd client
           npm install
           npm run build
           zip -r frontend-dist.zip build/
+          aws s3 cp $FILE_ZIP s3://$BUCKET_S3_NAME/$FILE_ZIP
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
