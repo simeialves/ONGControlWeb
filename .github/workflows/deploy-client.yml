@@ -27,7 +27,6 @@ jobs:
           BUCKET_S3_NAME: "elasticbeanstalk-us-east-1-166115332584"
         run: |
           npm install
-          cd client
           npm run build
           zip -r $FILE_ZIP *
           aws s3 cp $FILE_ZIP s3://$BUCKET_S3_NAME/$FILE_ZIP
