@@ -21,6 +21,8 @@ jobs:
           aws-region: us-east-1
       - name: Build and package frontend
         env:
+          ENVIRONMENT_NAME: "Client11-env"
+          APPLICATION_NAME: "client11"
           FILE_ZIP: "ongcontrolweb-client.zip"
           BUCKET_S3_NAME: "elasticbeanstalk-us-east-1-166115332584"
         run: |
@@ -28,3 +30,5 @@ jobs:
           npm install
           npm run build
           aws s3 sync build/ s3://$BUCKET_S3_NAME --delete
+          aws elasticbeanstalk create-application-version --application-name $APPLICATION_NAME --version-label $GITHUB_SHA --source-bundle S3Bucket=$BUCKET_S3_NAME,S3Key=$FILE_ZIP
+          aws elasticbeanstalk update-environment --environment-name $ENVIRONMENT_NAME --version-label $GITHUB_SHA
