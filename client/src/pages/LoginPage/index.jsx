@@ -89,7 +89,6 @@ const LoginPage = () => {
                   className="img"
                   objectFit="cover"
                   boxSize="250px"
-                  //src="http://www.lyon.com.br/img/produtos/lyonControl_redmine.png"
                   src="https://simeialves.com.br/images/logo_ongcontrol.png"
                   alt="Dan Abramov"
                   padding={50}
