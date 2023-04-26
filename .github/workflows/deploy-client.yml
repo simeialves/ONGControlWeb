@@ -19,13 +19,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: us-east-1
-          deployment_package: ongcontrolweb-client.zip
       - name: Build and package frontend
         env:
           FILE_ZIP: "ongcontrolweb-client.zip"
           BUCKET_S3_NAME: "elasticbeanstalk-us-east-1-166115332584"
         run: |
-          cd client
+          cd /client
           npm install
           npm run build
           # zip -r $FILE_ZIP build/
