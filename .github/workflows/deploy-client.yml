@@ -32,8 +32,8 @@ jobs:
           aws s3 cp $FILE_ZIP s3://$BUCKET_S3_NAME/$FILE_ZIP
       - name: Deploy to Elastic Beanstalk
         env:
-          ENVIRONMENT_NAME: "Client9-env"
-          APPLICATION_NAME: "client9"
+          ENVIRONMENT_NAME: "Client11-env"
+          APPLICATION_NAME: "client11"
           FILE_ZIP: "ongcontrolweb-client.zip"
           BUCKET_S3_NAME: "elasticbeanstalk-us-east-1-166115332584"
         run: |
