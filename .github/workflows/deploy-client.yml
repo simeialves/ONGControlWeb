@@ -24,7 +24,7 @@ jobs:
           FILE_ZIP: "ongcontrolweb-client.zip"
           BUCKET_S3_NAME: "elasticbeanstalk-us-east-1-166115332584"
         run: |
-          cd /client
+          cd client
           npm install
           npm run build
           # zip -r $FILE_ZIP build/
