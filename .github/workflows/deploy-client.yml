@@ -26,6 +26,7 @@ jobs:
         run: |
           cd client
           npm install
+          cd build
           npm run build
           # zip -r $FILE_ZIP build/
           zip -r $FILE_ZIP *
