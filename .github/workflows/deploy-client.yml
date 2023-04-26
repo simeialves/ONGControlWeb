@@ -28,8 +28,10 @@ jobs:
           npm install
           npm run build
           # zip -r $FILE_ZIP build/
-          zip -r $FILE_ZIP *
-          aws s3 cp $FILE_ZIP s3://$BUCKET_S3_NAME/$FILE_ZIP
+          # zip -r $FILE_ZIP *
+          # aws s3 cp $FILE_ZIP s3://$BUCKET_S3_NAME/$FILE_ZIP
+          # aws s3 sync build/ s3://${{ env.BUCKET_NAME }} --delete
+          aws s3 sync build/ s3://$BUCKET_S3_NAME --delete
       - name: Deploy to Elastic Beanstalk
         env:
           ENVIRONMENT_NAME: "Client11-env"
