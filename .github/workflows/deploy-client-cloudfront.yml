@@ -25,6 +25,7 @@ jobs:
           DISTRIBUTION_ID: "ECR1SKUEPNWLE"
           BUILD_OUTPUT_DIR: "build"
         run: |
+          cd client
           npm install
           npm run build
           aws s3 sync $BUILD_OUTPUT_DIR s3://$BUCKET_NAME --delete
