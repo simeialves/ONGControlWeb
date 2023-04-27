@@ -34,7 +34,7 @@ const Navbar2 = () => {
   return (
     <>
       <Box as="nav" position="fixed" top="0" width="100%" zIndex="1">
-        <Flex bg={smDown ? "red.800" : "blue.800"} p={4} color="white">
+        <Flex bg="red.800" p={4} color="white">
           <Link mr={8} href="/">
             <Text fontSize="lg" fontWeight="bold">
               ONGControl
@@ -114,14 +114,6 @@ const Navbar2 = () => {
           <Link mr={2} onClick={() => handleLogout()}>
             Logout
           </Link>
-          {/* <Button
-            mr={2}
-            colorScheme="white"
-            variant="outline"
-            onClick={() => handleLogout()}
-          >
-            Logout
-          </Button> */}
         </Flex>
       </Box>
     </>
