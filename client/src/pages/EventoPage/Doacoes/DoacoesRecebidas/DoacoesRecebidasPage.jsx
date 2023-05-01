@@ -91,6 +91,11 @@ function DoacoesRecebidasPage(props) {
     }
   };
 
+  const handleCloseModal = async () => {
+    await handleSubmit();
+    props.event();
+  };
+
   return (
     <>
       <FormControl display="flex" flexDir="column" gap="1">
@@ -182,9 +187,25 @@ function DoacoesRecebidasPage(props) {
             fontWeight="bold"
             fontSize="x1"
             _hover={{ bg: "blue.800" }}
-            onClick={handleSubmit}
+            onClick={handleCloseModal}
           >
             Salvar
+          </Button>
+          <Button
+            w={100}
+            p="6"
+            type="submit"
+            bg="gray.600"
+            color="white"
+            fontWeight="bold"
+            fontSize="x1"
+            _hover={{ bg: "gray.800" }}
+            onClick={props.event}
+            gap={2}
+            size="xs"
+            marginBottom={2}
+          >
+            Cancelar
           </Button>
         </HStack>
       </FormControl>

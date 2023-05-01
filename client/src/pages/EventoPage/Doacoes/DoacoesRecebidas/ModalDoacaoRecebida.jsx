@@ -8,7 +8,6 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 
 import { AddIcon } from "@chakra-ui/icons";
@@ -20,9 +19,9 @@ export const ModalDoacaoRecebida = (eventoid) => {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
 
-  function handleCloseModal() {
+  const handleCloseModal = () => {
     onClose();
-  }
+  };
 
   return (
     <>
@@ -42,12 +41,10 @@ export const ModalDoacaoRecebida = (eventoid) => {
           <ModalHeader>Doações Recebidas</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            {
-              <DoacoesRecebidasPage
-                eventoid={eventoid}
-                handleCloseModal={handleCloseModal}
-              />
-            }
+            <DoacoesRecebidasPage
+              eventoid={eventoid}
+              event={handleCloseModal}
+            />
           </ModalBody>
 
           <ModalFooter></ModalFooter>
