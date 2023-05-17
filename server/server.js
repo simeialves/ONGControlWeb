@@ -17,6 +17,7 @@ const tipoColaboradorEventoRoutes = require("./routes/tipoColaboradorEventoRoute
 const eventoRoutes = require("./routes/eventoRoutes");
 
 const doacaoEventoRoutes = require("./routes/doacaoEventoRoutes");
+const doacaoEventoPessoaRoutes = require("./routes/doacaoEventoPessoaRoutes");
 
 const localeventoRoutes = require("./routes/localEventoRoutes");
 const parametrosRoutes = require("./routes/parametroRoutes");
@@ -32,7 +33,7 @@ require("dotenv").config({
   path: envpath,
 });
 
-app.use(morgan("common"));
+// app.use(morgan("common"));
 
 const corsOptions = {
   origin: "*",
@@ -61,6 +62,7 @@ app.use("/tipocolaboradoreventos", tipoColaboradorEventoRoutes);
 app.use("/eventos", eventoRoutes);
 
 app.use("/doacaoeventos", doacaoEventoRoutes);
+app.use("/doacaoeventospessoas", doacaoEventoPessoaRoutes);
 
 app.use("/localeventos", localeventoRoutes);
 app.use("/parametros", parametrosRoutes);

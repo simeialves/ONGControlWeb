@@ -36,6 +36,18 @@ CREATE TABLE `projeto` (
 ADD CONSTRAINT FK_projetoid
 FOREIGN KEY (projetoid) REFERENCES projeto (projetoid);
 
+CREATE TABLE doacaoeventopessoa (
+    doacaoeventopessoaid INT AUTO_INCREMENT PRIMARY KEY,
+    doacaoeventoid INT,
+    eventoid INT,
+    pessoaid INT,
+    pessoaeventoid INT,
+    quantidade INT,
+    status VARCHAR(255),
+    FOREIGN KEY (eventoid) REFERENCES evento(eventoid),
+    FOREIGN KEY (doacaoeventoid) REFERENCES doacaoevento(doacaoeventoid),
+    FOREIGN KEY (pessoaid) REFERENCES pessoa(pessoaid)
+);
 
 
 DELIMITER $$
