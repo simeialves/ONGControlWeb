@@ -101,3 +101,36 @@ create trigger `pessoaevento_after_insert` after insert on `pessoaevento` for ea
 end
 $$
 delimiter ;
+
+-- DoacaoEventoPessoa
+
+delimiter $$
+create trigger `doacaoeventopessoa_after_insert` after insert on `doacaoeventopessoa` for each row begin
+    update tipodoacaoevento set quantidaderealizadas = quantidaderealizadas + new.quantidade where tipodoacaoeventoid = 
+    (select doacaoevento.tipodoacaoeventoid from doacaoevento where new.doacaoeventoid = doacaoevento.doacaoeventoid );
+end
+$$
+delimiter ;
+
+delimiter $$
+create trigger `doacaoeventopessoa_after_delete` after delete on `doacaoeventopessoa` for each row begin
+    update tipodoacaoevento set quantidaderealizadas = quantidaderealizadas - old.quantidade where tipodoacaoeventoid = 
+    (select doacaoevento.tipodoacaoeventoid from doacaoevento where old.doacaoeventoid = doacaoevento.doacaoeventoid );
+end
+$$
+delimiter ;
+
+delimiter $$
+create trigger `doacaoeventopessoa_after_update` after update on `doacaoeventopessoa` for each row begin
+	if old.quantidade > new.quantidade then
+    update tipodoacaoevento set quantidaderealizadas = quantidaderealizadas + (new.quantidade-old.quantidade) where tipodoacaoeventoid = (select doacaoevento.tipodoacaoeventoid from doacaoevento where new.doacaoeventoid = doacaoevento.doacaoeventoid);
+    end if;
+    
+    if old.quantidade < new.quantidade then
+    update tipodoacaoevento set quantidaderealizadas = quantidaderealizadas - (old.quantidade-new.quantidade) where tipodoacaoeventoid = (select doacaoevento.tipodoacaoeventoid from doacaoevento where new.doacaoeventoid = doacaoevento.doacaoeventoid);
+    end if;
+end
+$$
+delimiter ;
+
+
