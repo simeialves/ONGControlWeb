@@ -12,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 
 import {
-  AddIcon,
   DeleteIcon,
   EditIcon,
   SearchIcon,
@@ -25,9 +24,10 @@ import SpinnerUtil from "../../Uteis/progress";
 import { Box, HStack, Input, InputGroup } from "@chakra-ui/react";
 import Container from "react-bootstrap/Container";
 
-import { TIPO_BENEFICIARIO } from "../../../includes/const";
-import { api } from "../../../shared/services/api";
+import { getDoacaoEventoPessoa } from "../../../shared/services/DoacaoEventoPessoa";
 import { getPessoasEvento } from "../../../shared/services/PessoaEvento";
+import { api } from "../../../shared/services/api";
+import { ModalBeneficiario } from "./ModalBeneficiario";
 
 export default function Beneficiarios({ eventoid }) {
   const [results, setResults] = useState([]);
@@ -35,17 +35,25 @@ export default function Beneficiarios({ eventoid }) {
   const [message, setMessage] = useState(false);
   const [inputNome, setInputNome] = useState("");
   const [inputAtivo, setInputAtivo] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
-      const response = await getPessoasEvento(TIPO_BENEFICIARIO, eventoid);
+      console.log(eventoid);
+      const response = await getDoacaoEventoPessoa(eventoid);
       setResults(response.data);
       setLoading(false);
       setMessage(false);
+      console.log(response);
     })();
   }, [eventoid]);
+
+  async function fetchData() {
+    const response = await getTipoDoacaoEventos(eventoid);
+    setResults(response.data);
+  }
 
   if (loading) {
     return <SpinnerUtil />;
@@ -91,8 +99,10 @@ export default function Beneficiarios({ eventoid }) {
     setResults(response.data);
     setLoading(false);
   }
-  async function handleNew() {
-    navigate("/pessoas/new");
+
+  async function handleModalClose() {
+    setIsModalOpen(false);
+    fetchData();
   }
   return (
     <>
@@ -102,11 +112,14 @@ export default function Beneficiarios({ eventoid }) {
             variant="outline"
             colorScheme="gray"
             gap={2}
-            onClick={handleNew}
             size="sm"
             marginBottom={2}
           >
-            <AddIcon /> Nova
+            <ModalBeneficiario
+              eventoid={eventoid}
+              isOpen={isModalOpen}
+              onClose={handleModalClose}
+            />
           </Button>
         </HStack>
         <HStack>
@@ -149,8 +162,9 @@ export default function Beneficiarios({ eventoid }) {
               <Tr>
                 <Th>Nome</Th>
                 <Th>Documento</Th>
-                <Th>Telefone</Th>
-                <Th>Ação</Th>
+                <Th>E-mail</Th>
+                <Th>Senha</Th>
+                <Th></Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -162,7 +176,8 @@ export default function Beneficiarios({ eventoid }) {
                     </a>
                   </Td>
                   <Td>{result.documento}</Td>
-                  <Td>{result.telefone}</Td>
+                  <Td>{result.email}</Td>
+                  <Td>{result.senharetirada}</Td>
                   <Td>
                     <Button size={"xs"} bg={"write"}>
                       <EditIcon
