@@ -11,6 +11,7 @@ import {
 import React from "react";
 
 import { AddIcon } from "@chakra-ui/icons";
+import ModalBeneficiarioPage from "./ModalBeneficiarioPage";
 
 export const ModalBeneficiario = (eventoid) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -37,13 +38,13 @@ export const ModalBeneficiario = (eventoid) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Beneficiários</ModalHeader>
+          <ModalHeader>Doações</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            {/* <DoacoesNecessariasPage
+            <ModalBeneficiarioPage
               eventoid={eventoid}
               event={handleCloseModal}
-            /> */}
+            />
           </ModalBody>
 
           <ModalFooter></ModalFooter>

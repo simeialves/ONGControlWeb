@@ -32,27 +32,21 @@ import { ModalBeneficiario } from "./ModalBeneficiario";
 export default function Beneficiarios({ eventoid }) {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(false);
   const [inputNome, setInputNome] = useState("");
-  const [inputAtivo, setInputAtivo] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
-      console.log(eventoid);
-      const response = await getDoacaoEventoPessoa(eventoid);
-      setResults(response.data);
-      setLoading(false);
-      setMessage(false);
-      console.log(response);
+      await fetchData();
     })();
   }, [eventoid]);
 
   async function fetchData() {
-    const response = await getTipoDoacaoEventos(eventoid);
+    const response = await getDoacaoEventoPessoa(eventoid);
     setResults(response.data);
+    console.log(eventoid);
   }
 
   if (loading) {
@@ -107,98 +101,102 @@ export default function Beneficiarios({ eventoid }) {
   return (
     <>
       <Container fluid="md">
-        <HStack spacing="4" justify={"right"}>
-          <Button
-            variant="outline"
-            colorScheme="gray"
-            gap={2}
-            size="sm"
-            marginBottom={2}
-          >
-            <ModalBeneficiario
-              eventoid={eventoid}
-              isOpen={isModalOpen}
-              onClose={handleModalClose}
-            />
-          </Button>
-        </HStack>
-        <HStack>
-          <Box w="70%">
-            <InputGroup>
-              <Input
-                onChange={(event) => {
-                  setInputNome(event.target.value);
-                }}
-                placeholder="Pesquisar por nome"
-                size="sm"
-                borderRadius={5}
+        <Box shadow={"center"} boxShadow="md" padding={5} borderRadius={5}>
+          <HStack spacing="4" justify={"right"}>
+            <Button
+              variant="outline"
+              colorScheme="gray"
+              gap={2}
+              size="sm"
+              marginBottom={2}
+            >
+              <ModalBeneficiario
+                eventoid={eventoid}
+                isOpen={isModalOpen}
+                onClose={handleModalClose}
               />
-              <InputRightElement>
-                <SmallCloseIcon justify={"right"} onClick={handleClear} />
-              </InputRightElement>
-            </InputGroup>
-          </Box>
-          <Button
-            variant="solid"
-            gap={2}
-            w={120}
-            p="1"
-            bg="gray.600"
-            color="white"
-            fontSize="x1"
-            _hover={{ bg: "gray.800" }}
-            onClick={handleClick}
-            size="sm"
-          >
-            <SearchIcon />
-            Pesquisar
-          </Button>
-        </HStack>
-        <br></br>
-        <TableContainer>
-          <Table variant="simple" size="sm">
-            <TableCaption>Quantidade: {results.length}</TableCaption>
-            <Thead>
-              <Tr>
-                <Th>Nome</Th>
-                <Th>Documento</Th>
-                <Th>E-mail</Th>
-                <Th>Senha</Th>
-                <Th></Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {results.map((result) => (
+            </Button>
+          </HStack>
+          <HStack>
+            <Box w="70%">
+              <InputGroup>
+                <Input
+                  onChange={(event) => {
+                    setInputNome(event.target.value);
+                  }}
+                  placeholder="Pesquisar por nome"
+                  size="sm"
+                  borderRadius={5}
+                />
+                <InputRightElement>
+                  <SmallCloseIcon justify={"right"} onClick={handleClear} />
+                </InputRightElement>
+              </InputGroup>
+            </Box>
+            <Button
+              variant="solid"
+              gap={2}
+              w={120}
+              p="1"
+              bg="gray.600"
+              color="white"
+              fontSize="x1"
+              _hover={{ bg: "gray.800" }}
+              onClick={handleClick}
+              size="sm"
+            >
+              <SearchIcon />
+              Pesquisar
+            </Button>
+          </HStack>
+          <br></br>
+          <TableContainer>
+            <Table variant="simple" size="sm">
+              <TableCaption>Quantidade: {results.length}</TableCaption>
+              <Thead>
                 <Tr>
-                  <Td>
-                    <a href={`/pessoas/edit/${result.pessoaid}`}>
-                      {result.nome}
-                    </a>
-                  </Td>
-                  <Td>{result.documento}</Td>
-                  <Td>{result.email}</Td>
-                  <Td>{result.senharetirada}</Td>
-                  <Td>
-                    <Button size={"xs"} bg={"write"}>
-                      <EditIcon
-                        color={"blue.800"}
-                        boxSize={5}
-                        onClick={(e) => handleEdit(result.pessoaeventoid, e)}
-                      />
-                    </Button>
-                    <Button size={"xs"} bg={"write"}>
-                      <DeleteIcon
-                        color={"red.500"}
-                        boxSize={5}
-                        onClick={(e) => handleDelete(result.pessoaeventoid, e)}
-                      />
-                    </Button>
-                  </Td>
+                  <Th>Nome</Th>
+                  <Th>Documento</Th>
+                  <Th>E-mail</Th>
+                  <Th>Senha</Th>
+                  <Th></Th>
                 </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
+              </Thead>
+              <Tbody>
+                {results.map((result) => (
+                  <Tr>
+                    <Td>
+                      <a href={`/pessoas/edit/${result.pessoaid}`}>
+                        {result.nome}
+                      </a>
+                    </Td>
+                    <Td>{result.documento}</Td>
+                    <Td>{result.email}</Td>
+                    <Td>{result.senharetirada}</Td>
+                    <Td>
+                      <Button size={"xs"} bg={"write"}>
+                        <EditIcon
+                          color={"blue.800"}
+                          boxSize={5}
+                          onClick={(e) => handleEdit(result.pessoaeventoid, e)}
+                        />
+                      </Button>
+                      <Button size={"xs"} bg={"write"}>
+                        <DeleteIcon
+                          color={"red.500"}
+                          boxSize={5}
+                          onClick={(e) =>
+                            handleDelete(result.pessoaeventoid, e)
+                          }
+                        />
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </Box>
       </Container>
     </>
   );
