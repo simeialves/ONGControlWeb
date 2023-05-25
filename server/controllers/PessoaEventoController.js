@@ -30,9 +30,10 @@ class PessoaEventoController {
         status: status,
         senharetirada: senharetirada,
       })
-      .then(() => {
+      .then((result) => {
         res.status(200).json({
           message: SUCCESS_CREATED,
+          id: result[0],
         });
       })
       .catch((err) => {
@@ -123,7 +124,7 @@ class PessoaEventoController {
     await db.knex
       .select("*")
       .from("pessoaevento")
-      .where({ pessoaid: id })
+      .where({ pessoaeventoid: id })
       .then(function (result) {
         if (result.length) {
           db.knex
@@ -137,9 +138,10 @@ class PessoaEventoController {
               senharetirada: senharetirada,
             })
             .table("pessoaevento")
-            .then(() => {
+            .then((result) => {
               res.status(200).json({
                 message: SUCCESS_UPDATED,
+                id: result[0],
               });
             })
             .catch((err) => {
