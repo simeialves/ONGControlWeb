@@ -68,6 +68,7 @@ const AppRouters = () => {
     <Router>
       <AuthProvider>
         <Routes>
+          <Route path="*" element={<Navigate to="/" />} />
           <Route exact path="/login" element={<LoginPage />} />
           <Route
             exact
