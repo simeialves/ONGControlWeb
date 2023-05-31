@@ -12,16 +12,8 @@ const {
 class DoacaoEventoPessoaController {
   //#region CREATE
   static create = async (req, res) => {
-    /*
-    doacaoeventoid
-    eventoid
-    pessoaid
-    pessoaeventoid
-    quantidade
-    */
-
     const {
-      doacaoeventoid,
+      tipodoacaoeventoid,
       eventoid,
       pessoaid,
       pessoaeventoid,
@@ -31,7 +23,7 @@ class DoacaoEventoPessoaController {
 
     db.knex("doacaoeventopessoa")
       .insert({
-        doacaoeventoid: doacaoeventoid,
+        tipodoacaoeventoid: tipodoacaoeventoid,
         eventoid: eventoid,
         pessoaid: pessoaid,
         pessoaeventoid: pessoaeventoid,
@@ -56,14 +48,14 @@ class DoacaoEventoPessoaController {
     const { eventoid } = req.query;
 
     var query = db
-      .knex("doacaoeventopessoa")
+      .knex("pessoaevento")
       .orderBy("doacaoeventopessoa.eventoid", "doacaoeventopessoa.pessoaid")
       .select(
         "doacaoeventopessoa.doacaoeventopessoaid as doacaoeventopessoaid",
-        "doacaoeventopessoa.doacaoeventoid as doacaoeventoid",
+        "doacaoeventopessoa.tipodoacaoeventoid as tipodoacaoeventoid",
         "doacaoeventopessoa.eventoid as eventoid",
         "doacaoeventopessoa.pessoaid as pessoaid",
-        "doacaoeventopessoa.pessoaeventoid as pessoaeventoid",
+        "pessoaevento.pessoaeventoid as pessoaeventoid",
         "doacaoeventopessoa.quantidade as quantidade",
         "doacaoeventopessoa.status as status",
         "pessoa.nome as nome",
@@ -71,34 +63,27 @@ class DoacaoEventoPessoaController {
         "pessoa.email as email",
         "pessoaevento.senharetirada as senharetirada"
       )
-      .join(
-        "doacaoevento",
-        "doacaoevento.doacaoeventoid",
+      .leftJoin(
+        "doacaoeventopessoa",
+        "doacaoeventopessoa.pessoaeventoid",
         "=",
-        "doacaoeventopessoa.doacaoeventoid"
+        "pessoaevento.pessoaeventoid"
       )
-      .join(
+      .leftJoin(
         "tipodoacaoevento",
         "tipodoacaoevento.tipodoacaoeventoid",
         "=",
-        "doacaoevento.tipodoacaoeventoid"
+        "doacaoeventopessoa.tipodoacaoeventoid"
       )
-      .join(
+      .leftJoin(
         "tipodoacao",
         "tipodoacao.tipodoacaoid",
         "=",
         "tipodoacaoevento.tipodoacaoid"
       )
-      .join("pessoa", "doacaoeventopessoa.pessoaid", "=", "pessoa.pessoaid")
-      .join(
-        "pessoaevento",
-        "doacaoeventopessoa.pessoaeventoid",
-        "=",
-        "pessoaevento.pessoaeventoid"
-      );
+      .leftJoin("pessoa", "pessoaevento.pessoaid", "=", "pessoa.pessoaid");
 
-    if (eventoid != undefined)
-      query.where("doacaoeventopessoa.eventoid", eventoid);
+    if (eventoid != undefined) query.where("pessoaevento.eventoid", eventoid);
     query
       .then(function (results) {
         if (results.length) {
@@ -138,7 +123,7 @@ class DoacaoEventoPessoaController {
   static update = async (req, res) => {
     const id = Number.parseInt(req.params.id);
     const {
-      doacaoeventoid,
+      tipodoacaoeventoid,
       eventoid,
       pessoaid,
       pessoaeventoid,
@@ -155,7 +140,7 @@ class DoacaoEventoPessoaController {
           db.knex
             .where({ doacaoeventopessoaid: id })
             .update({
-              doacaoeventoid: doacaoeventoid,
+              tipodoacaoeventoid: tipodoacaoeventoid,
               eventoid: eventoid,
               pessoaid: pessoaid,
               pessoaeventoid: pessoaeventoid,
@@ -166,6 +151,7 @@ class DoacaoEventoPessoaController {
             .then(() => {
               res.status(200).json({
                 message: SUCCESS_UPDATED,
+                id: result.id,
               });
             })
             .catch((err) => {
@@ -203,6 +189,7 @@ class DoacaoEventoPessoaController {
             .then(() => {
               res.status(200).json({
                 message: SUCCESS_DELETED,
+                id: id,
               });
             })
             .catch((err) => {

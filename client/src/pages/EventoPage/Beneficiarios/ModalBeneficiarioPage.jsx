@@ -38,6 +38,7 @@ function ModalBeneficiarioPage(props) {
   const [pessoaSelecionada, setPessoaSelecionada] = useState("");
   const [pessoaEventoId, setPessoaEventoId] = useState("");
   const [doacaoEventoId, setDoacaoEventoId] = useState("");
+  const [tipoDoacaoEventoId, setTipoDoacaoEventoId] = useState("");
   const [tipoDoacao, setTipoDoacao] = useState("");
   const [inputEventoid, setEventoid] = useState(props.eventoid.eventoid);
   const [inputQuantidade, setQuantidade] = useState("");
@@ -86,13 +87,12 @@ function ModalBeneficiarioPage(props) {
               senharetirada: geradorSenhaRetirada(result.data.id),
             })
             .then((result) => {
-              //Corrigir aqui
               api
                 .post(`/doacaoeventospessoas`, {
-                  doacaoeventoid: doacaoEventoId,
+                  tipodoacaoeventoid: tipoDoacaoEventoId,
                   eventoid: Eventoid,
                   pessoaid: pessoaId,
-                  pessoaeventoid: result.id,
+                  pessoaeventoid: result.data.id,
                   quantidade: inputQuantidade,
                   status: STATUS_ATIVO,
                 })
@@ -108,8 +108,6 @@ function ModalBeneficiarioPage(props) {
         .catch((err) => {
           console.log(err);
         });
-
-      console.log(pessoaEventoId);
     } else {
       return api
         .put(`/pessoaseventos/${id}`, {
@@ -203,19 +201,22 @@ function ModalBeneficiarioPage(props) {
         <FormControl display="flex" flexDir="column" gap="1">
           <HStack spacing={4}>
             <Box w="80%">
-              <FormLabel htmlFor="tipodoacaoid">Doação:</FormLabel>
+              <FormLabel htmlFor="tipodoacaoeventoid">Doação:</FormLabel>
               <Select
-                id="tipodoacaoid"
+                id="tipodoacaoeventoid"
                 size={"xs"}
                 borderRadius={5}
                 placeholder="Selecione"
-                value={doacaoEventoId}
+                value={tipoDoacaoEventoId}
                 onChange={(event) => {
-                  setDoacaoEventoId(event.target.value);
+                  setTipoDoacaoEventoId(event.target.value);
                 }}
               >
                 {resultTipoDoacoes.map((result) => (
-                  <option key={result.tipodoacaoid} value={result.tipodoacaoid}>
+                  <option
+                    key={result.tipodoacaoeventoid}
+                    value={result.tipodoacaoeventoid}
+                  >
                     {result.descricao}
                   </option>
                 ))}

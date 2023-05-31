@@ -24,7 +24,6 @@ export function removeAspas(valor) {
 
 /*Gerador de Senha de Retirada de Doações*/
 export function geradorSenhaRetirada(valor) {
-  console.log(valor);
   const dateNow = new Date();
   return removeCaracter(formatDateNoTime(dateNow)) + "-" + valor;
 }

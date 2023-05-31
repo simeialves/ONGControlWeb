@@ -13,9 +13,9 @@ import {
 
 import {
   DeleteIcon,
-  EditIcon,
   SearchIcon,
   SmallCloseIcon,
+  ViewIcon,
 } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -53,15 +53,19 @@ export default function Beneficiarios({ eventoid }) {
     return <SpinnerUtil />;
   }
 
-  async function handleEdit(id) {
-    navigate(`/pessoas/edit/${id}`);
-  }
+  async function handleEdit(id) {}
   async function handleDelete(id) {
     api
       .delete(`/pessoaseventos/${id}`, {})
-      .then(() => {
-        // navigate(`/eventos/edit/${id}`);
-        window.location.reload(true);
+      .then((result) => {
+        api
+          .delete(`doacaoeventospessoas/${result.id}`, {})
+          .then(() => {
+            window.location.reload(true);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);
@@ -175,7 +179,7 @@ export default function Beneficiarios({ eventoid }) {
                     <Td>{result.senharetirada}</Td>
                     <Td>
                       <Button size={"xs"} bg={"write"}>
-                        <EditIcon
+                        <ViewIcon
                           color={"blue.800"}
                           boxSize={5}
                           onClick={(e) => handleEdit(result.pessoaeventoid, e)}

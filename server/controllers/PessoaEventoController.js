@@ -138,10 +138,10 @@ class PessoaEventoController {
               senharetirada: senharetirada,
             })
             .table("pessoaevento")
-            .then((result) => {
+            .then(() => {
               res.status(200).json({
                 message: SUCCESS_UPDATED,
-                id: result[0],
+                id: id,
               });
             })
             .catch((err) => {
