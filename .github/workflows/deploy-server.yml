@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -15,10 +16,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: us-east-1
+
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
           node-version: "14.x"
+
+      - name: Run Tests
+        run: |
+          npm run test
+
       - name: Deploy to Elastic Beanstalk - ONGControlServer
         env:
           ENVIRONMENT_NAME: "Ongcontrolwebserver-env"
