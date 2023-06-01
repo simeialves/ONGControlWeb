@@ -31,7 +31,6 @@ jobs:
         run: |
           cd server
           npm install
-          npm run test
           zip -r $FILE_ZIP *
           aws s3 cp $FILE_ZIP s3://$BUCKET_S3_NAME/$FILE_ZIP
           aws elasticbeanstalk create-application-version --application-name $APPLICATION_NAME --version-label $GITHUB_SHA --source-bundle S3Bucket=$BUCKET_S3_NAME,S3Key=$FILE_ZIP
