@@ -14,8 +14,9 @@ afterEach((done) => {
 
 describe("Testes da rota /pessoas", () => {
   it("Deve retornar uma lista de pessoas", async () => {
-    const headers = await GerarHeaders();
-    const res = await request.get("/pessoas").set(headers);
+    //const headers = await GerarHeaders();
+    //const res = await request.get("/pessoas").set(headers);
+    const res = await request.get("/pessoas");
     expect(res.statusCode).toBe(201);
   });
 });

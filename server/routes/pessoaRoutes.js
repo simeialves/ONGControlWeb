@@ -18,7 +18,7 @@ appRoutes.post("/", verifyJWT, PessoaController.create);
 //#endregion
 
 //#region READ
-appRoutes.get("/", verifyJWT, PessoaController.getAll);
+appRoutes.get("/", PessoaController.getAll);
 appRoutes.get("/filter", verifyJWT, PessoaController.getByFilter);
 appRoutes.get("/:id", verifyJWT, PessoaController.getById);
 //#endregion
