@@ -25,6 +25,7 @@ jobs:
       - name: Run Tests
         run: |
           cd server
+          npm install
           npm run test
 
       - name: Deploy to Elastic Beanstalk - ONGControlServer
