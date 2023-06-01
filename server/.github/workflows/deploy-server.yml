@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "14.x"
-      - name: Run Tests
+      - name: Run Tests 2
         run: npm run test
       - name: Deploy to Elastic Beanstalk - ONGControlServer
         env:
