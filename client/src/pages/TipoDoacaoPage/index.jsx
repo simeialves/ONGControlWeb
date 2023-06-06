@@ -126,7 +126,7 @@ const TipoDoacao = () => {
 
   async function handleOpenDialog(id) {
     setId(id);
-    // onOpen();
+    onOpen();
   }
   return (
     <>
