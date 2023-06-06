@@ -69,6 +69,7 @@ export default function DoacoesNecessarias({ eventoid }) {
       .then(() => {
         toast({
           title: "Registro excluído com sucesso",
+          position: "bottom-left",
           status: "success",
           duration: 3000,
           isClosable: true,
@@ -122,6 +123,7 @@ export default function DoacoesNecessarias({ eventoid }) {
                 eventoid={eventoid}
                 isOpen={isModalOpen}
                 onClose={handleModalClose}
+                fetchData={fetchData}
               />
             </Button>
           </HStack>
