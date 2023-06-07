@@ -27,6 +27,7 @@
     "knex": "^2.3.0",
     "morgan": "^1.10.0",
     "mysql2": "^2.3.3",
+    "nodemailer": "^6.9.3",
     "parser": "^0.1.4",
     "pm2": "^5.2.2",
     "react-bootstrap": "^2.6.0",

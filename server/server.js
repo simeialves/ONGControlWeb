@@ -15,6 +15,7 @@ const tipoColaboradorRoutes = require("./routes/tipoColaboradorRoutes");
 const tipoColaboradorEventoRoutes = require("./routes/tipoColaboradorEventoRoutes");
 
 const eventoRoutes = require("./routes/eventoRoutes");
+const emailRoutes = require("./routes/emailRoutes");
 
 const doacaoEventoRoutes = require("./routes/doacaoEventoRoutes");
 const doacaoEventoPessoaRoutes = require("./routes/doacaoEventoPessoaRoutes");
@@ -60,6 +61,7 @@ app.use("/tipocolaboradores", tipoColaboradorRoutes);
 app.use("/tipocolaboradoreventos", tipoColaboradorEventoRoutes);
 
 app.use("/eventos", eventoRoutes);
+app.use("/sendemail", emailRoutes);
 
 app.use("/doacaoeventos", doacaoEventoRoutes);
 app.use("/doacaoeventospessoas", doacaoEventoPessoaRoutes);
