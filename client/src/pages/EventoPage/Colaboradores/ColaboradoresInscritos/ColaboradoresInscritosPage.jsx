@@ -1,9 +1,11 @@
 import {
   Box,
   Button,
+  Flex,
   Heading,
   HStack,
   Link,
+  Spacer,
   Table,
   TableCaption,
   TableContainer,
@@ -22,9 +24,34 @@ import { api } from "../../../../shared/services/api";
 
 import Container from "react-bootstrap/Container";
 
+import { RiFileExcelLine } from "react-icons/ri";
+import { saveAsExcelFile } from "../../../../components/ExportCSV";
 import { TIPO_COLABORADOR } from "../../../../includes/const";
 import { getPessoasEvento } from "../../../../shared/services/PessoaEvento";
+import { getDateHourNow } from "../../../Uteis/Uteis";
 import { ModalColaboradorInscrito } from "./ModalColaboradorInscrito";
+
+const XLSX = require("xlsx");
+
+async function exportToExcel(data) {
+  const workbook = XLSX.utils.book_new();
+  const sheetData = data.map((result) => [
+    result.descricao,
+    result.nome,
+    result.documento,
+    result.telefone,
+  ]);
+  const sheet = XLSX.utils.aoa_to_sheet([
+    ["Descricao", "Nome", "Documento", "Telefone"],
+    ...sheetData,
+  ]);
+  XLSX.utils.book_append_sheet(workbook, sheet, "Colaboradores Inscritos");
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  saveAsExcelFile(
+    excelBuffer,
+    "Relatorio_Colaboradores_Inscritos_" + getDateHourNow() + ".xlsx"
+  );
+}
 
 export default function ColaboradoresInscritosPage({ eventoid }) {
   const [results, setResults] = useState([]);
@@ -58,7 +85,7 @@ export default function ColaboradoresInscritosPage({ eventoid }) {
   return (
     <>
       <Container fluid="md">
-        <Box boxShadow={"lg"} marginBottom={2}>
+        <Box shadow={"center"} boxShadow="md" borderRadius={5}>
           <Box bg="red.800" w="100%" p={4} color="white">
             <HStack spacing="4" justify={"center"}>
               <Heading
@@ -124,6 +151,19 @@ export default function ColaboradoresInscritosPage({ eventoid }) {
               </Tbody>
             </Table>
           </TableContainer>
+          <Box padding={5}>
+            <Flex display={"flex"}>
+              <Spacer />
+              <Button
+                colorScheme="gray"
+                size={"sm"}
+                gap={2}
+                onClick={() => exportToExcel(results)}
+              >
+                <RiFileExcelLine /> CSV
+              </Button>
+            </Flex>
+          </Box>
         </Box>
       </Container>
     </>

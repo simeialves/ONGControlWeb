@@ -7,8 +7,10 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
+  Flex,
   InputRightElement,
   Link,
+  Spacer,
   Table,
   TableCaption,
   TableContainer,
@@ -37,8 +39,33 @@ import { Box, HStack, Input, InputGroup } from "@chakra-ui/react";
 import Container from "react-bootstrap/Container";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import { RiFileExcelLine } from "react-icons/ri";
+import { saveAsExcelFile } from "../../components/ExportCSV";
 import { getLocalEventos } from "../../shared/services/LocalEvento";
 import { Footer } from "../Footer";
+import { getDateHourNow } from "../Uteis/Uteis";
+
+const XLSX = require("xlsx");
+
+async function exportToExcel(data) {
+  const workbook = XLSX.utils.book_new();
+  const sheetData = data.map((result) => [
+    result.nome,
+    result.logradouro + ", " + result.numero,
+    result.bairro,
+    result.cidade,
+  ]);
+  const sheet = XLSX.utils.aoa_to_sheet([
+    ["Nome", "Endereco", "Bairro", "Cidade"],
+    ...sheetData,
+  ]);
+  XLSX.utils.book_append_sheet(workbook, sheet, "Local dos Eventos");
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  saveAsExcelFile(
+    excelBuffer,
+    "Relatorio_Local_De_Eventos_" + getDateHourNow() + ".xlsx"
+  );
+}
 
 const LocalEvento = () => {
   const [results, setResults] = useState([]);
@@ -217,6 +244,17 @@ const LocalEvento = () => {
               </Tbody>
             </Table>
           </TableContainer>
+          <Flex display={"flex"}>
+            <Spacer />
+            <Button
+              colorScheme="gray"
+              size={"sm"}
+              gap={2}
+              onClick={() => exportToExcel(results)}
+            >
+              <RiFileExcelLine /> CSV
+            </Button>
+          </Flex>
         </Container>
       </Box>
       <AlertDialog

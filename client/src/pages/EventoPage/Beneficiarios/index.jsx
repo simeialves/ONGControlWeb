@@ -1,6 +1,8 @@
 import {
   Button,
+  Flex,
   InputRightElement,
+  Spacer,
   Table,
   TableCaption,
   TableContainer,
@@ -24,10 +26,35 @@ import SpinnerUtil from "../../Uteis/progress";
 import { Box, HStack, Input, InputGroup } from "@chakra-ui/react";
 import Container from "react-bootstrap/Container";
 
+import { RiFileExcelLine } from "react-icons/ri";
+import { saveAsExcelFile } from "../../../components/ExportCSV";
 import { getDoacaoEventoPessoa } from "../../../shared/services/DoacaoEventoPessoa";
 import { getPessoasEvento } from "../../../shared/services/PessoaEvento";
 import { api } from "../../../shared/services/api";
+import { getDateHourNow } from "../../Uteis/Uteis";
 import { ModalBeneficiario } from "./ModalBeneficiario";
+
+const XLSX = require("xlsx");
+
+async function exportToExcel(data) {
+  const workbook = XLSX.utils.book_new();
+  const sheetData = data.map((result) => [
+    result.nome,
+    result.documento,
+    result.email,
+    result.senharetirada,
+  ]);
+  const sheet = XLSX.utils.aoa_to_sheet([
+    ["Nome", "Documento", "Email", "Senha_de_Retirada"],
+    ...sheetData,
+  ]);
+  XLSX.utils.book_append_sheet(workbook, sheet, "Beneficiários");
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  saveAsExcelFile(
+    excelBuffer,
+    "Relatorio_Beneficiarios_" + getDateHourNow() + ".xlsx"
+  );
+}
 
 export default function Beneficiarios({ eventoid }) {
   const [results, setResults] = useState([]);
@@ -46,7 +73,6 @@ export default function Beneficiarios({ eventoid }) {
   async function fetchData() {
     const response = await getDoacaoEventoPessoa(eventoid);
     setResults(response.data);
-    console.log(eventoid);
   }
 
   if (loading) {
@@ -200,6 +226,17 @@ export default function Beneficiarios({ eventoid }) {
               </Tbody>
             </Table>
           </TableContainer>
+          <Flex display={"flex"}>
+            <Spacer />
+            <Button
+              colorScheme="gray"
+              size={"sm"}
+              gap={2}
+              onClick={() => exportToExcel(results)}
+            >
+              <RiFileExcelLine /> CSV
+            </Button>
+          </Flex>
         </Box>
       </Container>
     </>

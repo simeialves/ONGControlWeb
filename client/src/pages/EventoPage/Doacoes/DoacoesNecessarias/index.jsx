@@ -7,7 +7,9 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
+  Flex,
   Link,
+  Spacer,
   Table,
   TableCaption,
   TableContainer,
@@ -30,8 +32,40 @@ import { SpinnerUtil } from "../../../Uteis/progress";
 
 import Container from "react-bootstrap/esm/Container";
 
+import { RiFileExcelLine } from "react-icons/ri";
+import { saveAsExcelFile } from "../../../../components/ExportCSV";
 import { getTipoDoacaoEventos } from "../../../../shared/services/TipoDoacaoEvento";
+import { getDateHourNow } from "../../../Uteis/Uteis";
 import { ModalDoacaoNecessaria } from "./ModalDoacaoNecessaria";
+
+const XLSX = require("xlsx");
+
+async function exportToExcel(data) {
+  const workbook = XLSX.utils.book_new();
+  const sheetData = data.map((result) => [
+    result.descricao,
+    result.quantidade,
+    result.quantidaderecebidas,
+    result.quantidaderealizadas,
+    result.quantidaderecebidas - result.quantidaderealizadas,
+  ]);
+  const sheet = XLSX.utils.aoa_to_sheet([
+    [
+      "Descricao",
+      "Qtd._Necessaria",
+      "Qtd._Doacoes_Recebidas",
+      "Qtd._Doacoes_Realizadas",
+      "Saldo",
+    ],
+    ...sheetData,
+  ]);
+  XLSX.utils.book_append_sheet(workbook, sheet, "Doações Necessárias");
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  saveAsExcelFile(
+    excelBuffer,
+    "Relatorio_Doacoes_Necessarias_" + getDateHourNow() + ".xlsx"
+  );
+}
 
 export default function DoacoesNecessarias({ eventoid }) {
   const [results, setResults] = useState([]);
@@ -177,6 +211,19 @@ export default function DoacoesNecessarias({ eventoid }) {
               </Tbody>
             </Table>
           </TableContainer>
+          <Box padding={5}>
+            <Flex display={"flex"}>
+              <Spacer />
+              <Button
+                colorScheme="gray"
+                size={"sm"}
+                gap={2}
+                onClick={() => exportToExcel(results)}
+              >
+                <RiFileExcelLine /> CSV
+              </Button>
+            </Flex>
+          </Box>
         </Box>
       </Container>
 

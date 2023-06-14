@@ -8,8 +8,10 @@ import {
   AlertDialogOverlay,
   Button,
   Checkbox,
+  Flex,
   InputRightElement,
   Link,
+  Spacer,
   Stack,
   Table,
   TableCaption,
@@ -45,8 +47,31 @@ import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 
 import Container from "react-bootstrap/Container";
+import { RiFileExcelLine } from "react-icons/ri";
+import { saveAsExcelFile } from "../../components/ExportCSV";
 import { STATUS_ATIVO } from "../../includes/const";
 import { Footer } from "../Footer";
+import { getDateHourNow } from "../Uteis/Uteis";
+
+const XLSX = require("xlsx");
+
+async function exportToExcel(data) {
+  const workbook = XLSX.utils.book_new();
+  const sheetData = data.map((result) => [
+    result.descricao,
+    result.ativo == STATUS_ATIVO ? "Ativo" : "Inativo",
+  ]);
+  const sheet = XLSX.utils.aoa_to_sheet([
+    ["Descricao", "Status"],
+    ...sheetData,
+  ]);
+  XLSX.utils.book_append_sheet(workbook, sheet, "Tipo de Doações");
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  saveAsExcelFile(
+    excelBuffer,
+    "Relatorio_Tipo_De_Doacoes_" + getDateHourNow() + ".xlsx"
+  );
+}
 
 const TipoDoacao = () => {
   const [results, setResults] = useState([]);
@@ -236,6 +261,17 @@ const TipoDoacao = () => {
               </Tbody>
             </Table>
           </TableContainer>
+          <Flex display={"flex"}>
+            <Spacer />
+            <Button
+              colorScheme="gray"
+              size={"sm"}
+              gap={2}
+              onClick={() => exportToExcel(results)}
+            >
+              <RiFileExcelLine /> CSV
+            </Button>
+          </Flex>
         </Container>
       </Box>
       <AlertDialog

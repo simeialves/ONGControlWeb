@@ -1,8 +1,10 @@
 import {
   Box,
   Button,
+  Flex,
   HStack,
   Heading,
+  Spacer,
   Table,
   TableCaption,
   TableContainer,
@@ -22,7 +24,31 @@ import SpinnerUtil from "../../../Uteis/progress";
 
 import Container from "react-bootstrap/Container";
 
+import { RiFileExcelLine } from "react-icons/ri";
+import { saveAsExcelFile } from "../../../../components/ExportCSV";
+import { getDateHourNow } from "../../../Uteis/Uteis";
 import { ModalColaboradorNecessario } from "./ModalColaboradorNecessario";
+
+const XLSX = require("xlsx");
+
+async function exportToExcel(data) {
+  const workbook = XLSX.utils.book_new();
+  const sheetData = data.map((result) => [
+    result.descricao,
+    result.quantidade,
+    result.quantidadeinscritos,
+  ]);
+  const sheet = XLSX.utils.aoa_to_sheet([
+    ["Descricao", "Qtd._Necessarias", "Qtd._Inscritos"],
+    ...sheetData,
+  ]);
+  XLSX.utils.book_append_sheet(workbook, sheet, "Colaboradores Necessários");
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  saveAsExcelFile(
+    excelBuffer,
+    "Relatorio_Colaboradores_Necessarios_" + getDateHourNow() + ".xlsx"
+  );
+}
 
 export default function ColaboradoresNecessariosPage({ eventoid }) {
   const [results, setResults] = useState([]);
@@ -34,7 +60,6 @@ export default function ColaboradoresNecessariosPage({ eventoid }) {
     (async () => {
       const response = await getTipoColaboradorEventos(eventoid);
       setResults(response.data);
-
       setLoading(false);
     })();
   }, [eventoid]);
@@ -129,6 +154,19 @@ export default function ColaboradoresNecessariosPage({ eventoid }) {
               </Tbody>
             </Table>
           </TableContainer>
+          <Box padding={5}>
+            <Flex display={"flex"}>
+              <Spacer />
+              <Button
+                colorScheme="gray"
+                size={"sm"}
+                gap={2}
+                onClick={() => exportToExcel(results)}
+              >
+                <RiFileExcelLine /> CSV
+              </Button>
+            </Flex>
+          </Box>
         </Box>
       </Container>
     </>

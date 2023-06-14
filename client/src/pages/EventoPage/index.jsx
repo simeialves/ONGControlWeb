@@ -9,6 +9,7 @@ import {
   Box,
   Button,
   Checkbox,
+  Flex,
   HStack,
   Input,
   InputGroup,
@@ -16,6 +17,7 @@ import {
   Link,
   Radio,
   RadioGroup,
+  Spacer,
   Stack,
   Table,
   TableCaption,
@@ -47,8 +49,32 @@ import SpinnerUtil from "../Uteis/progress";
 import Container from "react-bootstrap/Container";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import { RiFileExcelLine } from "react-icons/ri";
+import { saveAsExcelFile } from "../../components/ExportCSV";
 import { getEventos } from "../../shared/services/Evento";
 import { Footer } from "../Footer";
+import { formatDateNoTime, getDateHourNow } from "../Uteis/Uteis";
+
+const XLSX = require("xlsx");
+
+async function exportToExcel(data) {
+  const workbook = XLSX.utils.book_new();
+  const sheetData = data.map((result) => [
+    result.descricao,
+    formatDateNoTime(result.datainicio),
+    formatDateNoTime(result.datafim),
+  ]);
+  const sheet = XLSX.utils.aoa_to_sheet([
+    ["Evento", "Data_Inicio", "Data_Fim"],
+    ...sheetData,
+  ]);
+  XLSX.utils.book_append_sheet(workbook, sheet, "Eventos");
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  saveAsExcelFile(
+    excelBuffer,
+    "Relatorio_Eventos_" + getDateHourNow() + ".xlsx"
+  );
+}
 
 const Evento = () => {
   const [results, setResults] = useState([]);
@@ -239,6 +265,17 @@ const Evento = () => {
               </Tbody>
             </Table>
           </TableContainer>
+          <Flex display={"flex"}>
+            <Spacer />
+            <Button
+              colorScheme="gray"
+              size={"sm"}
+              gap={2}
+              onClick={() => exportToExcel(results)}
+            >
+              <RiFileExcelLine /> CSV
+            </Button>
+          </Flex>
         </Container>
       </Box>
       <AlertDialog

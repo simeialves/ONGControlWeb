@@ -27,3 +27,9 @@ export function geradorSenhaRetirada(valor) {
   const dateNow = new Date();
   return removeCaracter(formatDateNoTime(dateNow)) + "-" + valor;
 }
+
+/*Gerador de data e hora atual*/
+export function getDateHourNow() {
+  const dateNow = new Date();
+  return removeCaracter(formatDateNoTime(dateNow));
+}

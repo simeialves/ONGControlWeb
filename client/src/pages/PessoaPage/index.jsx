@@ -7,10 +7,14 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
+  Flex,
   Link,
+  Spacer,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
+
+import { RiFileExcelLine } from "react-icons/ri";
 
 import {
   InputRightElement,
@@ -43,7 +47,30 @@ import Container from "react-bootstrap/Container";
 import { getPessoas } from "../../shared/services/Pessoas";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import { saveAsExcelFile } from "../../components/ExportCSV";
 import { Footer } from "../Footer";
+import { getDateHourNow } from "../Uteis/Uteis";
+
+const XLSX = require("xlsx");
+
+async function exportToExcel(data) {
+  const workbook = XLSX.utils.book_new();
+  const sheetData = data.map((result) => [
+    result.nome,
+    result.documento,
+    result.telefone,
+  ]);
+  const sheet = XLSX.utils.aoa_to_sheet([
+    ["Nome", "Documento", "Telefone"],
+    ...sheetData,
+  ]);
+  XLSX.utils.book_append_sheet(workbook, sheet, "Pessoas");
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  saveAsExcelFile(
+    excelBuffer,
+    "Relatorio_Pessoas_" + getDateHourNow() + ".xlsx"
+  );
+}
 
 const Pessoa = () => {
   const [results, setResults] = useState([]);
@@ -217,6 +244,17 @@ const Pessoa = () => {
               </Tbody>
             </Table>
           </TableContainer>
+          <Flex display={"flex"}>
+            <Spacer />
+            <Button
+              colorScheme="gray"
+              size={"sm"}
+              gap={2}
+              onClick={() => exportToExcel(results)}
+            >
+              <RiFileExcelLine /> CSV
+            </Button>
+          </Flex>
         </Container>
       </Box>
 

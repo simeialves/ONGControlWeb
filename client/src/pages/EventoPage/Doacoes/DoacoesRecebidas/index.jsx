@@ -8,8 +8,10 @@ import {
   AlertDialogOverlay,
   Box,
   Button,
+  Flex,
   HStack,
   Heading,
+  Spacer,
   Table,
   TableCaption,
   TableContainer,
@@ -28,10 +30,40 @@ import { api } from "../../../../shared/services/api";
 
 import { DeleteIcon } from "@chakra-ui/icons";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { RiFileExcelLine } from "react-icons/ri";
+import { saveAsExcelFile } from "../../../../components/ExportCSV";
 import { getDoacaoEvento } from "../../../../shared/services/DoacaoEvento";
-import { formatDate } from "../../../Uteis/Uteis";
+import {
+  formatDate,
+  formatDateNoTime,
+  getDateHourNow,
+} from "../../../Uteis/Uteis";
 import { SpinnerUtil } from "../../../Uteis/progress";
 import { ModalDoacaoRecebida } from "./ModalDoacaoRecebida";
+
+const XLSX = require("xlsx");
+
+async function exportToExcel(data) {
+  const workbook = XLSX.utils.book_new();
+  const sheetData = data.map((result) => [
+    result.tipodoacaodescricao,
+    result.doacaoeventoquantidade,
+    result.pessoanome,
+    formatDateNoTime(result.doacaoeventodatadoacao),
+    result.pessoanome,
+    result.pessoaemail,
+  ]);
+  const sheet = XLSX.utils.aoa_to_sheet([
+    ["Descricao", "Quantidade", "Doador", "Data_Doacao", "Telefone", "Email"],
+    ...sheetData,
+  ]);
+  XLSX.utils.book_append_sheet(workbook, sheet, "Doações Recebidas");
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  saveAsExcelFile(
+    excelBuffer,
+    "Relatorio_Doacoes_Recebidas_" + getDateHourNow() + ".xlsx"
+  );
+}
 
 export default function DoacoesRecebidas({ eventoid }) {
   const [results, setResults] = useState([]);
@@ -49,6 +81,7 @@ export default function DoacoesRecebidas({ eventoid }) {
   async function fetchData() {
     const response = await getDoacaoEvento(eventoid);
     setResults(response.data);
+    console.log(response.data);
   }
 
   useEffect(() => {
@@ -165,6 +198,19 @@ export default function DoacoesRecebidas({ eventoid }) {
               </Tbody>
             </Table>
           </TableContainer>
+          <Box padding={5}>
+            <Flex display={"flex"}>
+              <Spacer />
+              <Button
+                colorScheme="gray"
+                size={"sm"}
+                gap={2}
+                onClick={() => exportToExcel(results)}
+              >
+                <RiFileExcelLine /> CSV
+              </Button>
+            </Flex>
+          </Box>
         </Box>
       </Container>
 
