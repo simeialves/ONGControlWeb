@@ -63,10 +63,12 @@ class PessoaController {
 
   //#region READ
   static getAll = async (req, res) => {
-    await db.knex
-      .select("*")
-      .from("pessoa")
-      .orderBy("nome")
+    const { nome } = req.query;
+
+    let query = db.knex("pessoa").select("*").orderBy("nome");
+
+    if (nome) query.where("nome", nome);
+    query
       .then(function (results) {
         if (results.length) {
           res.status(201).json(results);

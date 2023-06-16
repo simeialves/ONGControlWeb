@@ -51,10 +51,13 @@ class LocalEventoController {
 
   //#region READ
   static getAll = async (req, res) => {
-    await db.knex
-      .select("*")
-      .from("localevento")
-      .orderBy("nome")
+    const { nome } = req.query;
+
+    let query = db.knex("localevento").select("*").orderBy("nome");
+
+    if (nome && nome != "") query.whereILike("nome", `%${nome}%`);
+
+    query
       .then(function (results) {
         if (results.length) {
           res.status(201).json(results);
@@ -79,29 +82,6 @@ class LocalEventoController {
       .then(function (result) {
         if (result.length) {
           res.status(201).json(result);
-        } else {
-          res.status(404).json({
-            message: NOT_FOUND,
-          });
-        }
-      })
-      .catch((err) => {
-        res.status(500).json({
-          message: ERROR_FETCH + " - " + err.message,
-        });
-      });
-  };
-  static getByFilter = async (req, res) => {
-    const { nome } = req.query;
-
-    var query = db.knex("localevento").select("*").orderBy("nome");
-
-    if (nome != undefined) query.whereILike("nome", `%${nome}%`);
-
-    query
-      .then(function (results) {
-        if (results.length) {
-          res.status(201).json(results);
         } else {
           res.status(404).json({
             message: NOT_FOUND,

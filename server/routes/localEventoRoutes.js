@@ -13,7 +13,6 @@ appRoutes.post("/", verifyJWT, LocalEventoController.create);
 //#region READ
 appRoutes.get("/", verifyJWT, LocalEventoController.getAll);
 appRoutes.get("/:id", verifyJWT, LocalEventoController.getById);
-appRoutes.get("/filter", verifyJWT, LocalEventoController.getByFilter);
 //#endregion
 
 //#region UPDATE

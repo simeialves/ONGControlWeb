@@ -10,7 +10,6 @@ import {
   HStack,
   Image,
   Input,
-  Text,
   useToast,
 } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
@@ -105,19 +104,19 @@ const LoginPage = () => {
                   Login In ONGControlWeb
                 </Heading>
               </HStack>
-              <HStack spacing="1" justify="center">
+              {/* <HStack spacing="1" justify="center">
                 <Text color="muted">Ainda não tem conta?</Text>
                 <Button variant="link" colorScheme="blue">
                   Criar conta
                 </Button>
-              </HStack>
+              </HStack> */}
               <HStack spacing={4}>
                 <Box w="100%">
                   <FormLabel htmlFor="nome">E-mail</FormLabel>
                   <Input
                     id="nome"
                     type={"email"}
-                    placeholder="manoelgomes@gmail.com"
+                    placeholder="email@gmail.com"
                     required={true}
                     value={email}
                     onChange={(event) => {
@@ -161,9 +160,9 @@ const LoginPage = () => {
               </HStack>
               <HStack justify="space-between">
                 <Checkbox defaultChecked>Remember me</Checkbox>
-                <Button variant="link" colorScheme="blue" size="sm">
+                {/* <Button variant="link" colorScheme="blue" size="sm">
                   Forgot password?
-                </Button>
+                </Button> */}
               </HStack>
             </FormControl>
           </Center>

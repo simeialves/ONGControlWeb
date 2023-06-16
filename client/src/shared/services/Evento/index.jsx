@@ -1,5 +1,6 @@
 import { api } from "../api";
 
-export const getEventos = async () => {
-  return api.get("/eventos");
+export const getEventos = async (descricao, ativo) => {
+  console.log(descricao, ativo);
+  return api.get(`/eventos/?descricao=${descricao}&&ativo=${ativo}`);
 };

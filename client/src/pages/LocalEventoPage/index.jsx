@@ -8,7 +8,6 @@ import {
   AlertDialogOverlay,
   Button,
   Flex,
-  InputRightElement,
   Link,
   Spacer,
   Table,
@@ -22,13 +21,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import {
-  AddIcon,
-  DeleteIcon,
-  EditIcon,
-  SearchIcon,
-  SmallCloseIcon,
-} from "@chakra-ui/icons";
+import { AddIcon, DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../shared/services/api";
@@ -70,9 +63,7 @@ async function exportToExcel(data) {
 const LocalEvento = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState(false);
   const [inputNome, setInputNome] = useState("");
-  const [inputAtivo, setInputAtivo] = useState(1);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
@@ -81,40 +72,22 @@ const LocalEvento = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    (async () => {
-      const response = await getLocalEventos();
-      setResults(response.data);
-      setLoading(false);
-      setMessage(false);
-    })();
+    fetchData();
   }, []);
 
   if (loading) {
     return <SpinnerUtil />;
   }
 
-  async function handleNew() {
-    navigate("/localeventos/new");
+  async function fetchData() {
+    setResults([]);
+    const response = await getLocalEventos(inputNome);
+    setResults(response.data);
+    setLoading(false);
   }
 
-  async function handleClick() {
-    setLoading(true);
-    setResults([]);
-    const nome = inputNome;
-    api
-      .get(`/localeventos/filter/?nome=${nome}`, {
-        nome: nome,
-      })
-      .then((response) => {
-        setResults(response.data);
-        setMessage(false);
-        setLoading(false);
-        setInputNome("");
-      })
-      .catch(() => {
-        setMessage(true);
-        setLoading(false);
-      });
+  async function handleNew() {
+    navigate("/localeventos/new");
   }
 
   async function handleEdit(id) {
@@ -133,17 +106,15 @@ const LocalEvento = () => {
       });
   }
 
-  async function handleClear() {
-    setLoading(true);
-    setInputNome("");
-    const response = await getLocalEventos();
-    setResults(response.data);
-    setLoading(false);
-  }
-
   async function handleOpenDialog(id) {
     setId(id);
     onOpen();
+  }
+
+  function handleKeyPress(event) {
+    if (event.key === "Enter") {
+      fetchData();
+    }
   }
 
   return (
@@ -173,10 +144,8 @@ const LocalEvento = () => {
                   placeholder="Pesquisar por nome"
                   size="sm"
                   borderRadius={5}
+                  onKeyPress={(event) => handleKeyPress(event)}
                 />
-                <InputRightElement>
-                  <SmallCloseIcon justify={"right"} onClick={handleClear} />
-                </InputRightElement>
               </InputGroup>
             </Box>
             <Button
@@ -188,7 +157,7 @@ const LocalEvento = () => {
               color="white"
               fontSize="x1"
               _hover={{ bg: "gray.800" }}
-              onClick={handleClick}
+              onClick={fetchData}
               size="sm"
             >
               <SearchIcon />
@@ -208,6 +177,7 @@ const LocalEvento = () => {
                   <Th>Ação</Th>
                 </Tr>
               </Thead>
+
               <Tbody>
                 {results.map((result) => (
                   <Tr>
