@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 
 import {
+  Link,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -30,7 +31,7 @@ export const ModalParams = () => {
 
   return (
     <>
-      <a onClick={onOpen}>Parâmetros</a>
+      <Link onClick={onOpen}>Configurações</Link>
       <Modal
         initialFocusRef={initialRef}
         finalFocusRef={finalRef}

@@ -1,12 +1,14 @@
 import React from "react";
-import Navbar2 from "./navbar2";
+import Navbar from "./navbar";
 import "./styles.css";
 
-const Headers = () => {
+const Headers = (props) => {
   return (
     <>
-      {/* <Navbar1 /> */}
-      <Navbar2 />
+      <Navbar
+        showMenu={props.showMenu}
+        descricaoPainel={props.descricaoPainel}
+      />
     </>
   );
 };

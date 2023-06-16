@@ -1,5 +1,5 @@
 import { Box, Spacer, useMediaQuery } from "@chakra-ui/react";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../shared/contexts/auth";
 import { ModalParams } from "../ParametroPage/ModalParams";
 import "./styles.css";
@@ -14,10 +14,13 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-const Navbar2 = () => {
+const Navbar2 = (props) => {
   const { logout } = useContext(AuthContext);
-  const [sidebar, setSidebar] = useState(false);
-  const showSidebar = () => setSidebar(!sidebar);
+
+  const [menu, setMenu] = useState(false);
+
+  const mostrarMenu = props.showMenu;
+  const descricaoPainel = props.descricaoPainel;
 
   const handleLogout = () => {
     logout();
@@ -30,6 +33,10 @@ const Navbar2 = () => {
   const [xlDown] = useMediaQuery("(min-width: 1200px)");
   const [xxlDown] = useMediaQuery("(min-width: 1600px)");
   const [xxxlDown] = useMediaQuery("(min-width: 1800px)");
+
+  useEffect(() => {
+    setMenu(mostrarMenu);
+  }, [props.showMenu]);
 
   return (
     <>
@@ -114,6 +121,11 @@ const Navbar2 = () => {
           <Link mr={2} onClick={() => handleLogout()}>
             Logout
           </Link>
+        </Flex>
+        <Flex bg="#7A2525" p={3} color="white">
+          <Text fontSize="2xl" fontWeight={"bold"}>
+            {descricaoPainel}
+          </Text>
         </Flex>
       </Box>
     </>
