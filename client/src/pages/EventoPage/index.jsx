@@ -13,7 +13,6 @@ import {
   HStack,
   Input,
   InputGroup,
-  InputRightElement,
   Link,
   Radio,
   RadioGroup,
@@ -30,13 +29,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import {
-  AddIcon,
-  DeleteIcon,
-  EditIcon,
-  SearchIcon,
-  SmallCloseIcon,
-} from "@chakra-ui/icons";
+import { AddIcon, DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
 
 import { STATUS_ATIVO } from "../../includes/const";
 
@@ -79,9 +72,8 @@ async function exportToExcel(data) {
 const Evento = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState(false);
   const [inputDescricao, setInputDescricao] = useState("");
-  const [inputAtivo, setInputAtivo] = useState(true);
+  const [inputAtivo, setInputAtivo] = useState("");
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
@@ -90,50 +82,29 @@ const Evento = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    (async () => {
-      const response = await getEventos();
-      setResults(response.data);
-      setLoading(false);
-    })();
+    fetchData();
   }, []);
 
   if (loading) {
     return <SpinnerUtil />;
   }
 
+  async function fetchData() {
+    setResults([]);
+    const response = await getEventos(inputDescricao, inputAtivo);
+    setResults(response.data);
+    setLoading(false);
+  }
+
   async function handleNew() {
     navigate(`/eventos/new`);
   }
 
-  async function handleClick() {
-    setLoading(true);
-    setResults([]);
-    const descricao = inputDescricao;
-    const ativo = inputAtivo;
-    api
-      .get(`/eventos/filter/?descricao=${descricao}&&ativo=${ativo}`, {
-        descricao: descricao,
-        ativo: ativo,
-      })
-      .then((response) => {
-        console.log(response);
-        setResults(response.data);
-        setMessage(false);
-        setLoading(false);
-        setInputDescricao("");
-      })
-      .catch(() => {
-        setLoading(false);
-        setResults([]);
-        setMessage(true);
-      });
-  }
-
-  function handleEdit(id) {
+  async function handleEdit(id) {
     navigate(`/eventos/edit/${id}`);
   }
 
-  function handleDelete() {
+  async function handleDelete() {
     api
       .delete(`/eventos/${id}`, {})
       .then(() => {
@@ -145,17 +116,15 @@ const Evento = () => {
       });
   }
 
-  async function handleClear() {
-    setLoading(true);
-    setInputDescricao("");
-    const response = await getEventos();
-    setResults(response.data);
-    setLoading(false);
-  }
-
   async function handleOpenDialog(id) {
     setId(id);
     onOpen();
+  }
+
+  function handleKeyPress(event) {
+    if (event.key === "Enter") {
+      fetchData();
+    }
   }
 
   return (
@@ -175,7 +144,6 @@ const Evento = () => {
               <AddIcon /> Nova
             </Button>
           </HStack>
-          <barradeBotoesSuperior />
           <HStack>
             <Box w="70%">
               <InputGroup>
@@ -186,14 +154,12 @@ const Evento = () => {
                   placeholder="Pesquisar pela descrição"
                   size="sm"
                   borderRadius={5}
+                  onKeyPress={(event) => handleKeyPress(event)}
                 />
-                <InputRightElement>
-                  <SmallCloseIcon justify={"right"} onClick={handleClear} />
-                </InputRightElement>
               </InputGroup>
             </Box>
-            <Box w="30%">
-              <RadioGroup onChange={setInputAtivo} value={inputAtivo}>
+            <Box display={"flex"} gap={2} w="30%">
+              <RadioGroup defaultValue="1" onChange={setInputAtivo}>
                 <Stack direction="row">
                   <HStack spacing={4}>
                     <Radio value="1">Ativo</Radio>
@@ -201,23 +167,22 @@ const Evento = () => {
                   </HStack>
                 </Stack>
               </RadioGroup>
+              <Button
+                variant="solid"
+                gap={2}
+                w={120}
+                p="1"
+                bg="gray.600"
+                color="white"
+                fontSize="x1"
+                _hover={{ bg: "gray.800" }}
+                onClick={fetchData}
+                size="sm"
+              >
+                <SearchIcon />
+                Pesquisar
+              </Button>
             </Box>
-
-            <Button
-              variant="solid"
-              gap={2}
-              w={120}
-              p="1"
-              bg="gray.600"
-              color="white"
-              fontSize="x1"
-              _hover={{ bg: "gray.800" }}
-              onClick={handleClick}
-              size="sm"
-            >
-              <SearchIcon />
-              Pesquisar
-            </Button>
           </HStack>
           <br></br>
           <TableContainer>
