@@ -9,7 +9,6 @@ import {
   Button,
   Checkbox,
   Flex,
-  InputRightElement,
   Link,
   Spacer,
   Stack,
@@ -24,13 +23,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import {
-  AddIcon,
-  DeleteIcon,
-  EditIcon,
-  SearchIcon,
-  SmallCloseIcon,
-} from "@chakra-ui/icons";
+import { AddIcon, DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
 
 import {
   Box,
@@ -42,7 +35,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api, getTipoDoacoes } from "../../shared/services/api";
+import { api } from "../../shared/services/api";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
 
@@ -50,6 +43,7 @@ import Container from "react-bootstrap/Container";
 import { RiFileExcelLine } from "react-icons/ri";
 import { saveAsExcelFile } from "../../components/ExportCSV";
 import { STATUS_ATIVO } from "../../includes/const";
+import { getTipoDoacoes } from "../../shared/services/TipoDoacao";
 import { Footer } from "../Footer";
 import { getDateHourNow } from "../Uteis/Uteis";
 
@@ -87,42 +81,22 @@ const TipoDoacao = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    (async () => {
-      const response = await getTipoDoacoes(STATUS_ATIVO);
-      setResults(response.data);
-      setLoading(false);
-      setInputAtivo(1);
-    })();
+    fetchData();
   }, []);
 
   if (loading) {
     return <SpinnerUtil />;
   }
 
-  async function handleNew() {
-    navigate(`/tipodoacoes/new`);
+  async function fetchData() {
+    setResults([]);
+    const response = await getTipoDoacoes(inputDescricao, inputAtivo);
+    setResults(response.data);
+    setLoading(false);
   }
 
-  async function handleClick() {
-    setLoading(true);
-    setResults([]);
-    const descricao = inputDescricao;
-    const ativo = inputAtivo;
-    api
-      .get(`/tipodoacoes/filter/?descricao=${descricao}&&ativo=${ativo}`, {
-        descricao: descricao,
-        ativo: ativo,
-      })
-      .then((response) => {
-        setResults(response.data);
-        setMessage(false);
-        setLoading(false);
-        setInputDescricao("");
-      })
-      .catch(() => {
-        setMessage(true);
-        setLoading(false);
-      });
+  async function handleNew() {
+    navigate(`/tipodoacoes/new`);
   }
 
   async function handleEdit(id) {
@@ -141,18 +115,17 @@ const TipoDoacao = () => {
       });
   }
 
-  async function handleClear() {
-    setLoading(true);
-    setInputDescricao("");
-    const response = await getTipoDoacoes();
-    setResults(response.data);
-    setLoading(false);
-  }
-
   async function handleOpenDialog(id) {
     setId(id);
     onOpen();
   }
+
+  function handleKeyPress(event) {
+    if (event.key === "Enter") {
+      fetchData();
+    }
+  }
+
   return (
     <>
       <Headers />
@@ -180,14 +153,12 @@ const TipoDoacao = () => {
                   placeholder="Pesquisar pela descrição"
                   size="sm"
                   borderRadius={5}
+                  onKeyPress={(event) => handleKeyPress(event)}
                 />
-                <InputRightElement>
-                  <SmallCloseIcon justify={"right"} onClick={handleClear} />
-                </InputRightElement>
               </InputGroup>
             </Box>
-            <Box w="30%">
-              <RadioGroup onChange={setInputAtivo} value={inputAtivo}>
+            <Box w="30%" display={"flex"} gap={2}>
+              <RadioGroup defaultValue="1" onChange={setInputAtivo}>
                 <Stack direction="row">
                   <HStack spacing={4}>
                     <Radio value="1">Ativo</Radio>
@@ -195,23 +166,22 @@ const TipoDoacao = () => {
                   </HStack>
                 </Stack>
               </RadioGroup>
+              <Button
+                variant="solid"
+                gap={2}
+                w={120}
+                p="1"
+                bg="gray.600"
+                color="white"
+                fontSize="x1"
+                _hover={{ bg: "gray.800" }}
+                onClick={fetchData}
+                size="sm"
+              >
+                <SearchIcon />
+                Pesquisar
+              </Button>
             </Box>
-
-            <Button
-              variant="solid"
-              gap={2}
-              w={120}
-              p="1"
-              bg="gray.600"
-              color="white"
-              fontSize="x1"
-              _hover={{ bg: "gray.800" }}
-              onClick={handleClick}
-              size="sm"
-            >
-              <SearchIcon />
-              Pesquisar
-            </Button>
           </HStack>
           <br></br>
           <TableContainer>

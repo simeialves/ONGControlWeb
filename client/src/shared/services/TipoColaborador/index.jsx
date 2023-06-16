@@ -1,5 +1,5 @@
 import { api } from "../api";
 
-export const getTipoColaboradores = async () => {
-  return api.get("/tipocolaboradores");
+export const getTipoColaboradores = async (descricao, ativo) => {
+  return api.get(`/tipocolaboradores/?descricao=${descricao}&&ativo=${ativo}`);
 };

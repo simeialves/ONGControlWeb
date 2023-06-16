@@ -13,7 +13,6 @@ appRoutes.post("/", verifyJWT, TipoColaboradorController.create);
 //#region READ
 appRoutes.get("/", verifyJWT, TipoColaboradorController.getAll);
 appRoutes.get("/:id", verifyJWT, TipoColaboradorController.getById);
-appRoutes.get("/filter", verifyJWT, TipoColaboradorController.getByFilter);
 //#endregion
 
 //#region UPDATE

@@ -32,11 +32,14 @@ class TipoDoacaoController {
 
   //#region READ
   static getAll = async (req, res) => {
-    const { ativo } = req.query;
+    const { descricao, ativo } = req.query;
 
     var query = db.knex("tipodoacao").select("*").orderBy("descricao");
 
-    if (ativo != undefined) query.where("ativo", ativo);
+    if (descricao && descricao != "")
+      query.whereILike("descricao", `%${descricao}%`);
+
+    if (ativo) query.where("ativo", ativo);
 
     query
       .then(function (results) {
@@ -75,30 +78,7 @@ class TipoDoacaoController {
         });
       });
   };
-  static getByFilter = async (req, res) => {
-    const { ativo, descricao } = req.query;
 
-    var query = db.knex("tipodoacao").select("*").orderBy("descricao");
-
-    if (ativo != undefined) query.where("ativo", ativo);
-    if (descricao != undefined) query.whereILike("descricao", `%${descricao}%`);
-
-    query
-      .then(function (results) {
-        if (results.length) {
-          res.status(201).json(results);
-        } else {
-          res.status(404).json({
-            message: NOT_FOUND,
-          });
-        }
-      })
-      .catch((err) => {
-        res.status(500).json({
-          message: ERROR_FETCH + " - " + err.message,
-        });
-      });
-  };
   //#endregion
 
   //#region UPDATE

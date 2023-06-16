@@ -73,7 +73,7 @@ const Evento = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [inputDescricao, setInputDescricao] = useState("");
-  const [inputAtivo, setInputAtivo] = useState("");
+  const [inputAtivo, setInputAtivo] = useState(STATUS_ATIVO);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
@@ -93,6 +93,7 @@ const Evento = () => {
     setResults([]);
     const response = await getEventos(inputDescricao, inputAtivo);
     setResults(response.data);
+    console.log(response.data);
     setLoading(false);
   }
 
@@ -158,7 +159,7 @@ const Evento = () => {
                 />
               </InputGroup>
             </Box>
-            <Box display={"flex"} gap={2} w="30%">
+            <Box w="30%" display={"flex"} gap={2}>
               <RadioGroup defaultValue="1" onChange={setInputAtivo}>
                 <Stack direction="row">
                   <HStack spacing={4}>
@@ -243,6 +244,7 @@ const Evento = () => {
           </Flex>
         </Container>
       </Box>
+
       <AlertDialog
         motionPreset="slideInBottom"
         leastDestructiveRef={cancelRef}

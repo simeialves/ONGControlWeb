@@ -67,13 +67,14 @@ class PessoaController {
 
     let query = db.knex("pessoa").select("*").orderBy("nome");
 
-    if (nome) query.where("nome", nome);
+    if (nome) query.whereILike("nome", `%${nome}%`);
+
     query
       .then(function (results) {
         if (results.length) {
           res.status(201).json(results);
         } else {
-          res.status(200).json({ message: NOT_FOUND });
+          res.status(404).json({ message: NOT_FOUND });
         }
       })
       .catch((err) => {
@@ -93,30 +94,6 @@ class PessoaController {
           res.status(201).json(result);
         } else {
           res.status(404).json({ message: NOT_FOUND });
-        }
-      })
-      .catch((err) => {
-        res.status(500).json({
-          message: ERROR_FETCH + " - " + err.message,
-        });
-      });
-  };
-  static getByFilter = async (req, res) => {
-    const { nome } = req.query;
-
-    var query = db.knex("pessoa").select("*");
-
-    if (nome != undefined)
-      query.whereILike("nome", `%${nome}%`).orderBy("nome");
-
-    query
-      .then(function (results) {
-        if (results.length) {
-          res.status(201).json(results);
-        } else {
-          res.status(404).json({
-            message: NOT_FOUND,
-          });
         }
       })
       .catch((err) => {

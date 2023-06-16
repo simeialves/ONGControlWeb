@@ -13,7 +13,6 @@ appRoutes.post("/", verifyJWT, TipoDoacaoController.create);
 //#region READ
 appRoutes.get("/", verifyJWT, TipoDoacaoController.getAll);
 appRoutes.get("/:id", verifyJWT, TipoDoacaoController.getById);
-appRoutes.get("/filter", verifyJWT, TipoDoacaoController.getByFilter);
 //#endregion
 
 //#region UPDATE

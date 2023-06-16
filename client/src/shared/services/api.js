@@ -21,7 +21,3 @@ export const getCEP = async (cep) => {
 export const createSession = async (email, password) => {
   return api.post("/auth/loginAuth", { email, password });
 };
-
-export const getTipoDoacoes = async (ativo) => {
-  return api.get(`/tipodoacoes/?ativo=${ativo}`);
-};
