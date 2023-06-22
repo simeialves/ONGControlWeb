@@ -29,7 +29,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { AddIcon, DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
 
 import { STATUS_ATIVO } from "../../../includes/const";
 
@@ -47,6 +47,7 @@ import { saveAsExcelFile } from "../../../components/ExportCSV";
 import { getEventos } from "../../../shared/services/Evento";
 import { Footer } from "../../Footer";
 import { formatDateNoTime, getDateHourNow } from "../../Uteis/Uteis";
+import { ModalEventos } from "./ModalEventos";
 
 const XLSX = require("xlsx");
 
@@ -69,7 +70,7 @@ async function exportToExcel(data) {
   );
 }
 
-const MenuEventos = () => {
+const MenuEventos = (props) => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -94,7 +95,6 @@ const MenuEventos = () => {
     setResults([]);
     const response = await getEventos(inputDescricao, inputAtivo);
     setResults(response.data);
-    console.log(response.data);
     setLoading(false);
   }
 
@@ -110,8 +110,8 @@ const MenuEventos = () => {
     api
       .delete(`/eventos/${id}`, {})
       .then(() => {
-        navigate("/eventos");
-        window.location.reload(false);
+        onClose();
+        fetchData();
       })
       .catch((err) => {
         console.log(err);
@@ -129,9 +129,9 @@ const MenuEventos = () => {
     }
   }
 
-  async function handleSetId(id) {
-    setComponentId(id);
-  }
+  const handleSetId = async (id) => {
+    await props.event(id);
+  };
 
   return (
     <>
@@ -139,15 +139,8 @@ const MenuEventos = () => {
       <Box paddingTop={150} paddingBottom={5}>
         <Container fluid="md">
           <HStack spacing="4" justify={"right"}>
-            <Button
-              variant="outline"
-              colorScheme="gray"
-              gap={2}
-              onClick={handleNew}
-              size="sm"
-              marginBottom={2}
-            >
-              <AddIcon /> Nova
+            <Button>
+              <ModalEventos event={fetchData} />
             </Button>
           </HStack>
           <HStack>
@@ -222,6 +215,7 @@ const MenuEventos = () => {
                           boxSize={5}
                           onClick={(e) => handleEdit(result.eventoid, e)}
                         />
+                        <ModalEventos event={fetchData} />
                       </Button>
                       <Button size={"xs"} bg={"write"}>
                         <DeleteIcon

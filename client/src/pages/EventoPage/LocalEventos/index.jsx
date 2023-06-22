@@ -124,7 +124,6 @@ const MenuLocalEventos = (props) => {
   return (
     <>
       <Headers />
-
       <Box paddingTop={150} paddingBottom={5}>
         <Container fluid="md">
           <HStack spacing="4" justify={"right"}>
