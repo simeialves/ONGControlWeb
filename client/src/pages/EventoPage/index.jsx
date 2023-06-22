@@ -6,12 +6,14 @@ import ListaSubmenu from "../../components/Submenu/ListaSubmenu";
 import { DESCRICAO_EVENTOS } from "../../includes/const";
 import { Footer } from "../Footer";
 import MenuEventos from "./Eventos";
+import MenuLocalEventos from "./LocalEventos";
 
 const Evento = () => {
   const [id, setId] = useState(1);
 
   async function handleSetId(id) {
     setId(id);
+    alert("ENtrei");
   }
 
   return (
@@ -19,6 +21,7 @@ const Evento = () => {
       <Headers descricaoPainel={DESCRICAO_EVENTOS} />
       <Submenu props={ListaSubmenu.eventos} event={handleSetId} />
       {id == 1 && <MenuEventos />}
+      {id == 2 && <MenuLocalEventos event={handleSetId} />}
       <Footer />
     </>
   );
