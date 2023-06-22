@@ -19,16 +19,16 @@ import {
 import { DeleteIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SpinnerUtil } from "../../../../pages/Uteis/progress";
-import { api } from "../../../../shared/services/api";
+import { SpinnerUtil } from "../../../../../pages/Uteis/progress";
+import { api } from "../../../../../shared/services/api";
 
 import Container from "react-bootstrap/Container";
 
 import { RiFileExcelLine } from "react-icons/ri";
-import { saveAsExcelFile } from "../../../../components/ExportCSV";
-import { TIPO_COLABORADOR } from "../../../../includes/const";
-import { getPessoasEvento } from "../../../../shared/services/PessoaEvento";
-import { getDateHourNow } from "../../../Uteis/Uteis";
+import { saveAsExcelFile } from "../../../../../components/ExportCSV";
+import { TIPO_COLABORADOR } from "../../../../../includes/const";
+import { getPessoasEvento } from "../../../../../shared/services/PessoaEvento";
+import { getDateHourNow } from "../../../../Uteis/Uteis";
 import { ModalColaboradorInscrito } from "./ModalColaboradorInscrito";
 
 const XLSX = require("xlsx");

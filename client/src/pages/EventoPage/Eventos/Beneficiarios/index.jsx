@@ -21,17 +21,17 @@ import {
 } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import SpinnerUtil from "../../Uteis/progress";
+import SpinnerUtil from "../../../Uteis/progress";
 
 import { Box, HStack, Input, InputGroup } from "@chakra-ui/react";
 import Container from "react-bootstrap/Container";
 
 import { RiFileExcelLine } from "react-icons/ri";
-import { saveAsExcelFile } from "../../../components/ExportCSV";
-import { getDoacaoEventoPessoa } from "../../../shared/services/DoacaoEventoPessoa";
-import { getPessoasEvento } from "../../../shared/services/PessoaEvento";
-import { api } from "../../../shared/services/api";
-import { getDateHourNow } from "../../Uteis/Uteis";
+import { saveAsExcelFile } from "../../../../components/ExportCSV";
+import { getDoacaoEventoPessoa } from "../../../../shared/services/DoacaoEventoPessoa";
+import { getPessoasEvento } from "../../../../shared/services/PessoaEvento";
+import { api } from "../../../../shared/services/api";
+import { getDateHourNow } from "../../../Uteis/Uteis";
 import { ModalBeneficiario } from "./ModalBeneficiario";
 
 const XLSX = require("xlsx");

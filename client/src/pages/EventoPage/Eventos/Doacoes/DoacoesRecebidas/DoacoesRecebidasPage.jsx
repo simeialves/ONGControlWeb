@@ -14,9 +14,9 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getPessoas } from "../../../../shared/services/Pessoas";
-import { getTipoDoacaoEventos } from "../../../../shared/services/TipoDoacaoEvento";
-import { api } from "../../../../shared/services/api";
+import { getPessoas } from "../../../../../shared/services/Pessoas";
+import { getTipoDoacaoEventos } from "../../../../../shared/services/TipoDoacaoEvento";
+import { api } from "../../../../../shared/services/api";
 
 function DoacoesRecebidasPage(props) {
   const { id } = useParams();

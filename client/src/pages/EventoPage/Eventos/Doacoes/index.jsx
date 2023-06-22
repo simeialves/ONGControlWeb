@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import SpinnerUtil from "../../Uteis/progress";
+import SpinnerUtil from "../../../Uteis/progress";
 
 import DoacoesNecessarias from "./DoacoesNecessarias/";
 import DoacoesRecebidas from "./DoacoesRecebidas/";

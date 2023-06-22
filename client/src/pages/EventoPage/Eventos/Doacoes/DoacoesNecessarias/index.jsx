@@ -6,11 +6,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
-  Box,
   Button,
   Flex,
-  HStack,
-  Heading,
+  Link,
   Spacer,
   Table,
   TableCaption,
@@ -23,49 +21,53 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import Container from "react-bootstrap/esm/Container";
-import { useNavigate } from "react-router-dom";
-import { api } from "../../../../shared/services/api";
 
-import { DeleteIcon } from "@chakra-ui/icons";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { Box, Heading, HStack } from "@chakra-ui/react";
+
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { api } from "../../../../../shared/services/api";
+import { SpinnerUtil } from "../../../../Uteis/progress";
+
+import Container from "react-bootstrap/esm/Container";
+
 import { RiFileExcelLine } from "react-icons/ri";
-import { saveAsExcelFile } from "../../../../components/ExportCSV";
-import { getDoacaoEvento } from "../../../../shared/services/DoacaoEvento";
-import {
-  formatDate,
-  formatDateNoTime,
-  getDateHourNow,
-} from "../../../Uteis/Uteis";
-import { SpinnerUtil } from "../../../Uteis/progress";
-import { ModalDoacaoRecebida } from "./ModalDoacaoRecebida";
+import { saveAsExcelFile } from "../../../../../components/ExportCSV";
+import { getTipoDoacaoEventos } from "../../../../../shared/services/TipoDoacaoEvento";
+import { getDateHourNow } from "../../../../Uteis/Uteis";
+import { ModalDoacaoNecessaria } from "./ModalDoacaoNecessaria";
 
 const XLSX = require("xlsx");
 
 async function exportToExcel(data) {
   const workbook = XLSX.utils.book_new();
   const sheetData = data.map((result) => [
-    result.tipodoacaodescricao,
-    result.doacaoeventoquantidade,
-    result.pessoanome,
-    formatDateNoTime(result.doacaoeventodatadoacao),
-    result.pessoanome,
-    result.pessoaemail,
+    result.descricao,
+    result.quantidade,
+    result.quantidaderecebidas,
+    result.quantidaderealizadas,
+    result.quantidaderecebidas - result.quantidaderealizadas,
   ]);
   const sheet = XLSX.utils.aoa_to_sheet([
-    ["Descricao", "Quantidade", "Doador", "Data_Doacao", "Telefone", "Email"],
+    [
+      "Descricao",
+      "Qtd._Necessaria",
+      "Qtd._Doacoes_Recebidas",
+      "Qtd._Doacoes_Realizadas",
+      "Saldo",
+    ],
     ...sheetData,
   ]);
-  XLSX.utils.book_append_sheet(workbook, sheet, "Doações Recebidas");
+  XLSX.utils.book_append_sheet(workbook, sheet, "Doações Necessárias");
   const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
   saveAsExcelFile(
     excelBuffer,
-    "Relatorio_Doacoes_Recebidas_" + getDateHourNow() + ".xlsx"
+    "Relatorio_Doacoes_Necessarias_" + getDateHourNow() + ".xlsx"
   );
 }
 
-export default function DoacoesRecebidas({ eventoid }) {
+export default function DoacoesNecessarias({ eventoid }) {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -79,9 +81,8 @@ export default function DoacoesRecebidas({ eventoid }) {
   const toast = useToast();
 
   async function fetchData() {
-    const response = await getDoacaoEvento(eventoid);
+    const response = await getTipoDoacaoEventos(eventoid);
     setResults(response.data);
-    console.log(response.data);
   }
 
   useEffect(() => {
@@ -98,10 +99,11 @@ export default function DoacoesRecebidas({ eventoid }) {
 
   async function handleDelete() {
     await api
-      .delete(`/doacaoeventos/${id}`, {})
+      .delete(`/tipodoacaoeventos/${id}`, {})
       .then(() => {
         toast({
           title: "Registro excluído com sucesso",
+          position: "bottom-left",
           status: "success",
           duration: 3000,
           isClosable: true,
@@ -136,7 +138,7 @@ export default function DoacoesRecebidas({ eventoid }) {
                   md: "md",
                 }}
               >
-                Doações Recebidas
+                Doações Necessárias
               </Heading>
             </HStack>
           </Box>
@@ -151,10 +153,11 @@ export default function DoacoesRecebidas({ eventoid }) {
               marginBottom={2}
               marginRight={2}
             >
-              <ModalDoacaoRecebida
+              <ModalDoacaoNecessaria
                 eventoid={eventoid}
                 isOpen={isModalOpen}
                 onClose={handleModalClose}
+                fetchData={fetchData}
               />
             </Button>
           </HStack>
@@ -164,31 +167,41 @@ export default function DoacoesRecebidas({ eventoid }) {
               <Thead>
                 <Tr>
                   <Th>Descrição</Th>
-                  <Th>Quantidade</Th>
-                  <Th>Doador</Th>
-                  <Th>Data Doação</Th>
-                  <Th>Telefone</Th>
-                  <Th>E-mail</Th>
+                  <Th>Qtd. Necessárias</Th>
+                  <Th>Qtd. Doações Recebidas</Th>
+                  <Th>Qtd. Doações Realizadas</Th>
+                  <Th>Saldo</Th>
                   <Th>Ação</Th>
                 </Tr>
               </Thead>
               <Tbody>
                 {results.map((result) => (
                   <Tr>
-                    <Td>{result.tipodoacaodescricao}</Td>
-                    <Td>{result.doacaoeventoquantidade}</Td>
-                    <Td>{result.pessoanome}</Td>
-                    <Td>{formatDate(result.doacaoeventodatadoacao)}</Td>
-                    <Td>{result.pessoatelefone}</Td>
-                    <Td>{result.pessoaemail}</Td>
-
                     <Td>
+                      <Link href={`/pessoas/edit/${result.pessoaid}`}>
+                        {result.descricao}
+                      </Link>
+                    </Td>
+                    <Td>{result.quantidade}</Td>
+                    <Td>{result.quantidaderecebidas}</Td>
+                    <Td>{result.quantidaderealizadas}</Td>
+                    <Td>
+                      {result.quantidaderecebidas - result.quantidaderealizadas}
+                    </Td>
+                    <Td>
+                      <Button size={"xs"} bg={"write"}>
+                        <EditIcon
+                          color={"blue.800"}
+                          boxSize={5}
+                          onClick={(e) => handleEdit(result.pessoaeventoid, e)}
+                        />
+                      </Button>
                       <Button size={"xs"} bg={"write"}>
                         <DeleteIcon
                           color={"red.500"}
                           boxSize={5}
                           onClick={(e) =>
-                            handleOpenDialog(result.doacaoeventoid, e)
+                            handleOpenDialog(result.tipodoacaoeventoid, e)
                           }
                         />
                       </Button>

@@ -8,7 +8,6 @@ import {
   AlertDialogOverlay,
   Button,
   Flex,
-  Link,
   Spacer,
   Table,
   TableCaption,
@@ -180,11 +179,7 @@ const MenuLocalEventos = (props) => {
               <Tbody>
                 {results.map((result) => (
                   <Tr>
-                    <Td>
-                      <Link href={`/localeventos/edit/${result.localeventoid}`}>
-                        {result.nome}
-                      </Link>
-                    </Td>
+                    <Td>{result.nome}</Td>
                     <Td>
                       {result.logradouro}, {result.numero}
                     </Td>

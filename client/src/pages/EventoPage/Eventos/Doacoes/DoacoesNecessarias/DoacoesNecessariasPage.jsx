@@ -14,26 +14,21 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { api } from "../../../../shared/services/api";
-import { getTipoColaboradores } from "../../../../shared/services/TipoColaborador";
+import { STATUS_ATIVO } from "../../../../../includes/const";
+import { getTipoDoacoes } from "../../../../../shared/services/TipoDoacao";
+import { api } from "../../../../../shared/services/api";
 
 function DoacoesNecessariasPage(props) {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  /*
-tipocolaboradoreventoid, tipocolaboradorid, eventoid, quantidade, quantidadeinscrito
-*/
-
   const [loading, setLoading] = useState(true);
 
-  const [inputTipocolaboradoreventoid, setTipocolaboradoreventoid] =
-    useState("");
-  const [inputTipocolaboradorid, setTipocolaboradorid] = useState("");
+  const [inputTipodoacaoid, setTipoDoacaoid] = useState("");
   const [inputEventoid, setEventoid] = useState(props.eventoid.eventoid);
   const [inputQuantidade, setQuantidade] = useState("");
 
-  const [TipoColaboradores, setTipoColaboradores] = useState([]);
+  const [resultTipoDoacoes, setTipoDoacoes] = useState([]);
 
   const Eventoid = props.eventoid.eventoid;
 
@@ -42,50 +37,51 @@ tipocolaboradoreventoid, tipocolaboradorid, eventoid, quantidade, quantidadeinsc
   useEffect(() => {
     (async () => {
       setLoading(true);
-      handleTipoColaboradores();
-
-      const response = await api.get(`/parametros/`);
-
-      setTipocolaboradorid(response.data[0].tipodoacaoid);
-      setEventoid(response.data[0].eventoid);
-      setQuantidade(response.data[0].quantidade);
-
+      handleTipoDoacoes();
       setLoading(false);
     })();
   }, [Eventoid]);
 
-  async function handleTipoColaboradores() {
-    const response = await getTipoColaboradores();
-    setTipoColaboradores(response.data);
+  async function handleTipoDoacoes() {
+    const response = await getTipoDoacoes(STATUS_ATIVO);
+    setTipoDoacoes(response.data);
   }
 
   const handleSubmit = async () => {
     if (id != undefined) {
-      console.log("Submit");
       return api
-        .post(`/tipocolaboradoreventos/`, {
-          tipocolaboradorid: inputTipocolaboradorid,
+        .post(`/tipodoacaoeventos/`, {
+          tipodoacaoid: inputTipodoacaoid,
           eventoid: Eventoid,
           quantidade: inputQuantidade,
+          quantidaderecebidas: 0,
+          quantidaderealizadas: 0,
         })
-        .then(() => {})
+        .then(() => {
+          this.window.location.reload(true);
+        })
         .catch((err) => {
           console.log(err);
         });
     } else {
       return api
         .put(`/tipodoacaoeventos/${id}`, {
-          tipocolaboradorid: inputTipocolaboradorid,
+          tipodoacaoid: inputTipodoacaoid,
           eventoid: Eventoid,
           quantidade: inputQuantidade,
+          quantidaderecebidas: 0,
+          quantidaderealizadas: 0,
         })
-        .then(() => {
-          navigate(`/evento/${Eventoid}/colaboradores`);
-        })
+        .then(() => {})
         .catch((err) => {
           console.log(err);
         });
     }
+  };
+
+  const handleCloseModal = async () => {
+    await handleSubmit();
+    props.event();
   };
 
   return (
@@ -93,22 +89,19 @@ tipocolaboradoreventoid, tipocolaboradorid, eventoid, quantidade, quantidadeinsc
       <FormControl display="flex" flexDir="column" gap="1">
         <HStack spacing={4}>
           <Box w="80%">
-            <FormLabel htmlFor="tipodoacaoid">Tipo de Colaborador</FormLabel>
+            <FormLabel htmlFor="tipodoacaoid">Tipo de Doação</FormLabel>
             <Select
               id="tipodoacaoid"
               size={"xs"}
               borderRadius={5}
               placeholder="Selecione"
-              value={inputTipocolaboradorid}
+              value={inputTipodoacaoid}
               onChange={(event) => {
-                setTipocolaboradorid(event.target.value);
+                setTipoDoacaoid(event.target.value);
               }}
             >
-              {TipoColaboradores.map((result) => (
-                <option
-                  key={result.tipocolaboradorid}
-                  value={result.tipocolaboradorid}
-                >
+              {resultTipoDoacoes.map((result) => (
+                <option key={result.tipodoacaoid} value={result.tipodoacaoid}>
                   {result.descricao}
                 </option>
               ))}
@@ -116,15 +109,6 @@ tipocolaboradoreventoid, tipocolaboradorid, eventoid, quantidade, quantidadeinsc
           </Box>
           <Box w="20%">
             <FormLabel htmlFor="nivel">Qtd</FormLabel>
-            {/* <Input
-                            id="nivel"
-                            size="xs"
-                            borderRadius={5}
-                            value={inputNivel}
-                            onChange={(event) => {
-                              setInputNivel(event.target.value);
-                            }}
-                          /> */}
             <NumberInput
               id="nivel"
               size={"xs"}
@@ -154,26 +138,26 @@ tipocolaboradoreventoid, tipocolaboradorid, eventoid, quantidade, quantidadeinsc
             fontWeight="bold"
             fontSize="x1"
             _hover={{ bg: "blue.800" }}
-            onClick={handleSubmit}
+            onClick={handleCloseModal}
           >
             Salvar
           </Button>
-          {/* <Button
-              w={100}
-              p="6"
-              type="submit"
-              bg="gray.600"
-              color="white"
-              fontWeight="bold"
-              fontSize="x1"
-              _hover={{ bg: "gray.800" }}
-              onClick={handleVoltar}
-              gap={2}
-              size="xs"
-              marginBottom={2}
-            >
-              Cancelar
-            </Button> */}
+          <Button
+            w={100}
+            p="6"
+            type="submit"
+            bg="gray.600"
+            color="white"
+            fontWeight="bold"
+            fontSize="x1"
+            _hover={{ bg: "gray.800" }}
+            onClick={props.event}
+            gap={2}
+            size="xs"
+            marginBottom={2}
+          >
+            Cancelar
+          </Button>
         </HStack>
       </FormControl>
     </>

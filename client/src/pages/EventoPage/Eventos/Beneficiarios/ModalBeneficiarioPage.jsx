@@ -20,12 +20,15 @@ import {
   PASSO_03,
   STATUS_ATIVO,
   TIPO_BENEFICIARIO,
-} from "../../../includes/const";
-import { getPessoas, getPessoasById } from "../../../shared/services/Pessoas";
-import { getTipoDoacoesById } from "../../../shared/services/TipoDoacao";
-import { getTipoDoacaoEventos } from "../../../shared/services/TipoDoacaoEvento";
-import { api } from "../../../shared/services/api";
-import { geradorSenhaRetirada } from "../../Uteis/Uteis";
+} from "../../../../includes/const";
+import {
+  getPessoas,
+  getPessoasById,
+} from "../../../../shared/services/Pessoas";
+import { getTipoDoacoesById } from "../../../../shared/services/TipoDoacao";
+import { getTipoDoacaoEventos } from "../../../../shared/services/TipoDoacaoEvento";
+import { api } from "../../../../shared/services/api";
+import { geradorSenhaRetirada } from "../../../Uteis/Uteis";
 
 function ModalBeneficiarioPage(props) {
   const { id } = useParams();

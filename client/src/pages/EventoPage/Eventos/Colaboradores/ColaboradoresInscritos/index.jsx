@@ -9,10 +9,10 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { TIPO_COLABORADOR } from "../../../../includes/const";
-import { getPessoas } from "../../../../shared/services/Pessoas";
-import { getTipoColaboradorEventos } from "../../../../shared/services/TipoColaboradorEvento";
-import { api } from "../../../../shared/services/api";
+import { TIPO_COLABORADOR } from "../../../../../includes/const";
+import { getPessoas } from "../../../../../shared/services/Pessoas";
+import { getTipoColaboradorEventos } from "../../../../../shared/services/TipoColaboradorEvento";
+import { api } from "../../../../../shared/services/api";
 
 function ColaboradoresInscritosPage(props) {
   const { id } = useParams();

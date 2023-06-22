@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import { Footer } from "../Footer";
-import Headers from "../Headers";
+import { Footer } from "../../Footer";
+import Headers from "../../Headers";
 
 const EventoDetails = () => {
   const { id } = useParams();

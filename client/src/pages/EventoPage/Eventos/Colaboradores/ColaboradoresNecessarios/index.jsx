@@ -14,21 +14,26 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { STATUS_ATIVO } from "../../../../includes/const";
-import { getTipoDoacoes } from "../../../../shared/services/TipoDoacao";
-import { api } from "../../../../shared/services/api";
+import { getTipoColaboradores } from "../../../../../shared/services/TipoColaborador";
+import { api } from "../../../../../shared/services/api";
 
 function DoacoesNecessariasPage(props) {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  /*
+tipocolaboradoreventoid, tipocolaboradorid, eventoid, quantidade, quantidadeinscrito
+*/
+
   const [loading, setLoading] = useState(true);
 
-  const [inputTipodoacaoid, setTipoDoacaoid] = useState("");
+  const [inputTipocolaboradoreventoid, setTipocolaboradoreventoid] =
+    useState("");
+  const [inputTipocolaboradorid, setTipocolaboradorid] = useState("");
   const [inputEventoid, setEventoid] = useState(props.eventoid.eventoid);
   const [inputQuantidade, setQuantidade] = useState("");
 
-  const [resultTipoDoacoes, setTipoDoacoes] = useState([]);
+  const [TipoColaboradores, setTipoColaboradores] = useState([]);
 
   const Eventoid = props.eventoid.eventoid;
 
@@ -37,51 +42,50 @@ function DoacoesNecessariasPage(props) {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      handleTipoDoacoes();
+      handleTipoColaboradores();
+
+      const response = await api.get(`/parametros/`);
+
+      setTipocolaboradorid(response.data[0].tipodoacaoid);
+      setEventoid(response.data[0].eventoid);
+      setQuantidade(response.data[0].quantidade);
+
       setLoading(false);
     })();
   }, [Eventoid]);
 
-  async function handleTipoDoacoes() {
-    const response = await getTipoDoacoes(STATUS_ATIVO);
-    setTipoDoacoes(response.data);
+  async function handleTipoColaboradores() {
+    const response = await getTipoColaboradores();
+    setTipoColaboradores(response.data);
   }
 
   const handleSubmit = async () => {
     if (id != undefined) {
+      console.log("Submit");
       return api
-        .post(`/tipodoacaoeventos/`, {
-          tipodoacaoid: inputTipodoacaoid,
+        .post(`/tipocolaboradoreventos/`, {
+          tipocolaboradorid: inputTipocolaboradorid,
           eventoid: Eventoid,
           quantidade: inputQuantidade,
-          quantidaderecebidas: 0,
-          quantidaderealizadas: 0,
         })
-        .then(() => {
-          this.window.location.reload(true);
-        })
+        .then(() => {})
         .catch((err) => {
           console.log(err);
         });
     } else {
       return api
         .put(`/tipodoacaoeventos/${id}`, {
-          tipodoacaoid: inputTipodoacaoid,
+          tipocolaboradorid: inputTipocolaboradorid,
           eventoid: Eventoid,
           quantidade: inputQuantidade,
-          quantidaderecebidas: 0,
-          quantidaderealizadas: 0,
         })
-        .then(() => {})
+        .then(() => {
+          navigate(`/evento/${Eventoid}/colaboradores`);
+        })
         .catch((err) => {
           console.log(err);
         });
     }
-  };
-
-  const handleCloseModal = async () => {
-    await handleSubmit();
-    props.event();
   };
 
   return (
@@ -89,19 +93,22 @@ function DoacoesNecessariasPage(props) {
       <FormControl display="flex" flexDir="column" gap="1">
         <HStack spacing={4}>
           <Box w="80%">
-            <FormLabel htmlFor="tipodoacaoid">Tipo de Doação</FormLabel>
+            <FormLabel htmlFor="tipodoacaoid">Tipo de Colaborador</FormLabel>
             <Select
               id="tipodoacaoid"
               size={"xs"}
               borderRadius={5}
               placeholder="Selecione"
-              value={inputTipodoacaoid}
+              value={inputTipocolaboradorid}
               onChange={(event) => {
-                setTipoDoacaoid(event.target.value);
+                setTipocolaboradorid(event.target.value);
               }}
             >
-              {resultTipoDoacoes.map((result) => (
-                <option key={result.tipodoacaoid} value={result.tipodoacaoid}>
+              {TipoColaboradores.map((result) => (
+                <option
+                  key={result.tipocolaboradorid}
+                  value={result.tipocolaboradorid}
+                >
                   {result.descricao}
                 </option>
               ))}
@@ -109,6 +116,15 @@ function DoacoesNecessariasPage(props) {
           </Box>
           <Box w="20%">
             <FormLabel htmlFor="nivel">Qtd</FormLabel>
+            {/* <Input
+                            id="nivel"
+                            size="xs"
+                            borderRadius={5}
+                            value={inputNivel}
+                            onChange={(event) => {
+                              setInputNivel(event.target.value);
+                            }}
+                          /> */}
             <NumberInput
               id="nivel"
               size={"xs"}
@@ -138,26 +154,26 @@ function DoacoesNecessariasPage(props) {
             fontWeight="bold"
             fontSize="x1"
             _hover={{ bg: "blue.800" }}
-            onClick={handleCloseModal}
+            onClick={handleSubmit}
           >
             Salvar
           </Button>
-          <Button
-            w={100}
-            p="6"
-            type="submit"
-            bg="gray.600"
-            color="white"
-            fontWeight="bold"
-            fontSize="x1"
-            _hover={{ bg: "gray.800" }}
-            onClick={props.event}
-            gap={2}
-            size="xs"
-            marginBottom={2}
-          >
-            Cancelar
-          </Button>
+          {/* <Button
+              w={100}
+              p="6"
+              type="submit"
+              bg="gray.600"
+              color="white"
+              fontWeight="bold"
+              fontSize="x1"
+              _hover={{ bg: "gray.800" }}
+              onClick={handleVoltar}
+              gap={2}
+              size="xs"
+              marginBottom={2}
+            >
+              Cancelar
+            </Button> */}
         </HStack>
       </FormControl>
     </>

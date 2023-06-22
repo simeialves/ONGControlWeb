@@ -33,9 +33,9 @@ import { getProjetos } from "../../shared/services/Projeto/Index";
 import { Footer } from "../Footer";
 import Headers from "../Headers";
 import SpinnerUtil from "../Uteis/progress";
-import Beneficiarios from "./Beneficiarios";
-import Colaboradores from "./Colaboradores";
-import Doacoes from "./Doacoes";
+import Beneficiarios from "./Eventos/Beneficiarios";
+import Colaboradores from "./Eventos/Colaboradores";
+import Doacoes from "./Eventos/Doacoes";
 
 const Evento = () => {
   const { id } = useParams();

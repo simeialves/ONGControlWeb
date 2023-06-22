@@ -14,7 +14,7 @@ import {
   default as EditEventoPage,
   default as NewEventoPage,
 } from "../pages/EventoPage/details";
-import DetalheEventoPage from "../pages/EventoPage/eventodetails";
+import DetalheEventoPage from "../pages/EventoPage/Eventos/eventodetails";
 
 import HomePage from "../pages/HomePage";
 
