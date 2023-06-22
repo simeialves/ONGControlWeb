@@ -21,7 +21,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { AddIcon, DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
+import { DeleteIcon, SearchIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../shared/services/api";
@@ -37,6 +37,7 @@ import { saveAsExcelFile } from "../../../components/ExportCSV";
 import { getLocalEventos } from "../../../shared/services/LocalEvento";
 import { Footer } from "../../Footer";
 import { getDateHourNow } from "../../Uteis/Uteis";
+import { ModalLocalEventos } from "./ModalLocalEventos";
 
 const XLSX = require("xlsx");
 
@@ -124,18 +125,12 @@ const MenuLocalEventos = (props) => {
   return (
     <>
       <Headers />
+
       <Box paddingTop={150} paddingBottom={5}>
         <Container fluid="md">
           <HStack spacing="4" justify={"right"}>
-            <Button
-              variant="outline"
-              colorScheme="gray"
-              gap={2}
-              onClick={handleNew}
-              size="sm"
-              marginBottom={2}
-            >
-              <AddIcon /> Nova
+            <Button>
+              <ModalLocalEventos event={fetchData} />
             </Button>
           </HStack>
           <HStack>
@@ -197,10 +192,15 @@ const MenuLocalEventos = (props) => {
                     <Td>{result.cidade}</Td>
                     <Td>
                       <Button size={"xs"} bg={"write"}>
-                        <EditIcon
+                        {/* <EditIcon
                           color={"blue.800"}
                           boxSize={5}
                           onClick={(e) => handleEdit(result.localeventoid, e)}
+                        /> */}
+
+                        <ModalLocalEventos
+                          event={fetchData}
+                          props={result.localeventoid}
                         />
                       </Button>
                       <Button size={"xs"} bg={"write"}>

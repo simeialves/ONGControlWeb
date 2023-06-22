@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { api, getCEP } from "../../../shared/services/api";
 
 import {
@@ -14,11 +14,12 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { Footer } from "../../Footer";
-import Headers from "../../Headers";
 import SpinnerUtil from "../../Uteis/progress";
 
-const New = (props) => {
-  const { id } = useParams();
+const ModalLocalEventosPage = (props) => {
+  //const { id } = useParams();
+
+  const [id] = useState(props.props);
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
@@ -125,11 +126,14 @@ const New = (props) => {
     navigate(`/eventos`);
   }
 
+  async function handleCloseModal() {
+    props.event();
+  }
+
   return (
     <>
-      <Headers />
       <Box paddingTop={100} paddingBottom={5}>
-        <Box h="100vh">
+        <Box h="40vh">
           <Flex
             align="center"
             justify="center"
@@ -140,7 +144,7 @@ const New = (props) => {
               w="100%"
               maxW={800}
               bg="white"
-              top={150}
+              top={10}
               position="absolute"
               borderRadius={5}
               p="6"
@@ -296,7 +300,7 @@ const New = (props) => {
                     fontWeight="bold"
                     fontSize="x1"
                     _hover={{ bg: "gray.300" }}
-                    onClick={handleVoltar}
+                    onClick={handleCloseModal}
                     gap={2}
                     size="xs"
                     marginBottom={2}
@@ -314,4 +318,4 @@ const New = (props) => {
   );
 };
 
-export default New;
+export default ModalLocalEventosPage;

@@ -18,10 +18,10 @@ import DetalheEventoPage from "../pages/EventoPage/eventodetails";
 
 import HomePage from "../pages/HomePage";
 
-import {
-  default as EditLocalEventoPage,
-  default as NewLocalEventoPage,
-} from "../pages/EventoPage/LocalEventos/details";
+// import {
+//   default as EditLocalEventoPage,
+//   default as NewLocalEventoPage,
+// } from "../pages/EventoPage/LocalEventos/details";
 
 import LoginPage from "../pages/LoginPage";
 
@@ -233,7 +233,7 @@ const AppRouters = () => {
               </Private>
             }
           />
-          <Route
+          {/* <Route
             exact
             path="/localeventos/new"
             element={
@@ -250,7 +250,7 @@ const AppRouters = () => {
                 <EditLocalEventoPage />
               </Private>
             }
-          />
+          /> */}
           <Route
             exact
             path="/contatos"

@@ -13,7 +13,6 @@ const Evento = () => {
 
   async function handleSetId(id) {
     setId(id);
-    alert("ENtrei");
   }
 
   return (
