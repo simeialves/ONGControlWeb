@@ -54,7 +54,7 @@ const Navbar = (props) => {
           <Text
             as="a"
             mr={2}
-            href="/pessoas"
+            href="/cadastros"
             fontSize="xs"
             textDecoration={"none"}
             _hover={"red"}

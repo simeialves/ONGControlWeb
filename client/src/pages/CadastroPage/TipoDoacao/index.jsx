@@ -6,16 +6,10 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
-  Box,
   Button,
   Checkbox,
   Flex,
-  HStack,
-  Input,
-  InputGroup,
   Link,
-  Radio,
-  RadioGroup,
   Spacer,
   Stack,
   Table,
@@ -31,8 +25,14 @@ import {
 
 import { AddIcon, DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
 
-import { STATUS_ATIVO } from "../../../includes/const";
-
+import {
+  Box,
+  HStack,
+  Input,
+  InputGroup,
+  Radio,
+  RadioGroup,
+} from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../shared/services/api";
@@ -40,13 +40,12 @@ import Headers from "../../Headers";
 import SpinnerUtil from "../../Uteis/progress";
 
 import Container from "react-bootstrap/Container";
-
-import "bootstrap/dist/css/bootstrap.min.css";
 import { RiFileExcelLine } from "react-icons/ri";
 import { saveAsExcelFile } from "../../../components/ExportCSV";
-import { getEventos } from "../../../shared/services/Evento";
+import { STATUS_ATIVO } from "../../../includes/const";
+import { getTipoDoacoes } from "../../../shared/services/TipoDoacao";
 import { Footer } from "../../Footer";
-import { formatDateNoTime, getDateHourNow } from "../../Uteis/Uteis";
+import { getDateHourNow } from "../../Uteis/Uteis";
 
 const XLSX = require("xlsx");
 
@@ -54,25 +53,24 @@ async function exportToExcel(data) {
   const workbook = XLSX.utils.book_new();
   const sheetData = data.map((result) => [
     result.descricao,
-    formatDateNoTime(result.datainicio),
-    formatDateNoTime(result.datafim),
+    result.ativo == STATUS_ATIVO ? "Ativo" : "Inativo",
   ]);
   const sheet = XLSX.utils.aoa_to_sheet([
-    ["Evento", "Data_Inicio", "Data_Fim"],
+    ["Descricao", "Status"],
     ...sheetData,
   ]);
-  XLSX.utils.book_append_sheet(workbook, sheet, "Eventos");
+  XLSX.utils.book_append_sheet(workbook, sheet, "Tipo de Doações");
   const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
   saveAsExcelFile(
     excelBuffer,
-    "Relatorio_Eventos_" + getDateHourNow() + ".xlsx"
+    "Relatorio_Tipo_De_Doacoes_" + getDateHourNow() + ".xlsx"
   );
 }
 
-const MenuEventos = () => {
+const MenuTipoDoacao = () => {
   const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(true);
-
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(false);
   const [inputDescricao, setInputDescricao] = useState("");
   const [inputAtivo, setInputAtivo] = useState(STATUS_ATIVO);
 
@@ -92,25 +90,24 @@ const MenuEventos = () => {
 
   async function fetchData() {
     setResults([]);
-    const response = await getEventos(inputDescricao, inputAtivo);
+    const response = await getTipoDoacoes(inputDescricao, inputAtivo);
     setResults(response.data);
-    console.log(response.data);
     setLoading(false);
   }
 
   async function handleNew() {
-    navigate(`/eventos/new`);
+    navigate(`/tipodoacoes/new`);
   }
 
   async function handleEdit(id) {
-    navigate(`/eventos/edit/${id}`);
+    navigate(`/tipodoacoes/edit/${id}`);
   }
 
   async function handleDelete() {
     api
-      .delete(`/eventos/${id}`, {})
+      .delete(`/tipodoacoes/${id}`, {})
       .then(() => {
-        navigate("/eventos");
+        navigate("/tipodoacoes");
         window.location.reload(false);
       })
       .catch((err) => {
@@ -127,10 +124,6 @@ const MenuEventos = () => {
     if (event.key === "Enter") {
       fetchData();
     }
-  }
-
-  async function handleSetId(id) {
-    setComponentId(id);
   }
 
   return (
@@ -205,7 +198,7 @@ const MenuEventos = () => {
                 {results.map((result) => (
                   <Tr>
                     <Td>
-                      <Link href={`/eventos/edit/${result.eventoid}`}>
+                      <Link href={`/tipodoacoes/edit/${result.tipodoacaoid}`}>
                         {result.descricao}
                       </Link>
                     </Td>
@@ -220,14 +213,16 @@ const MenuEventos = () => {
                         <EditIcon
                           color={"blue.800"}
                           boxSize={5}
-                          onClick={(e) => handleEdit(result.eventoid, e)}
+                          onClick={(e) => handleEdit(result.tipodoacaoid, e)}
                         />
                       </Button>
                       <Button size={"xs"} bg={"write"}>
                         <DeleteIcon
                           color={"red.500"}
                           boxSize={5}
-                          onClick={(e) => handleOpenDialog(result.eventoid, e)}
+                          onClick={(e) =>
+                            handleOpenDialog(result.tipodoacaoid, e)
+                          }
                         />
                       </Button>
                     </Td>
@@ -249,7 +244,6 @@ const MenuEventos = () => {
           </Flex>
         </Container>
       </Box>
-
       <AlertDialog
         motionPreset="slideInBottom"
         leastDestructiveRef={cancelRef}
@@ -275,10 +269,9 @@ const MenuEventos = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
       <Footer />
     </>
   );
 };
 
-export default MenuEventos;
+export default MenuTipoDoacao;

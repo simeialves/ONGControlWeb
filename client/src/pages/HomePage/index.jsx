@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import React from "react";
+import { DESCRICAO_HOME_PAGE } from "../../includes/const";
 import { Footer } from "../Footer";
 import Headers from "../Headers";
 import { CardEvento } from "./card";
@@ -7,7 +8,7 @@ import { CardEvento } from "./card";
 const HomePage = () => {
   return (
     <>
-      <Headers />
+      <Headers descricaoPainel={DESCRICAO_HOME_PAGE} />
       <Box
         paddingTop={100}
         width="100%"

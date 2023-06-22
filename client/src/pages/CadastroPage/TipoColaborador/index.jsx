@@ -7,9 +7,11 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
+  Checkbox,
   Flex,
   Link,
   Spacer,
+  Stack,
   Table,
   TableCaption,
   TableContainer,
@@ -22,48 +24,55 @@ import {
 } from "@chakra-ui/react";
 
 import { AddIcon, DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
+
+import {
+  Box,
+  HStack,
+  Input,
+  InputGroup,
+  Radio,
+  RadioGroup,
+} from "@chakra-ui/react";
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api } from "../../shared/services/api";
-import Headers from "../Headers";
-import SpinnerUtil from "../Uteis/progress";
+import { getTipoColaboradores } from "../../../shared/services/TipoColaborador";
+import { api } from "../../../shared/services/api";
+import Headers from "../../Headers";
+import SpinnerUtil from "../../Uteis/progress";
 
-import { Box, HStack, Input, InputGroup } from "@chakra-ui/react";
 import Container from "react-bootstrap/Container";
-
-import "bootstrap/dist/css/bootstrap.min.css";
 import { RiFileExcelLine } from "react-icons/ri";
-import { saveAsExcelFile } from "../../components/ExportCSV";
-import { getLocalEventos } from "../../shared/services/LocalEvento";
-import { Footer } from "../Footer";
-import { getDateHourNow } from "../Uteis/Uteis";
+import { saveAsExcelFile } from "../../../components/ExportCSV";
+import { STATUS_ATIVO } from "../../../includes/const";
+import { Footer } from "../../Footer";
+import { getDateHourNow } from "../../Uteis/Uteis";
 
 const XLSX = require("xlsx");
 
 async function exportToExcel(data) {
   const workbook = XLSX.utils.book_new();
   const sheetData = data.map((result) => [
-    result.nome,
-    result.logradouro + ", " + result.numero,
-    result.bairro,
-    result.cidade,
+    result.descricao,
+    result.ativo == STATUS_ATIVO ? "Ativo" : "Inativo",
   ]);
   const sheet = XLSX.utils.aoa_to_sheet([
-    ["Nome", "Endereco", "Bairro", "Cidade"],
+    ["Descricao", "Status"],
     ...sheetData,
   ]);
-  XLSX.utils.book_append_sheet(workbook, sheet, "Local dos Eventos");
+  XLSX.utils.book_append_sheet(workbook, sheet, "Tipo de Colaboradores");
   const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
   saveAsExcelFile(
     excelBuffer,
-    "Relatorio_Local_De_Eventos_" + getDateHourNow() + ".xlsx"
+    "Relatorio_Tipo_De_Colaboradores_" + getDateHourNow() + ".xlsx"
   );
 }
 
-const LocalEvento = () => {
+const MenuTipoColaborador = () => {
   const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [inputNome, setInputNome] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [inputDescricao, setInputDescricao] = useState("");
+  const [inputAtivo, setInputAtivo] = useState(STATUS_ATIVO);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
@@ -81,24 +90,24 @@ const LocalEvento = () => {
 
   async function fetchData() {
     setResults([]);
-    const response = await getLocalEventos(inputNome);
+    const response = await getTipoColaboradores(inputDescricao, inputAtivo);
     setResults(response.data);
     setLoading(false);
   }
 
   async function handleNew() {
-    navigate("/localeventos/new");
+    navigate(`/tipocolaboradores/new`);
   }
 
   async function handleEdit(id) {
-    navigate(`/localeventos/edit/${id}`);
+    navigate(`/tipocolaboradores/edit/${id}`);
   }
 
   async function handleDelete() {
     api
-      .delete(`/localeventos/${id}`, {})
+      .delete(`/tipocolaboradores/${id}`, {})
       .then(() => {
-        navigate("/localeventos");
+        navigate("/tipocolaboradores");
         window.location.reload(false);
       })
       .catch((err) => {
@@ -120,7 +129,7 @@ const LocalEvento = () => {
   return (
     <>
       <Headers />
-      <Box paddingTop={100} paddingBottom={5}>
+      <Box paddingTop={150} paddingBottom={5}>
         <Container fluid="md">
           <HStack spacing="4" justify={"right"}>
             <Button
@@ -139,30 +148,41 @@ const LocalEvento = () => {
               <InputGroup>
                 <Input
                   onChange={(event) => {
-                    setInputNome(event.target.value);
+                    setInputDescricao(event.target.value);
                   }}
-                  placeholder="Pesquisar por nome"
+                  placeholder="Pesquisar pela descrição"
                   size="sm"
                   borderRadius={5}
                   onKeyPress={(event) => handleKeyPress(event)}
                 />
               </InputGroup>
             </Box>
-            <Button
-              variant="solid"
-              gap={2}
-              w={120}
-              p="1"
-              bg="gray.600"
-              color="white"
-              fontSize="x1"
-              _hover={{ bg: "gray.800" }}
-              onClick={fetchData}
-              size="sm"
-            >
-              <SearchIcon />
-              Pesquisar
-            </Button>
+            <Box w="30%" display={"flex"} gap={2}>
+              <RadioGroup defaultValue="1" onChange={setInputAtivo}>
+                <Stack direction="row">
+                  <HStack spacing={4}>
+                    <Radio value="1">Ativo</Radio>
+                    <Radio value="0">Inativo</Radio>
+                  </HStack>
+                </Stack>
+              </RadioGroup>
+
+              <Button
+                variant="solid"
+                gap={2}
+                w={120}
+                p="1"
+                bg="gray.600"
+                color="white"
+                fontSize="x1"
+                _hover={{ bg: "gray.800" }}
+                onClick={fetchData}
+                size="sm"
+              >
+                <SearchIcon />
+                Pesquisar
+              </Button>
+            </Box>
           </HStack>
           <br></br>
           <TableContainer>
@@ -170,33 +190,35 @@ const LocalEvento = () => {
               <TableCaption>Quantidade: {results.length}</TableCaption>
               <Thead>
                 <Tr>
-                  <Th>Nome</Th>
-                  <Th>Endereço</Th>
-                  <Th>Bairro</Th>
-                  <Th>Cidade</Th>
+                  <Th>Descrição</Th>
+                  <Th>Ativo</Th>
                   <Th>Ação</Th>
                 </Tr>
               </Thead>
-
               <Tbody>
                 {results.map((result) => (
                   <Tr>
                     <Td>
-                      <Link href={`/localeventos/edit/${result.localeventoid}`}>
-                        {result.nome}
+                      <Link
+                        href={`/tipocolaboradores/edit/${result.tipocolaboradorid}`}
+                      >
+                        {result.descricao}
                       </Link>
                     </Td>
                     <Td>
-                      {result.logradouro}, {result.numero}
+                      <Checkbox
+                        isChecked={result.ativo == STATUS_ATIVO ? true : false}
+                        isDisabled
+                      />
                     </Td>
-                    <Td>{result.bairro}</Td>
-                    <Td>{result.cidade}</Td>
                     <Td>
                       <Button size={"xs"} bg={"write"}>
                         <EditIcon
                           color={"blue.800"}
                           boxSize={5}
-                          onClick={(e) => handleEdit(result.localeventoid, e)}
+                          onClick={(e) =>
+                            handleEdit(result.tipocolaboradorid, e)
+                          }
                         />
                       </Button>
                       <Button size={"xs"} bg={"write"}>
@@ -204,7 +226,7 @@ const LocalEvento = () => {
                           color={"red.500"}
                           boxSize={5}
                           onClick={(e) =>
-                            handleOpenDialog(result.localeventoid, e)
+                            handleOpenDialog(result.tipocolaboradorid, e)
                           }
                         />
                       </Button>
@@ -257,4 +279,4 @@ const LocalEvento = () => {
   );
 };
 
-export default LocalEvento;
+export default MenuTipoColaborador;

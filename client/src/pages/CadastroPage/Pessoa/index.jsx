@@ -6,18 +6,10 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
-  Box,
   Button,
-  Checkbox,
   Flex,
-  HStack,
-  Input,
-  InputGroup,
   Link,
-  Radio,
-  RadioGroup,
   Spacer,
-  Stack,
   Table,
   TableCaption,
   TableContainer,
@@ -27,60 +19,61 @@ import {
   Thead,
   Tr,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 
+import { RiFileExcelLine } from "react-icons/ri";
+
 import { AddIcon, DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
-
-import { STATUS_ATIVO } from "../../../includes/const";
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../shared/services/api";
 import Headers from "../../Headers";
 import SpinnerUtil from "../../Uteis/progress";
 
+import { getPessoas } from "../../../shared/services/Pessoas";
+
+import { Box, HStack, Input, InputGroup } from "@chakra-ui/react";
 import Container from "react-bootstrap/Container";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import { RiFileExcelLine } from "react-icons/ri";
 import { saveAsExcelFile } from "../../../components/ExportCSV";
-import { getEventos } from "../../../shared/services/Evento";
 import { Footer } from "../../Footer";
-import { formatDateNoTime, getDateHourNow } from "../../Uteis/Uteis";
+import { getDateHourNow } from "../../Uteis/Uteis";
 
 const XLSX = require("xlsx");
 
 async function exportToExcel(data) {
   const workbook = XLSX.utils.book_new();
   const sheetData = data.map((result) => [
-    result.descricao,
-    formatDateNoTime(result.datainicio),
-    formatDateNoTime(result.datafim),
+    result.nome,
+    result.documento,
+    result.telefone,
   ]);
   const sheet = XLSX.utils.aoa_to_sheet([
-    ["Evento", "Data_Inicio", "Data_Fim"],
+    ["Nome", "Documento", "Telefone"],
     ...sheetData,
   ]);
-  XLSX.utils.book_append_sheet(workbook, sheet, "Eventos");
+  XLSX.utils.book_append_sheet(workbook, sheet, "Pessoas");
   const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
   saveAsExcelFile(
     excelBuffer,
-    "Relatorio_Eventos_" + getDateHourNow() + ".xlsx"
+    "Relatorio_Pessoas_" + getDateHourNow() + ".xlsx"
   );
 }
 
-const MenuEventos = () => {
+const MenuPessoa = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const [inputDescricao, setInputDescricao] = useState("");
-  const [inputAtivo, setInputAtivo] = useState(STATUS_ATIVO);
+  const [inputNome, setInputNome] = useState("");
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
   const [id, setId] = useState("");
 
   const navigate = useNavigate();
+
+  const toast = useToast();
 
   useEffect(() => {
     fetchData();
@@ -92,26 +85,32 @@ const MenuEventos = () => {
 
   async function fetchData() {
     setResults([]);
-    const response = await getEventos(inputDescricao, inputAtivo);
+    const response = await getPessoas(inputNome);
     setResults(response.data);
     console.log(response.data);
     setLoading(false);
   }
 
   async function handleNew() {
-    navigate(`/eventos/new`);
+    navigate("/pessoas/new");
   }
 
   async function handleEdit(id) {
-    navigate(`/eventos/edit/${id}`);
+    navigate(`/pessoas/edit/${id}`);
   }
 
   async function handleDelete() {
-    api
-      .delete(`/eventos/${id}`, {})
+    await api
+      .delete(`/pessoas/${id}`, {})
       .then(() => {
-        navigate("/eventos");
-        window.location.reload(false);
+        toast({
+          title: "Pessoa excluída com sucesso",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        fetchData();
+        onClose();
       })
       .catch((err) => {
         console.log(err);
@@ -129,10 +128,6 @@ const MenuEventos = () => {
     }
   }
 
-  async function handleSetId(id) {
-    setComponentId(id);
-  }
-
   return (
     <>
       <Headers />
@@ -140,6 +135,7 @@ const MenuEventos = () => {
         <Container fluid="md">
           <HStack spacing="4" justify={"right"}>
             <Button
+              id="btnNovo"
               variant="outline"
               colorScheme="gray"
               gap={2}
@@ -155,40 +151,30 @@ const MenuEventos = () => {
               <InputGroup>
                 <Input
                   onChange={(event) => {
-                    setInputDescricao(event.target.value);
+                    setInputNome(event.target.value);
                   }}
-                  placeholder="Pesquisar pela descrição"
+                  placeholder="Pesquisar por nome"
                   size="sm"
                   borderRadius={5}
                   onKeyPress={(event) => handleKeyPress(event)}
                 />
               </InputGroup>
             </Box>
-            <Box w="30%" display={"flex"} gap={2}>
-              <RadioGroup defaultValue="1" onChange={setInputAtivo}>
-                <Stack direction="row">
-                  <HStack spacing={4}>
-                    <Radio value="1">Ativo</Radio>
-                    <Radio value="0">Inativo</Radio>
-                  </HStack>
-                </Stack>
-              </RadioGroup>
-              <Button
-                variant="solid"
-                gap={2}
-                w={120}
-                p="1"
-                bg="gray.600"
-                color="white"
-                fontSize="x1"
-                _hover={{ bg: "gray.800" }}
-                onClick={fetchData}
-                size="sm"
-              >
-                <SearchIcon />
-                Pesquisar
-              </Button>
-            </Box>
+            <Button
+              variant="solid"
+              gap={2}
+              w={120}
+              p="1"
+              bg="gray.600"
+              color="white"
+              fontSize="x1"
+              _hover={{ bg: "gray.800" }}
+              onClick={fetchData}
+              size="sm"
+            >
+              <SearchIcon />
+              Pesquisar
+            </Button>
           </HStack>
           <br></br>
           <TableContainer>
@@ -196,38 +182,37 @@ const MenuEventos = () => {
               <TableCaption>Quantidade: {results.length}</TableCaption>
               <Thead>
                 <Tr>
-                  <Th>Descrição</Th>
-                  <Th>Ativo</Th>
+                  <Th>Nome</Th>
+                  <Th>Documento</Th>
+                  <Th>Telefone</Th>
                   <Th>Ação</Th>
                 </Tr>
               </Thead>
+
               <Tbody>
                 {results.map((result) => (
-                  <Tr>
+                  <Tr key={result.pessoaid}>
                     <Td>
-                      <Link href={`/eventos/edit/${result.eventoid}`}>
-                        {result.descricao}
+                      <Link href={`/pessoas/edit/${result.pessoaid}`}>
+                        {result.nome}
                       </Link>
                     </Td>
-                    <Td>
-                      <Checkbox
-                        isChecked={result.ativo == STATUS_ATIVO ? true : false}
-                        isDisabled
-                      />
-                    </Td>
+                    <Td>{result.documento}</Td>
+                    <Td>{result.telefone}</Td>
                     <Td>
                       <Button size={"xs"} bg={"write"}>
                         <EditIcon
+                          name="btnEditar"
                           color={"blue.800"}
                           boxSize={5}
-                          onClick={(e) => handleEdit(result.eventoid, e)}
+                          onClick={(e) => handleEdit(result.pessoaid, e)}
                         />
                       </Button>
-                      <Button size={"xs"} bg={"write"}>
+                      <Button size={"xs"} bg={"write"} name="btnDelete">
                         <DeleteIcon
                           color={"red.500"}
                           boxSize={5}
-                          onClick={(e) => handleOpenDialog(result.eventoid, e)}
+                          onClick={(e) => handleOpenDialog(result.pessoaid, e)}
                         />
                       </Button>
                     </Td>
@@ -275,10 +260,9 @@ const MenuEventos = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
       <Footer />
     </>
   );
 };
 
-export default MenuEventos;
+export default MenuPessoa;

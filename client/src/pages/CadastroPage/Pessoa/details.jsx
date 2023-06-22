@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { api, getCEP } from "../../shared/services/api";
+import { formatDateNoTime } from "../Uteis/Uteis";
 
 import {
   Box,
@@ -11,6 +12,9 @@ import {
   FormLabel,
   HStack,
   Input,
+  Radio,
+  RadioGroup,
+  Stack,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { Footer } from "../Footer";
@@ -24,7 +28,12 @@ const New = () => {
   const [loading, setLoading] = useState(true);
 
   const [inputNome, setInputNome] = useState("");
-  const [inputCep, setInputCep] = useState("");
+  const [inputDocumento, setInputDocumento] = useState("");
+  const [inputSexo, setInputSexo] = useState("");
+  const [inputDtNascimento, setInputDtNascimento] = useState("");
+  const [inputTelefone, setInputTelefone] = useState("");
+  const [inputEmail, setInputEmail] = useState("");
+  const [inputCEP, setInputCEP] = useState("");
   const [inputLogradouro, setInputLogradouro] = useState("");
   const [inputNumero, setInputNumero] = useState("");
   const [inputComplemento, setInputComplemento] = useState("");
@@ -32,15 +41,20 @@ const New = () => {
   const [inputCidade, setInputCidade] = useState("");
   const [inputUF, setInputUF] = useState("");
   const [inputPais, setInputPais] = useState("");
-  const [inputLink, setInputLink] = useState("");
+  const [inputTipo, setInputTipo] = useState("");
 
   useEffect(() => {
     if (id != undefined) {
       setLoading(true);
       (async () => {
-        const response = await api.get(`/localeventos/${id}`);
+        const response = await api.get(`/pessoas/${id}`);
         setInputNome(response.data[0].nome);
-        setInputCep(response.data[0].cep);
+        setInputDocumento(response.data[0].documento);
+        setInputSexo(response.data[0].sexo);
+        setInputDtNascimento(formatDateNoTime(response.data[0].dtnascimento));
+        setInputTelefone(response.data[0].telefone);
+        setInputEmail(response.data[0].email);
+        setInputCEP(response.data[0].cep);
         setInputLogradouro(response.data[0].logradouro);
         setInputNumero(response.data[0].numero);
         setInputComplemento(response.data[0].complemento);
@@ -48,7 +62,7 @@ const New = () => {
         setInputCidade(response.data[0].cidade);
         setInputUF(response.data[0].uf);
         setInputPais(response.data[0].pais);
-        setInputLink(response.data[0].link);
+        setInputTipo(response.data[0].tipo);
       })();
       setLoading(false);
     }
@@ -61,9 +75,14 @@ const New = () => {
   const handleSubmit = async () => {
     if (id == undefined) {
       return api
-        .post(`/localeventos/`, {
+        .post(`/pessoas/`, {
           nome: inputNome,
-          cep: inputCep,
+          documento: inputDocumento,
+          sexo: inputSexo,
+          dtnascimento: inputDtNascimento,
+          telefone: inputTelefone,
+          email: inputEmail,
+          cep: inputCEP,
           logradouro: inputLogradouro,
           numero: inputNumero,
           complemento: inputComplemento,
@@ -71,19 +90,24 @@ const New = () => {
           cidade: inputCidade,
           uf: inputUF,
           pais: inputPais,
-          link: inputLink,
+          tipo: inputTipo,
         })
         .then(() => {
-          navigate("/localeventos");
+          navigate("/cadastros");
         })
         .catch((err) => {
           console.log(err);
         });
     } else {
       return api
-        .put(`/localeventos/${id}`, {
+        .put(`/pessoas/${id}`, {
           nome: inputNome,
-          cep: inputCep,
+          documento: inputDocumento,
+          sexo: inputSexo,
+          dtnascimento: inputDtNascimento,
+          telefone: inputTelefone,
+          email: inputEmail,
+          cep: inputCEP,
           logradouro: inputLogradouro,
           numero: inputNumero,
           complemento: inputComplemento,
@@ -91,10 +115,10 @@ const New = () => {
           cidade: inputCidade,
           uf: inputUF,
           pais: inputPais,
-          link: inputLink,
+          tipo: inputTipo,
         })
         .then(() => {
-          navigate("/localeventos");
+          navigate("/cadastros");
         })
         .catch((err) => {
           console.log(err);
@@ -117,7 +141,7 @@ const New = () => {
   };
 
   async function handleVoltar() {
-    navigate(`/localeventos`);
+    navigate(`/cadastros`);
   }
 
   return (
@@ -156,23 +180,93 @@ const New = () => {
                     />
                   </Box>
                 </HStack>
-                <HStack>
-                  <Box w="20%">
+                <HStack spacing={4}>
+                  <Box w="30%">
+                    <FormLabel htmlFor="documento">Documento</FormLabel>
+                    <Input
+                      id="documento"
+                      size="xs"
+                      borderRadius={5}
+                      value={inputDocumento}
+                      onChange={(event) => {
+                        setInputDocumento(event.target.value);
+                      }}
+                    />
+                  </Box>
+
+                  <Box w="30%">
+                    <FormLabel htmlFor="sexo">Sexo</FormLabel>
+                    <RadioGroup onChange={setInputSexo} value={inputSexo}>
+                      <Stack direction="row">
+                        <Radio size="sm" borderRadius={5} value="1">
+                          Masculino
+                        </Radio>
+                        <Radio size="sm" borderRadius={5} value="2">
+                          Feminino
+                        </Radio>
+                      </Stack>
+                    </RadioGroup>
+                  </Box>
+                  <Box w="40%">
+                    <FormLabel htmlFor="dtnascimento">
+                      Data de Nascimento
+                    </FormLabel>
+                    <Input
+                      id="dtnascimento"
+                      size="xs"
+                      borderRadius={5}
+                      value={inputDtNascimento}
+                      onChange={(event) => {
+                        setInputDtNascimento(event.target.value);
+                      }}
+                      type="date"
+                    />
+                  </Box>
+                </HStack>
+                <HStack spacing={4}>
+                  <Box w="30%">
+                    <FormLabel htmlFor="telefone">Telefone</FormLabel>
+                    <Input
+                      id="telefone"
+                      size="xs"
+                      borderRadius={5}
+                      value={inputTelefone}
+                      onChange={(event) => {
+                        setInputTelefone(event.target.value);
+                      }}
+                    />
+                  </Box>
+                  <Box w="70%">
+                    <FormLabel htmlFor="email">E-mail</FormLabel>
+                    <Input
+                      id="email"
+                      size="xs"
+                      borderRadius={5}
+                      value={inputEmail}
+                      onChange={(event) => {
+                        setInputEmail(event.target.value);
+                      }}
+                    />
+                  </Box>
+                </HStack>
+
+                <HStack spacing={4}>
+                  <Box w="15%">
                     <FormLabel htmlFor="cep">Cep</FormLabel>
                     <Input
                       id="cep"
                       size="xs"
                       borderRadius={5}
-                      value={inputCep}
+                      value={inputCEP}
                       onChange={(event) => {
-                        setInputCep(event.target.value);
+                        setInputCEP(event.target.value);
                       }}
                       onBlur={(event) => {
                         checkCEP(event.target.value);
                       }}
                     />
                   </Box>
-                  <Box w="80%">
+                  <Box w="50%">
                     <FormLabel htmlFor="logradouro">Logradouro</FormLabel>
                     <Input
                       id="logradouro"
@@ -184,11 +278,8 @@ const New = () => {
                       }}
                     />
                   </Box>
-                </HStack>
-
-                <HStack>
-                  <Box w="20%">
-                    <FormLabel htmlFor="numero">Numero</FormLabel>
+                  <Box w="15%">
+                    <FormLabel htmlFor="numero">Número</FormLabel>
                     <Input
                       id="numero"
                       size="xs"
@@ -211,8 +302,10 @@ const New = () => {
                       }}
                     />
                   </Box>
+                </HStack>
 
-                  <Box w="60%">
+                <HStack spacing={4}>
+                  <Box w="30%">
                     <FormLabel htmlFor="bairro">Bairro</FormLabel>
                     <Input
                       id="bairro"
@@ -224,10 +317,8 @@ const New = () => {
                       }}
                     />
                   </Box>
-                </HStack>
 
-                <HStack spacing={4}>
-                  <Box w="80%">
+                  <Box w="50%">
                     <FormLabel htmlFor="cidade">Cidade</FormLabel>
                     <Input
                       id="cidade"
@@ -239,6 +330,7 @@ const New = () => {
                       }}
                     />
                   </Box>
+
                   <Box w="20%">
                     <FormLabel htmlFor="uf">UF</FormLabel>
                     <Input
@@ -252,22 +344,10 @@ const New = () => {
                     />
                   </Box>
                 </HStack>
-                <HStack spacing={4}>
-                  <Box w="100%">
-                    <FormLabel htmlFor="uf">Link</FormLabel>
-                    <Input
-                      id="link"
-                      size="xs"
-                      borderRadius={5}
-                      value={inputLink}
-                      onChange={(event) => {
-                        setInputLink(event.target.value);
-                      }}
-                    />
-                  </Box>
-                </HStack>
+
                 <HStack spacing="4" justify={"right"}>
                   <Button
+                    id="btnSalvar"
                     w={240}
                     p="6"
                     type="submit"
