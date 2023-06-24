@@ -1,3 +1,4 @@
+//#region IMPORTS
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../shared/services/api";
@@ -27,11 +28,14 @@ import {
 import { useState } from "react";
 import Container from "react-bootstrap/esm/Container";
 import { STATUS_ATIVO } from "../../../includes/const";
-import { Footer } from "../../Footer";
+import { getLocalEventos } from "../../../shared/services/LocalEvento";
+import { getProjetos } from "../../../shared/services/Projeto";
+import { formatDateNoTime } from "../../Uteis/Uteis";
 import SpinnerUtil from "../../Uteis/progress";
 import Beneficiarios from "./Beneficiarios";
 import Colaboradores from "./Colaboradores";
 import Doacoes from "./Doacoes";
+//#endregion
 
 const ModalEventosPage = (props) => {
   const [id] = useState(props.props);
@@ -100,7 +104,7 @@ const ModalEventosPage = (props) => {
           ativo: inputAtivo,
         })
         .then(() => {
-          navigate("/eventos");
+          handleCloseModal();
         })
         .catch((err) => {
           console.log(err);
@@ -126,24 +130,27 @@ const ModalEventosPage = (props) => {
         });
     }
   };
-  async function handleVoltar() {
-    navigate(`/eventos`);
+
+  async function handleCloseModal() {
+    props.event();
   }
+
   async function handleClick() {
     setInputAtivo(inputAtivo == STATUS_INATIVO ? STATUS_ATIVO : STATUS_INATIVO);
   }
 
   async function handleLocalEvento() {
-    const response = await getLocalEventos();
+    const response = await getLocalEventos("");
     setResultsLocalEventos(response.data);
   }
+
   async function handleProjeto() {
     const response = await getProjetos();
     setResultsProjetos(response.data);
   }
   return (
     <>
-      <Box paddingTop={100} paddingBottom={5}>
+      <Box>
         <Container fluid="md">
           <Tabs variant="enclosed">
             <TabList>
@@ -154,19 +161,19 @@ const ModalEventosPage = (props) => {
             </TabList>
             <TabPanels>
               <TabPanel>
-                <Box h="40vh">
+                <Box>
                   <Flex
                     align="center"
                     justify="center"
-                    bg="blackAlpha.200"
+                    // bg="blackAlpha.200"
                     h="calc(100vh-150px)"
                   >
                     <Center
                       w="100%"
                       maxW={800}
                       bg="white"
-                      top={170}
-                      position="absolute"
+                      // top={30}
+                      // position="absolute"
                       borderRadius={5}
                       p="6"
                       boxShadow="0 1px 2px #ccc"
@@ -346,7 +353,7 @@ const ModalEventosPage = (props) => {
                             fontWeight="bold"
                             fontSize="x1"
                             _hover={{ bg: "gray.300" }}
-                            onClick={handleVoltar}
+                            onClick={handleCloseModal}
                             gap={2}
                             size="xs"
                             marginBottom={2}
@@ -372,7 +379,6 @@ const ModalEventosPage = (props) => {
           </Tabs>
         </Container>
       </Box>
-      <Footer />
     </>
   );
 };

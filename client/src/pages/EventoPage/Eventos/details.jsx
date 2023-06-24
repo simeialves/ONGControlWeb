@@ -1,7 +1,8 @@
+//#region IMPORTS
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { api } from "../../shared/services/api";
-import { formatDateNoTime } from "../Uteis/Uteis";
+import { api } from "../../../shared/services/api";
+import { formatDateNoTime } from "../../Uteis/Uteis";
 
 import {
   Box,
@@ -27,15 +28,16 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import Container from "react-bootstrap/esm/Container";
-import { STATUS_ATIVO, STATUS_INATIVO } from "../../includes/const";
-import { getLocalEventos } from "../../shared/services/LocalEvento";
-import { getProjetos } from "../../shared/services/Projeto/Index";
-import { Footer } from "../Footer";
-import Headers from "../Headers";
-import SpinnerUtil from "../Uteis/progress";
-import Beneficiarios from "./Eventos/Beneficiarios";
-import Colaboradores from "./Eventos/Colaboradores";
-import Doacoes from "./Eventos/Doacoes";
+import { STATUS_ATIVO, STATUS_INATIVO } from "../../../includes/const";
+import { getLocalEventos } from "../../../shared/services/LocalEvento";
+import { getProjetos } from "../../../shared/services/Projeto/Index";
+import { Footer } from "../../Footer";
+import Headers from "../../Headers";
+import SpinnerUtil from "../../Uteis/progress";
+import Beneficiarios from "./Beneficiarios";
+import Colaboradores from "./Colaboradores";
+import Doacoes from "./Doacoes";
+//#endregion
 
 const Evento = () => {
   const { id } = useParams();
@@ -140,7 +142,9 @@ const Evento = () => {
   async function handleLocalEvento() {
     const response = await getLocalEventos();
     setResultsLocalEventos(response.data);
+    console.log(response.data);
   }
+
   async function handleProjeto() {
     const response = await getProjetos();
     setResultsProjetos(response.data);

@@ -14,16 +14,13 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { STATUS_ATIVO } from "../../../../../includes/const";
 import { getTipoColaboradores } from "../../../../../shared/services/TipoColaborador";
 import { api } from "../../../../../shared/services/api";
 
 function DoacoesNecessariasPage(props) {
   const { id } = useParams();
   const navigate = useNavigate();
-
-  /*
-tipocolaboradoreventoid, tipocolaboradorid, eventoid, quantidade, quantidadeinscrito
-*/
 
   const [loading, setLoading] = useState(true);
 
@@ -55,7 +52,7 @@ tipocolaboradoreventoid, tipocolaboradorid, eventoid, quantidade, quantidadeinsc
   }, [Eventoid]);
 
   async function handleTipoColaboradores() {
-    const response = await getTipoColaboradores();
+    const response = await getTipoColaboradores("", STATUS_ATIVO);
     setTipoColaboradores(response.data);
   }
 

@@ -1,3 +1,4 @@
+//#region IMPORTS
 import {
   AlertDialog,
   AlertDialogBody,
@@ -13,7 +14,6 @@ import {
   HStack,
   Input,
   InputGroup,
-  Link,
   Radio,
   RadioGroup,
   Spacer,
@@ -29,7 +29,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
+import { DeleteIcon, SearchIcon } from "@chakra-ui/icons";
 
 import { STATUS_ATIVO } from "../../../includes/const";
 
@@ -48,6 +48,7 @@ import { getEventos } from "../../../shared/services/Evento";
 import { Footer } from "../../Footer";
 import { formatDateNoTime, getDateHourNow } from "../../Uteis/Uteis";
 import { ModalEventos } from "./ModalEventos";
+//#endregion
 
 const XLSX = require("xlsx");
 
@@ -197,11 +198,7 @@ const MenuEventos = (props) => {
               <Tbody>
                 {results.map((result) => (
                   <Tr>
-                    <Td>
-                      <Link href={`/eventos/edit/${result.eventoid}`}>
-                        {result.descricao}
-                      </Link>
-                    </Td>
+                    <Td>{result.descricao}</Td>
                     <Td>
                       <Checkbox
                         isChecked={result.ativo == STATUS_ATIVO ? true : false}
@@ -210,12 +207,10 @@ const MenuEventos = (props) => {
                     </Td>
                     <Td>
                       <Button size={"xs"} bg={"write"}>
-                        <EditIcon
-                          color={"blue.800"}
-                          boxSize={5}
-                          onClick={(e) => handleEdit(result.eventoid, e)}
+                        <ModalEventos
+                          props={result.eventoid}
+                          event={fetchData}
                         />
-                        <ModalEventos event={fetchData} />
                       </Button>
                       <Button size={"xs"} bg={"write"}>
                         <DeleteIcon

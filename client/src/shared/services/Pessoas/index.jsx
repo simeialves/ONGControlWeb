@@ -1,7 +1,6 @@
 import { api } from "../api";
 
 export const getPessoas = async (nome) => {
-  console.log(nome);
   return api.get(`/pessoas/?nome=${nome}`);
 };
 

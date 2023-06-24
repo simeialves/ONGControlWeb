@@ -1,3 +1,4 @@
+//#region
 import {
   Box,
   Button,
@@ -30,7 +31,7 @@ import { TIPO_COLABORADOR } from "../../../../../includes/const";
 import { getPessoasEvento } from "../../../../../shared/services/PessoaEvento";
 import { getDateHourNow } from "../../../../Uteis/Uteis";
 import { ModalColaboradorInscrito } from "./ModalColaboradorInscrito";
-
+//#endregion
 const XLSX = require("xlsx");
 
 async function exportToExcel(data) {

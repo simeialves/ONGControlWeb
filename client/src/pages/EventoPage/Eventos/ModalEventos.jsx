@@ -4,10 +4,11 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalFooter,
+  ModalHeader,
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React from "react";
 
 import { AddIcon, EditIcon } from "@chakra-ui/icons";
 import ModalEventosPage from "./ModalEventosPage";
@@ -28,10 +29,6 @@ export const ModalEventos = (props) => {
     onClose();
     fetchData();
   };
-
-  useEffect(() => {
-    console.log("props", props);
-  });
 
   return (
     <>
@@ -56,8 +53,8 @@ export const ModalEventos = (props) => {
       >
         <ModalOverlay />
         <ModalContent>
+          <ModalHeader>Eventos</ModalHeader>
           <ModalCloseButton />
-
           <ModalBody pb={6}>
             <ModalEventosPage props={eventoid} event={handleCloseModal} />
           </ModalBody>

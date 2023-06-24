@@ -81,7 +81,6 @@ export default function DoacoesRecebidas({ eventoid }) {
   async function fetchData() {
     const response = await getDoacaoEvento(eventoid);
     setResults(response.data);
-    console.log(response.data);
   }
 
   useEffect(() => {

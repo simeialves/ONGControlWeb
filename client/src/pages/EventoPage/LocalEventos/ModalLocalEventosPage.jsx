@@ -1,3 +1,4 @@
+//#region Imports
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { api, getCEP } from "../../../shared/services/api";
@@ -13,12 +14,10 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { Footer } from "../../Footer";
 import SpinnerUtil from "../../Uteis/progress";
+//#endregion
 
 const ModalLocalEventosPage = (props) => {
-  //const { id } = useParams();
-
   const [id] = useState(props.props);
   const navigate = useNavigate();
 
@@ -79,7 +78,7 @@ const ModalLocalEventosPage = (props) => {
           link: inputLink,
         })
         .then(() => {
-          handleVoltar();
+          handleCloseModal();
         })
         .catch((err) => {
           console.log(err);
@@ -99,7 +98,7 @@ const ModalLocalEventosPage = (props) => {
           link: inputLink,
         })
         .then(() => {
-          handleVoltar();
+          handleCloseModal();
         })
         .catch((err) => {
           console.log(err);
@@ -121,12 +120,8 @@ const ModalLocalEventosPage = (props) => {
     }
   };
 
-  async function handleVoltar() {
-    handleSetId(2);
-    navigate(`/eventos`);
-  }
-
   async function handleCloseModal() {
+    handleSetId(2);
     props.event();
   }
 
@@ -313,7 +308,6 @@ const ModalLocalEventosPage = (props) => {
           </Flex>
         </Box>
       </Box>
-      <Footer />
     </>
   );
 };

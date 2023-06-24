@@ -10,18 +10,10 @@ import { AuthContext, AuthProvider } from "../shared/contexts/auth";
 import Contatos from "../pages/Contatos";
 
 import Evento from "../pages/EventoPage";
-import {
-  default as EditEventoPage,
-  default as NewEventoPage,
-} from "../pages/EventoPage/details";
+
 import DetalheEventoPage from "../pages/EventoPage/Eventos/eventodetails";
 
 import HomePage from "../pages/HomePage";
-
-// import {
-//   default as EditLocalEventoPage,
-//   default as NewLocalEventoPage,
-// } from "../pages/EventoPage/LocalEventos/details";
 
 import LoginPage from "../pages/LoginPage";
 
@@ -208,24 +200,6 @@ const AppRouters = () => {
           />
           <Route
             exact
-            path="/eventos/new"
-            element={
-              <Private>
-                <NewEventoPage />
-              </Private>
-            }
-          />
-          <Route
-            exact
-            path="/eventos/edit/:id"
-            element={
-              <Private>
-                <EditEventoPage />
-              </Private>
-            }
-          />
-          <Route
-            exact
             path="/eventos/details/:id"
             element={
               <Private>
@@ -233,24 +207,6 @@ const AppRouters = () => {
               </Private>
             }
           />
-          {/* <Route
-            exact
-            path="/localeventos/new"
-            element={
-              <Private>
-                <NewLocalEventoPage />
-              </Private>
-            }
-          />
-          <Route
-            exact
-            path="/localeventos/edit/:id"
-            element={
-              <Private>
-                <EditLocalEventoPage />
-              </Private>
-            }
-          /> */}
           <Route
             exact
             path="/contatos"

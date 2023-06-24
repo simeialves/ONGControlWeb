@@ -57,7 +57,7 @@ function DoacoesRecebidasPage(props) {
   }
 
   async function handlePessoas() {
-    const response = await getPessoas();
+    const response = await getPessoas("");
     setPessoas(response.data);
   }
 

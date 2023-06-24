@@ -45,12 +45,11 @@ function ColaboradoresInscritosPage(props) {
 
   async function handleTipoColaboradoresEvento() {
     const response = await getTipoColaboradorEventos(Eventoid);
-    console.log(response.data);
     setTipoColaboradorEvento(response.data);
   }
 
   async function handlePessoas() {
-    const response = await getPessoas();
+    const response = await getPessoas("");
     setPessoas(response.data);
   }
 
@@ -151,22 +150,6 @@ function ColaboradoresInscritosPage(props) {
           >
             Salvar
           </Button>
-          {/* <Button
-              w={100}
-              p="6"
-              type="submit"
-              bg="gray.600"
-              color="white"
-              fontWeight="bold"
-              fontSize="x1"
-              _hover={{ bg: "gray.800" }}
-              onClick={handleVoltar}
-              gap={2}
-              size="xs"
-              marginBottom={2}
-            >
-              Cancelar
-            </Button> */}
         </HStack>
       </FormControl>
     </>

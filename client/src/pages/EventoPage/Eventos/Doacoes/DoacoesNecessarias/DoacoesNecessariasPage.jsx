@@ -43,7 +43,7 @@ function DoacoesNecessariasPage(props) {
   }, [Eventoid]);
 
   async function handleTipoDoacoes() {
-    const response = await getTipoDoacoes(STATUS_ATIVO);
+    const response = await getTipoDoacoes("", STATUS_ATIVO);
     setTipoDoacoes(response.data);
   }
 

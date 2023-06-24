@@ -55,7 +55,7 @@ class LocalEventoController {
 
     let query = db.knex("localevento").select("*").orderBy("nome");
 
-    if (nome && nome != "") query.whereILike("nome", `%${nome}%`);
+    if (nome) query.whereILike("nome", `%${nome}%`);
 
     query
       .then(function (results) {
