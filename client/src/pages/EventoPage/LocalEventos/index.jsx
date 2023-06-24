@@ -180,7 +180,9 @@ const MenuLocalEventos = (props) => {
                   <Tr>
                     <Td>{result.nome}</Td>
                     <Td>
-                      {result.logradouro}, {result.numero}
+                      {result.numero != ""
+                        ? result.logradouro + ", " + result.numero
+                        : result.logradouro}
                     </Td>
                     <Td>{result.bairro}</Td>
                     <Td>{result.cidade}</Td>

@@ -4,6 +4,7 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalFooter,
+  ModalHeader,
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -48,10 +49,11 @@ export const ModalLocalEventos = (props) => {
         finalFocusRef={finalRef}
         isOpen={isOpen}
         onClose={onClose}
-        size={"4xl"}
+        size={"3xl"}
       >
         <ModalOverlay />
         <ModalContent>
+          <ModalHeader>Local de Eventos</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <ModalLocalEventosPage

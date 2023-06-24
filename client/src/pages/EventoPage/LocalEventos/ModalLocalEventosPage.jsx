@@ -133,7 +133,7 @@ const ModalLocalEventosPage = (props) => {
   return (
     <>
       <Box paddingTop={100} paddingBottom={5}>
-        <Box h="40vh">
+        <Box>
           <Flex
             align="center"
             justify="center"
