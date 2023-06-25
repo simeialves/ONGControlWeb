@@ -1,3 +1,4 @@
+//#region IMPORTS
 import {
   Box,
   Button,
@@ -8,16 +9,12 @@ import {
 } from "@chakra-ui/react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { TIPO_COLABORADOR } from "../../../../../includes/const";
 import { getPessoas } from "../../../../../shared/services/Pessoas";
 import { getTipoColaboradorEventos } from "../../../../../shared/services/TipoColaboradorEvento";
 import { api } from "../../../../../shared/services/api";
-
+//#endregion
 function ColaboradoresInscritosPage(props) {
-  const { id } = useParams();
-  const navigate = useNavigate();
-
   const [loading, setLoading] = useState(false);
 
   const [inputTipoColaboradorEventoid, setTipoColaboradorEventoid] =
@@ -27,24 +24,17 @@ function ColaboradoresInscritosPage(props) {
   const [tipoDoacaoes, setTipoColaboradorEvento] = useState([]);
   const [pessoas, setPessoas] = useState([]);
 
-  const Eventoid = props.eventoid.eventoid;
+  const id = props.eventoid.eventoid;
 
   useEffect(() => {
-    (async () => {
-      setLoading(true);
-      handleTipoColaboradoresEvento();
-      handlePessoas();
-
-      const response = await api.get(`/doacaoeventos/${id}`);
-
-      setTipoColaboradorEventoid(response.data[0].tipodoacaoid);
-
-      setLoading(false);
-    })();
-  }, [Eventoid]);
+    setLoading(true);
+    handleTipoColaboradoresEvento();
+    handlePessoas();
+    setLoading(false);
+  }, [id]);
 
   async function handleTipoColaboradoresEvento() {
-    const response = await getTipoColaboradorEventos(Eventoid);
+    const response = await getTipoColaboradorEventos(id);
     setTipoColaboradorEvento(response.data);
   }
 
@@ -59,7 +49,7 @@ function ColaboradoresInscritosPage(props) {
         .post(`/pessoaseventos/`, {
           pessoaid: inputPessoaid,
           tipocolaboradoreventoid: inputTipoColaboradorEventoid,
-          eventoid: Eventoid,
+          eventoid: id,
           tipo: TIPO_COLABORADOR,
           status: 0,
           senharetirada: 0,
@@ -73,7 +63,7 @@ function ColaboradoresInscritosPage(props) {
         .put(`/pessoaseventos/${id}`, {
           pessoaid: inputPessoaid,
           tipocolaboradoreventoid: inputTipoColaboradorEventoid,
-          eventoid: Eventoid,
+          eventoid: id,
           tipo: TIPO_COLABORADOR,
           status: 0,
           senharetirada: 0,
@@ -85,6 +75,11 @@ function ColaboradoresInscritosPage(props) {
           console.log(err);
         });
     }
+  };
+
+  const handleCloseModal = async () => {
+    await handleSubmit();
+    props.event();
   };
 
   return (
@@ -146,7 +141,7 @@ function ColaboradoresInscritosPage(props) {
             fontWeight="bold"
             fontSize="x1"
             _hover={{ bg: "blue.800" }}
-            onClick={handleSubmit}
+            onClick={handleCloseModal}
           >
             Salvar
           </Button>

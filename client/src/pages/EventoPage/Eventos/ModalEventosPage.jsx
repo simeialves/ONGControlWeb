@@ -64,7 +64,6 @@ const ModalEventosPage = (props) => {
   const handleChange = (value) => setInputNivel(value);
 
   useEffect(() => {
-    console.log(props);
     handleLocalEvento();
     handleProjeto();
     if (id !== undefined) {

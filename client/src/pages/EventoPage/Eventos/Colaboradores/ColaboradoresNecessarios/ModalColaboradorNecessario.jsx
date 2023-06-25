@@ -1,10 +1,4 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-
-import "bootstrap/dist/css/bootstrap.min.css";
-
-import "bootstrap/dist/css/bootstrap.min.css";
-import React from "react";
-
+//#region IMPORTS
 import {
   Modal,
   ModalBody,
@@ -15,11 +9,11 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React from "react";
 
 import { AddIcon } from "@chakra-ui/icons";
 import ColaboradorNecessarioPage from "./ColaboradoresNecessariosPage";
-
+//#endregion
 export const ModalColaboradorNecessario = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -57,23 +51,7 @@ export const ModalColaboradorNecessario = (props) => {
             />
           </ModalBody>
 
-          <ModalFooter>
-            {
-              /* <Button
-              w={240}
-              p="6"
-              type="submit"
-              bg="blue.600"
-              color="white"
-              fontWeight="bold"
-              fontSize="x1"
-              _hover={{ bg: "blue.800" }}
-            >
-              Salvaraa
-            </Button>*/
-              // <Button onClick={handleCloseModal}>Cancel</Button>
-            }
-          </ModalFooter>
+          <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>
     </>

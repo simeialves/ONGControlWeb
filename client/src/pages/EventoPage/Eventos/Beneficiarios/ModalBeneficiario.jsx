@@ -1,3 +1,4 @@
+//#region IMPORTS
 import {
   Modal,
   ModalBody,
@@ -12,7 +13,7 @@ import React from "react";
 
 import { AddIcon } from "@chakra-ui/icons";
 import ModalBeneficiarioPage from "./ModalBeneficiarioPage";
-
+//#endregion
 export const ModalBeneficiario = (eventoid) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 

@@ -1,10 +1,4 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-
-import "bootstrap/dist/css/bootstrap.min.css";
-
-import "bootstrap/dist/css/bootstrap.min.css";
-import React from "react";
-
+//#region IMPORTS
 import {
   Modal,
   ModalBody,
@@ -15,19 +9,22 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React from "react";
 
 import { AddIcon } from "@chakra-ui/icons";
-import ColaboradoresInscritosPage from ".";
-
-export const ModalColaboradorInscrito = (eventoid) => {
+import ColaboradoresInscritosPage from "./ColaboradoresInscritosPage";
+//#endregion
+export const ModalColaboradorInscrito = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
 
+  const fetchData = props.fetchData;
+
   function handleCloseModal() {
     onClose();
+    fetchData();
   }
 
   return (
@@ -49,8 +46,8 @@ export const ModalColaboradorInscrito = (eventoid) => {
           <ModalCloseButton />
           <ModalBody pb={6}>
             <ColaboradoresInscritosPage
-              eventoid={eventoid}
-              handleCloseModal={handleCloseModal}
+              eventoid={props}
+              event={handleCloseModal}
             />
           </ModalBody>
 

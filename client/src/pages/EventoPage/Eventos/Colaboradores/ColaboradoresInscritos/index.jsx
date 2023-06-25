@@ -1,5 +1,12 @@
-//#region
+//#region IMPORTS
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Box,
   Button,
   Flex,
@@ -15,11 +22,12 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 
 import { DeleteIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { SpinnerUtil } from "../../../../../pages/Uteis/progress";
 import { api } from "../../../../../shared/services/api";
 
@@ -32,6 +40,7 @@ import { getPessoasEvento } from "../../../../../shared/services/PessoaEvento";
 import { getDateHourNow } from "../../../../Uteis/Uteis";
 import { ModalColaboradorInscrito } from "./ModalColaboradorInscrito";
 //#endregion
+
 const XLSX = require("xlsx");
 
 async function exportToExcel(data) {
@@ -57,30 +66,55 @@ async function exportToExcel(data) {
 export default function ColaboradoresInscritosPage({ eventoid }) {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = React.useRef();
+  const [id, setId] = useState("");
+
+  const toast = useToast();
+
+  async function fetchData() {
+    setResults([]);
+    const response = await getPessoasEvento(TIPO_COLABORADOR, eventoid);
+    setResults(response.data);
+  }
 
   useEffect(() => {
-    (async () => {
-      const response = await getPessoasEvento(TIPO_COLABORADOR, eventoid);
-      setResults(response.data);
-      setLoading(false);
-    })();
+    fetchData();
   }, [eventoid]);
 
   if (loading) {
     return <SpinnerUtil />;
   }
 
-  async function handleDelete(id) {
-    api
+  async function handleDelete() {
+    await api
       .delete(`/pessoaseventos/${id}`, {})
       .then(() => {
-        window.location.reload(true);
+        toast({
+          title: "Registro excluído com sucesso",
+          position: "bottom-left",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        fetchData();
+        onClose();
       })
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  function handleModalClose() {
+    setIsModalOpen(false);
+    fetchData();
+  }
+
+  async function handleOpenDialog(id) {
+    setId(id);
+    onOpen();
   }
 
   return (
@@ -110,7 +144,12 @@ export default function ColaboradoresInscritosPage({ eventoid }) {
               marginBottom={2}
               marginRight={2}
             >
-              <ModalColaboradorInscrito eventoid={eventoid} />
+              <ModalColaboradorInscrito
+                eventoid={eventoid}
+                isOpen={isModalOpen}
+                onClose={handleModalClose}
+                fetchData={fetchData}
+              />
             </Button>
           </HStack>
           <TableContainer>
@@ -142,7 +181,7 @@ export default function ColaboradoresInscritosPage({ eventoid }) {
                           color={"red.500"}
                           boxSize={5}
                           onClick={(e) =>
-                            handleDelete(result.pessoaeventoid, e)
+                            handleOpenDialog(result.pessoaeventoid, e)
                           }
                         />
                       </Button>
@@ -167,6 +206,32 @@ export default function ColaboradoresInscritosPage({ eventoid }) {
           </Box>
         </Box>
       </Container>
+
+      <AlertDialog
+        motionPreset="slideInBottom"
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isOpen={isOpen}
+        isCentered
+      >
+        <AlertDialogOverlay />
+
+        <AlertDialogContent>
+          <AlertDialogHeader>Apagar registro?</AlertDialogHeader>
+          <AlertDialogCloseButton />
+          <AlertDialogBody>
+            Tem certeza que deseja apagar o registro selecionado?
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <Button colorScheme="red" ml={3} onClick={handleDelete}>
+              Sim
+            </Button>
+            <Button ref={cancelRef} ml={3} onClick={onClose}>
+              Cancelar
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

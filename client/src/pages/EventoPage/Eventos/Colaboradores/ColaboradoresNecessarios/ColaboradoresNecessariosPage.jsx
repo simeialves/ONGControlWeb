@@ -21,10 +21,7 @@ import { api } from "../../../../../shared/services/api";
 function DoacoesNecessariasPage(props) {
   const [loading, setLoading] = useState(true);
 
-  const [inputTipocolaboradoreventoid, setTipocolaboradoreventoid] =
-    useState("");
-  const [inputTipocolaboradorid, setTipocolaboradorid] = useState("");
-  const [inputEventoid, setEventoid] = useState(props.eventoid.eventoid);
+  const [inputTipoColaboradorid, setTipoColaboradorid] = useState("");
   const [inputQuantidade, setQuantidade] = useState("");
 
   const [TipoColaboradores, setTipoColaboradores] = useState([]);
@@ -36,13 +33,6 @@ function DoacoesNecessariasPage(props) {
   useEffect(() => {
     setLoading(true);
     handleTipoColaboradores();
-
-    // const response = await api.get(`/parametros/`);
-
-    // setTipocolaboradorid(response.data[0].tipodoacaoid);
-    // setEventoid(response.data[0].eventoid);
-    // setQuantidade(response.data[0].quantidade);
-
     setLoading(false);
   }, [id]);
 
@@ -55,7 +45,7 @@ function DoacoesNecessariasPage(props) {
     if (id != undefined) {
       return api
         .post(`/tipocolaboradoreventos/`, {
-          tipocolaboradorid: inputTipocolaboradorid,
+          tipocolaboradorid: inputTipoColaboradorid,
           eventoid: id,
           quantidade: inputQuantidade,
         })
@@ -68,7 +58,7 @@ function DoacoesNecessariasPage(props) {
     } else {
       return api
         .put(`/tipodoacaoeventos/${id}`, {
-          tipocolaboradorid: inputTipocolaboradorid,
+          tipocolaboradorid: inputTipoColaboradorid,
           eventoid: id,
           quantidade: inputQuantidade,
         })
@@ -95,9 +85,9 @@ function DoacoesNecessariasPage(props) {
               size={"xs"}
               borderRadius={5}
               placeholder="Selecione"
-              value={inputTipocolaboradorid}
+              value={inputTipoColaboradorid}
               onChange={(event) => {
-                setTipocolaboradorid(event.target.value);
+                setTipoColaboradorid(event.target.value);
               }}
             >
               {TipoColaboradores.map((result) => (

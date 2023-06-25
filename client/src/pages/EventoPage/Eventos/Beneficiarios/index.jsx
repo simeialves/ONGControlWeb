@@ -1,3 +1,4 @@
+//#region IMPORTS
 import {
   Button,
   Flex,
@@ -20,7 +21,6 @@ import {
   ViewIcon,
 } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import SpinnerUtil from "../../../Uteis/progress";
 
 import { Box, HStack, Input, InputGroup } from "@chakra-ui/react";
@@ -33,7 +33,7 @@ import { getPessoasEvento } from "../../../../shared/services/PessoaEvento";
 import { api } from "../../../../shared/services/api";
 import { getDateHourNow } from "../../../Uteis/Uteis";
 import { ModalBeneficiario } from "./ModalBeneficiario";
-
+//#endregion
 const XLSX = require("xlsx");
 
 async function exportToExcel(data) {
@@ -61,8 +61,6 @@ export default function Beneficiarios({ eventoid }) {
   const [loading, setLoading] = useState(false);
   const [inputNome, setInputNome] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -124,7 +122,7 @@ export default function Beneficiarios({ eventoid }) {
     setLoading(false);
   }
 
-  async function handleModalClose() {
+  async function handleCloseModal() {
     setIsModalOpen(false);
     fetchData();
   }
@@ -143,7 +141,7 @@ export default function Beneficiarios({ eventoid }) {
               <ModalBeneficiario
                 eventoid={eventoid}
                 isOpen={isModalOpen}
-                onClose={handleModalClose}
+                onClose={handleCloseModal}
               />
             </Button>
           </HStack>

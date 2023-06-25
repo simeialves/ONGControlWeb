@@ -25,7 +25,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { getTipoColaboradorEventos } from "../../../../../shared/services/TipoColaboradorEvento";
 import { api } from "../../../../../shared/services/api";
@@ -167,15 +167,6 @@ export default function ColaboradoresNecessariosPage({ eventoid }) {
                     <Td>{result.quantidadeinscritos}</Td>
 
                     <Td>
-                      <Button size={"xs"} bg={"write"}>
-                        <EditIcon
-                          color={"blue.800"}
-                          boxSize={5}
-                          onClick={(e) =>
-                            handleEdit(result.tipocolaboradoreventoid, e)
-                          }
-                        />
-                      </Button>
                       <Button size={"xs"} bg={"write"}>
                         <DeleteIcon
                           color={"red.500"}
