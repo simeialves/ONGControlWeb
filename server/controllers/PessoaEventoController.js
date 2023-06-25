@@ -7,6 +7,8 @@ const {
   SUCCESS_UPDATED,
   ERROR_UPDATED,
   SUCCESS_DELETED,
+  BENEFICIARIOS,
+  COLABORADORES,
 } = require("../includes/Messages");
 
 class PessoaEventoController {
@@ -50,21 +52,26 @@ class PessoaEventoController {
     var query = db
       .knex("pessoaevento")
       .select("*")
-      .join("pessoa", "pessoaevento.pessoaid", "=", "pessoa.pessoaid")
-      .join(
-        "tipocolaboradorevento",
-        "pessoaevento.tipocolaboradoreventoid",
-        "=",
-        "tipocolaboradorevento.tipocolaboradoreventoid"
-      )
-      .join(
-        "tipocolaborador",
-        "tipocolaborador.tipocolaboradorid",
-        "=",
-        "tipocolaboradorevento.tipocolaboradorid"
-      );
+      .join("pessoa", "pessoaevento.pessoaid", "=", "pessoa.pessoaid");
 
-    if (tipo != undefined) query.where("pessoaevento.tipo", tipo);
+    if (tipo == COLABORADORES) {
+      query
+        .join(
+          "tipocolaboradorevento",
+          "pessoaevento.tipocolaboradoreventoid",
+          "=",
+          "tipocolaboradorevento.tipocolaboradoreventoid"
+        )
+        .join(
+          "tipocolaborador",
+          "tipocolaborador.tipocolaboradorid",
+          "=",
+          "tipocolaboradorevento.tipocolaboradorid"
+        );
+    } else if (tipo == BENEFICIARIOS) {
+      query.where("pessoaevento.tipo", tipo);
+    }
+
     if (eventoid != undefined) query.where("pessoaevento.eventoid", eventoid);
     if (tipocolaboradoreventoid != undefined)
       query.where(

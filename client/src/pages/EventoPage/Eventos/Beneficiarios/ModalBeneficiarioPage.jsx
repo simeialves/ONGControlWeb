@@ -13,7 +13,6 @@ import {
 } from "@chakra-ui/react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import {
   PASSO_01,
   PASSO_02,
@@ -26,25 +25,24 @@ import {
   getPessoasById,
 } from "../../../../shared/services/Pessoas";
 import { getTipoDoacoesById } from "../../../../shared/services/TipoDoacao";
-import { getTipoDoacaoEventos } from "../../../../shared/services/TipoDoacaoEvento";
+import {
+  getTipoDoacaoEventos,
+  getTipoDoacaoEventosById,
+} from "../../../../shared/services/TipoDoacaoEvento";
 import { api } from "../../../../shared/services/api";
 import { geradorSenhaRetirada } from "../../../Uteis/Uteis";
 
 function ModalBeneficiarioPage(props) {
-  const { id } = useParams();
-  const navigate = useNavigate();
-
   const [loading, setLoading] = useState(true);
 
   const [pessoas, setPessoas] = useState([]);
   const [pessoaId, setPessoaId] = useState("");
   const [pessoaSelecionada, setPessoaSelecionada] = useState("");
-  const [pessoaEventoId, setPessoaEventoId] = useState("");
   const [doacaoEventoId, setDoacaoEventoId] = useState("");
   const [tipoDoacaoEventoId, setTipoDoacaoEventoId] = useState("");
   const [tipoDoacao, setTipoDoacao] = useState("");
-  const [inputEventoid, setEventoid] = useState(props.eventoid.eventoid);
   const [inputQuantidade, setQuantidade] = useState("");
+
   const [passo, setPasso] = useState(PASSO_01);
 
   const [resultTipoDoacoes, setTipoDoacoes] = useState([]);
@@ -75,59 +73,41 @@ function ModalBeneficiarioPage(props) {
   }
 
   const handleSubmit = async () => {
-    if (id != undefined) {
-      api
-        .post(`/pessoaseventos/`, {
-          pessoaid: pessoaId,
-          tipocolaboradoreventoid: null,
-          eventoid: Eventoid,
-          tipo: TIPO_BENEFICIARIO,
-          status: 1,
-        })
-        .then((result) => {
-          api
-            .put(`/pessoaseventos/${result.data.id}`, {
-              senharetirada: geradorSenhaRetirada(result.data.id),
-            })
-            .then((result) => {
-              api
-                .post(`/doacaoeventospessoas`, {
-                  tipodoacaoeventoid: tipoDoacaoEventoId,
-                  eventoid: Eventoid,
-                  pessoaid: pessoaId,
-                  pessoaeventoid: result.data.id,
-                  quantidade: inputQuantidade,
-                  status: STATUS_ATIVO,
-                })
-                .then(() => {})
-                .catch((err) => {
-                  console.log(err);
-                });
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      return api
-        .put(`/pessoaseventos/${id}`, {
-          pessoaid: inputPessoaid,
-          tipocolaboradoreventoid: inputTipoColaboradorEventoid,
-          eventoid: Eventoid,
-          tipo: TIPO_COLABORADOR,
-          status: 0,
-          senharetirada: 0,
-        })
-        .then(() => {
-          // navigate("/eventos");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    api
+      .post(`/pessoaseventos/`, {
+        pessoaid: pessoaId,
+        tipocolaboradoreventoid: null,
+        eventoid: Eventoid,
+        tipo: TIPO_BENEFICIARIO,
+        status: STATUS_ATIVO,
+      })
+      .then((result) => {
+        api
+          .put(`/pessoaseventos/${result.data.id}`, {
+            senharetirada: geradorSenhaRetirada(result.data.id),
+          })
+          .then((result) => {
+            api
+              .post(`/doacaoeventospessoas`, {
+                tipodoacaoeventoid: tipoDoacaoEventoId,
+                eventoid: Eventoid,
+                pessoaid: pessoaId,
+                pessoaeventoid: result.data.id,
+                quantidade: inputQuantidade,
+                status: STATUS_ATIVO,
+              })
+              .then(() => {})
+              .catch((err) => {
+                console.log(err);
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleNext = async () => {
@@ -137,9 +117,13 @@ function ModalBeneficiarioPage(props) {
       setPessoaSelecionada(response.data[0]);
     } else if (passo == PASSO_02) {
       setPasso(PASSO_03);
+      // const response = await getTipoDoacoesById(doacaoEventoId);
+      // setTipoDoacao(response.data[0]);
 
-      const response = await getTipoDoacoesById(doacaoEventoId);
-      setTipoDoacao(response.data[0]);
+      const response = await getTipoDoacaoEventosById(tipoDoacaoEventoId);
+      const tipodoacaoid = response.data[0].tipodoacaoid;
+      const tipoDoacao = await getTipoDoacoesById(tipodoacaoid);
+      setTipoDoacao(tipoDoacao.data[0].descricao);
     }
   };
 
@@ -292,7 +276,7 @@ function ModalBeneficiarioPage(props) {
               <br />
               Telefone: {pessoaSelecionada.telefone}
               <br />
-              Doação: {tipoDoacao.descricao}
+              Doação: {tipoDoacao}
               <br />
               Quantidade: {inputQuantidade}
               <br />

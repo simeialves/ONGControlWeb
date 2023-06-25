@@ -28,7 +28,7 @@ import Container from "react-bootstrap/Container";
 
 import { RiFileExcelLine } from "react-icons/ri";
 import { saveAsExcelFile } from "../../../../components/ExportCSV";
-import { getDoacaoEventoPessoa } from "../../../../shared/services/DoacaoEventoPessoa";
+import { TIPO_BENEFICIARIO } from "../../../../includes/const";
 import { getPessoasEvento } from "../../../../shared/services/PessoaEvento";
 import { api } from "../../../../shared/services/api";
 import { getDateHourNow } from "../../../Uteis/Uteis";
@@ -69,7 +69,8 @@ export default function Beneficiarios({ eventoid }) {
   }, [eventoid]);
 
   async function fetchData() {
-    const response = await getDoacaoEventoPessoa(eventoid);
+    // const response = await getDoacaoEventoPessoa(eventoid);
+    const response = await getPessoasEvento(TIPO_BENEFICIARIO, eventoid);
     setResults(response.data);
   }
 

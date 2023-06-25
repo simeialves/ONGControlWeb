@@ -80,7 +80,7 @@ class TipoDoacaoEventoController {
     await db.knex
       .select("*")
       .from("tipodoacaoevento")
-      .where({ pessoaeventoid: id })
+      .where({ tipodoacaoeventoid: id })
       .then(function (result) {
         if (result.length) {
           res.status(201).json(result);
