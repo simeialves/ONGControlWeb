@@ -45,45 +45,36 @@ class DoacaoEventoPessoaController {
 
   //#region READ
   static getAll = async (req, res) => {
-    const { eventoid } = req.query;
-
+    const { pessoaEventoId } = req.query;
     var query = db
-      .knex("pessoaevento")
-      .orderBy("doacaoeventopessoa.eventoid", "doacaoeventopessoa.pessoaid")
+      .knex("doacaoeventopessoa")
+      .orderBy("doacaoeventopessoa.doacaoeventopessoaid")
       .select(
-        "doacaoeventopessoa.doacaoeventopessoaid as doacaoeventopessoaid",
-        "doacaoeventopessoa.tipodoacaoeventoid as tipodoacaoeventoid",
-        "doacaoeventopessoa.eventoid as eventoid",
-        "doacaoeventopessoa.pessoaid as pessoaid",
-        "pessoaevento.pessoaeventoid as pessoaeventoid",
-        "doacaoeventopessoa.quantidade as quantidade",
-        "doacaoeventopessoa.status as status",
-        "pessoa.nome as nome",
-        "pessoa.documento as documento",
-        "pessoa.email as email",
-        "pessoaevento.senharetirada as senharetirada"
+        "tipodoacao.descricao as descricao",
+        "doacaoeventopessoa.quantidade as quantidade"
       )
-      .leftJoin(
-        "doacaoeventopessoa",
+      .join("pessoa", "doacaoeventopessoa.pessoaid", "=", "pessoa.pessoaid")
+      .join(
+        "pessoaevento",
         "doacaoeventopessoa.pessoaeventoid",
         "=",
         "pessoaevento.pessoaeventoid"
       )
-      .leftJoin(
+      .join(
         "tipodoacaoevento",
-        "tipodoacaoevento.tipodoacaoeventoid",
+        "doacaoeventopessoa.tipodoacaoeventoid",
         "=",
-        "doacaoeventopessoa.tipodoacaoeventoid"
+        "tipodoacaoevento.tipodoacaoeventoid"
       )
-      .leftJoin(
+      .join(
         "tipodoacao",
-        "tipodoacao.tipodoacaoid",
+        "tipodoacaoevento.tipodoacaoid",
         "=",
-        "tipodoacaoevento.tipodoacaoid"
-      )
-      .leftJoin("pessoa", "pessoaevento.pessoaid", "=", "pessoa.pessoaid");
+        "tipodoacao.tipodoacaoid"
+      );
+    if (pessoaEventoId)
+      query.where("doacaoeventopessoa.pessoaeventoid", "=", pessoaEventoId);
 
-    if (eventoid != undefined) query.where("pessoaevento.eventoid", eventoid);
     query
       .then(function (results) {
         if (results.length) {

@@ -2,7 +2,6 @@
 import {
   Button,
   Flex,
-  InputRightElement,
   Spacer,
   Table,
   TableCaption,
@@ -14,12 +13,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 
-import {
-  DeleteIcon,
-  SearchIcon,
-  SmallCloseIcon,
-  ViewIcon,
-} from "@chakra-ui/icons";
+import { DeleteIcon, SearchIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import SpinnerUtil from "../../../Uteis/progress";
 
@@ -33,6 +27,7 @@ import { getPessoasEvento } from "../../../../shared/services/PessoaEvento";
 import { api } from "../../../../shared/services/api";
 import { getDateHourNow } from "../../../Uteis/Uteis";
 import { ModalBeneficiario } from "./ModalBeneficiario";
+import { ModalDoacaoBeneficiario } from "./ModalDoacaoBeneficiario";
 //#endregion
 const XLSX = require("xlsx");
 
@@ -157,9 +152,6 @@ export default function Beneficiarios({ eventoid }) {
                   size="sm"
                   borderRadius={5}
                 />
-                <InputRightElement>
-                  <SmallCloseIcon justify={"right"} onClick={handleClear} />
-                </InputRightElement>
               </InputGroup>
             </Box>
             <Button
@@ -204,10 +196,10 @@ export default function Beneficiarios({ eventoid }) {
                     <Td>{result.senharetirada}</Td>
                     <Td>
                       <Button size={"xs"} bg={"write"}>
-                        <ViewIcon
-                          color={"blue.800"}
-                          boxSize={5}
-                          onClick={(e) => handleEdit(result.pessoaeventoid, e)}
+                        <ModalDoacaoBeneficiario
+                          pessoaeventoid={result.pessoaeventoid}
+                          isOpen={isModalOpen}
+                          onClose={handleCloseModal}
                         />
                       </Button>
                       <Button size={"xs"} bg={"write"}>
