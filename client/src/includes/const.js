@@ -1,6 +1,10 @@
 export const STATUS_ATIVO = 1;
 export const STATUS_INATIVO = 0;
 
+export const PROJETO_NATAL_PARA_TODOS = 1;
+export const PROJETO_MADRUGADA_DE_CARINHO = 2;
+export const PROJETO_COMPARTILHANDO_SABER = 3;
+
 export const ADMINISTRADOR = 1;
 
 export const TIPO_BENEFICIARIO = 1;

@@ -46,24 +46,7 @@ export const ModalParams = () => {
           <ModalBody pb={6}>
             <ParametroPage event={handleCloseModal} />
           </ModalBody>
-
-          <ModalFooter>
-            {
-              /* <Button
-              w={240}
-              p="6"
-              type="submit"
-              bg="blue.600"
-              color="white"
-              fontWeight="bold"
-              fontSize="x1"
-              _hover={{ bg: "blue.800" }}
-            >
-              Salvaraa
-            </Button>*/
-              // <Button onClick={handleCloseModal}>Cancel</Button>
-            }
-          </ModalFooter>
+          <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>
     </>

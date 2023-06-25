@@ -16,7 +16,13 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api } from "../../shared/services/api";
+import {
+  PROJETO_COMPARTILHANDO_SABER,
+  PROJETO_MADRUGADA_DE_CARINHO,
+  PROJETO_NATAL_PARA_TODOS,
+  STATUS_ATIVO,
+} from "../../includes/const";
+import { getEventos } from "../../shared/services/Evento";
 import { formatDate, removeAspas } from "../Uteis/Uteis";
 
 export const CardEvento = () => {
@@ -26,18 +32,15 @@ export const CardEvento = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    (async () => {
-      setLoading(true);
-      setResults([]);
-      await api.get(`/eventos`).then((response) => {
-        setResults(response.data);
-        setLoading(false);
-      });
-    })();
+    fetchData();
   }, []);
 
-  function handleClick(id) {
-    navigate(`/eventos/edit/${id}`);
+  async function fetchData() {
+    setResults([]);
+    const response = await getEventos("", STATUS_ATIVO);
+    setResults(response.data);
+    setLoading(false);
+    console.log(response.data);
   }
 
   return (
@@ -64,7 +67,15 @@ export const CardEvento = () => {
               >
                 <CardBody>
                   <Image
-                    src="https://simeialves.com.br/images/natalparatodos.jpg"
+                    src={
+                      result.projetoid == PROJETO_NATAL_PARA_TODOS
+                        ? "https://simeialves.com.br/images/natal-para-todos.jpg"
+                        : result.projetoid == PROJETO_MADRUGADA_DE_CARINHO
+                        ? "https://simeialves.com.br/images/madrugada-de-carinho.jpg"
+                        : result.projetoid == PROJETO_COMPARTILHANDO_SABER
+                        ? "https://simeialves.com.br/images/compartilhando-saber.jpg"
+                        : ""
+                    }
                     alt="Natal para Todos"
                     borderRadius="lg"
                   />

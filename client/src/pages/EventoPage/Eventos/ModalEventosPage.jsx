@@ -27,9 +27,11 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import Container from "react-bootstrap/esm/Container";
-import { STATUS_ATIVO } from "../../../includes/const";
-import { getLocalEventos } from "../../../shared/services/LocalEvento";
-import { getProjetos } from "../../../shared/services/Projeto";
+import { STATUS_ATIVO, STATUS_INATIVO } from "../../../includes/const";
+import {
+  getLocalEventos,
+  getProjetos,
+} from "../../../shared/services/LocalEvento";
 import { formatDateNoTime } from "../../Uteis/Uteis";
 import SpinnerUtil from "../../Uteis/progress";
 import Beneficiarios from "./Beneficiarios";
@@ -62,6 +64,7 @@ const ModalEventosPage = (props) => {
   const handleChange = (value) => setInputNivel(value);
 
   useEffect(() => {
+    console.log(props);
     handleLocalEvento();
     handleProjeto();
     if (id !== undefined) {
@@ -123,7 +126,7 @@ const ModalEventosPage = (props) => {
           ativo: inputAtivo,
         })
         .then(() => {
-          navigate("/eventos");
+          handleCloseModal();
         })
         .catch((err) => {
           console.log(err);
