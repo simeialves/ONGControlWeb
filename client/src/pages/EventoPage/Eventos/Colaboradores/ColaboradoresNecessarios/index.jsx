@@ -1,180 +1,237 @@
+//#region IMPORTS
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Box,
   Button,
-  FormControl,
-  FormLabel,
+  Flex,
   HStack,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  Select,
+  Heading,
+  Spacer,
+  Table,
+  TableCaption,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
-import "bootstrap/dist/css/bootstrap.min.css";
+
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { STATUS_ATIVO } from "../../../../../includes/const";
-import { getTipoColaboradores } from "../../../../../shared/services/TipoColaborador";
+import { getTipoColaboradorEventos } from "../../../../../shared/services/TipoColaboradorEvento";
 import { api } from "../../../../../shared/services/api";
+import SpinnerUtil from "../../../../Uteis/progress";
 
-function DoacoesNecessariasPage(props) {
-  const { id } = useParams();
-  const navigate = useNavigate();
+import Container from "react-bootstrap/Container";
 
-  const [loading, setLoading] = useState(true);
+import { RiFileExcelLine } from "react-icons/ri";
+import { saveAsExcelFile } from "../../../../../components/ExportCSV";
+import { getDateHourNow } from "../../../../Uteis/Uteis";
+import { ModalColaboradorNecessario } from "./ModalColaboradorNecessario";
+//#endregion
 
-  const [inputTipocolaboradoreventoid, setTipocolaboradoreventoid] =
-    useState("");
-  const [inputTipocolaboradorid, setTipocolaboradorid] = useState("");
-  const [inputEventoid, setEventoid] = useState(props.eventoid.eventoid);
-  const [inputQuantidade, setQuantidade] = useState("");
+const XLSX = require("xlsx");
 
-  const [TipoColaboradores, setTipoColaboradores] = useState([]);
-
-  const Eventoid = props.eventoid.eventoid;
-
-  const handleChange = (value) => setQuantidade(value);
-
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      handleTipoColaboradores();
-
-      const response = await api.get(`/parametros/`);
-
-      setTipocolaboradorid(response.data[0].tipodoacaoid);
-      setEventoid(response.data[0].eventoid);
-      setQuantidade(response.data[0].quantidade);
-
-      setLoading(false);
-    })();
-  }, [Eventoid]);
-
-  async function handleTipoColaboradores() {
-    const response = await getTipoColaboradores("", STATUS_ATIVO);
-    setTipoColaboradores(response.data);
-  }
-
-  const handleSubmit = async () => {
-    if (id != undefined) {
-      console.log("Submit");
-      return api
-        .post(`/tipocolaboradoreventos/`, {
-          tipocolaboradorid: inputTipocolaboradorid,
-          eventoid: Eventoid,
-          quantidade: inputQuantidade,
-        })
-        .then(() => {})
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      return api
-        .put(`/tipodoacaoeventos/${id}`, {
-          tipocolaboradorid: inputTipocolaboradorid,
-          eventoid: Eventoid,
-          quantidade: inputQuantidade,
-        })
-        .then(() => {
-          navigate(`/evento/${Eventoid}/colaboradores`);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
-
-  return (
-    <>
-      <FormControl display="flex" flexDir="column" gap="1">
-        <HStack spacing={4}>
-          <Box w="80%">
-            <FormLabel htmlFor="tipodoacaoid">Tipo de Colaborador</FormLabel>
-            <Select
-              id="tipodoacaoid"
-              size={"xs"}
-              borderRadius={5}
-              placeholder="Selecione"
-              value={inputTipocolaboradorid}
-              onChange={(event) => {
-                setTipocolaboradorid(event.target.value);
-              }}
-            >
-              {TipoColaboradores.map((result) => (
-                <option
-                  key={result.tipocolaboradorid}
-                  value={result.tipocolaboradorid}
-                >
-                  {result.descricao}
-                </option>
-              ))}
-            </Select>
-          </Box>
-          <Box w="20%">
-            <FormLabel htmlFor="nivel">Qtd</FormLabel>
-            {/* <Input
-                            id="nivel"
-                            size="xs"
-                            borderRadius={5}
-                            value={inputNivel}
-                            onChange={(event) => {
-                              setInputNivel(event.target.value);
-                            }}
-                          /> */}
-            <NumberInput
-              id="nivel"
-              size={"xs"}
-              step={1}
-              defaultValue={1}
-              min={1}
-              max={999}
-              value={inputQuantidade}
-              onChange={handleChange}
-            >
-              <NumberInputField borderRadius={5} />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-          </Box>
-        </HStack>
-
-        <HStack marginTop={5} spacing="4" justify={"right"}>
-          <Button
-            w={240}
-            p="6"
-            type="submit"
-            bg="blue.600"
-            color="white"
-            fontWeight="bold"
-            fontSize="x1"
-            _hover={{ bg: "blue.800" }}
-            onClick={handleSubmit}
-          >
-            Salvar
-          </Button>
-          {/* <Button
-              w={100}
-              p="6"
-              type="submit"
-              bg="gray.600"
-              color="white"
-              fontWeight="bold"
-              fontSize="x1"
-              _hover={{ bg: "gray.800" }}
-              onClick={handleVoltar}
-              gap={2}
-              size="xs"
-              marginBottom={2}
-            >
-              Cancelar
-            </Button> */}
-        </HStack>
-      </FormControl>
-    </>
+async function exportToExcel(data) {
+  const workbook = XLSX.utils.book_new();
+  const sheetData = data.map((result) => [
+    result.descricao,
+    result.quantidade,
+    result.quantidadeinscritos,
+  ]);
+  const sheet = XLSX.utils.aoa_to_sheet([
+    ["Descricao", "Qtd._Necessarias", "Qtd._Inscritos"],
+    ...sheetData,
+  ]);
+  XLSX.utils.book_append_sheet(workbook, sheet, "Colaboradores Necessários");
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  saveAsExcelFile(
+    excelBuffer,
+    "Relatorio_Colaboradores_Necessarios_" + getDateHourNow() + ".xlsx"
   );
 }
 
-export default DoacoesNecessariasPage;
+export default function ColaboradoresNecessariosPage({ eventoid }) {
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = React.useRef();
+  const [id, setId] = useState("");
+
+  const toast = useToast();
+
+  async function fetchData() {
+    setResults([]);
+    const response = await getTipoColaboradorEventos(eventoid);
+    setResults(response.data);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, [eventoid]);
+
+  if (loading) {
+    return <SpinnerUtil />;
+  }
+
+  async function handleDelete() {
+    await api
+      .delete(`/tipocolaboradoreventos/${id}`, {})
+      .then(() => {
+        toast({
+          title: "Registro excluído com sucesso",
+          position: "bottom-left",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        fetchData();
+        onClose();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function handleModalClose() {
+    setIsModalOpen(false);
+    fetchData();
+  }
+
+  async function handleOpenDialog(id) {
+    setId(id);
+    onOpen();
+  }
+
+  return (
+    <>
+      <Container fluid="md">
+        <Box boxShadow={"lg"} marginBottom={2}>
+          <Box bg="red.800" w="100%" p={4} color="white">
+            <HStack spacing="4" justify={"center"}>
+              <Heading
+                size={{
+                  base: "xs",
+                  md: "md",
+                }}
+              >
+                Colaboradores Necessários
+              </Heading>
+            </HStack>
+          </Box>
+          <HStack spacing="4" justify={"right"}>
+            <Button
+              variant="outline"
+              colorScheme="gray"
+              gap={2}
+              size="sm"
+              marginTop={2}
+              marginBottom={2}
+              marginRight={2}
+            >
+              <ModalColaboradorNecessario
+                eventoid={eventoid}
+                isOpen={isModalOpen}
+                onClose={handleModalClose}
+                fetchData={fetchData}
+              />
+            </Button>
+          </HStack>
+          <TableContainer>
+            <Table variant="simple" size="sm">
+              <TableCaption>Quantidade: {results.length}</TableCaption>
+              <Thead>
+                <Tr>
+                  <Th>Descrição</Th>
+                  <Th>Qtd. Necessárias</Th>
+                  <Th>Qtd. Inscritos</Th>
+                  <Th>Ação</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {results.map((result) => (
+                  <Tr>
+                    <Td>{result.descricao}</Td>
+                    <Td>{result.quantidade}</Td>
+                    <Td>{result.quantidadeinscritos}</Td>
+
+                    <Td>
+                      <Button size={"xs"} bg={"write"}>
+                        <EditIcon
+                          color={"blue.800"}
+                          boxSize={5}
+                          onClick={(e) =>
+                            handleEdit(result.tipocolaboradoreventoid, e)
+                          }
+                        />
+                      </Button>
+                      <Button size={"xs"} bg={"write"}>
+                        <DeleteIcon
+                          color={"red.500"}
+                          boxSize={5}
+                          onClick={(e) =>
+                            handleOpenDialog(result.tipocolaboradoreventoid, e)
+                          }
+                        />
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+          <Box padding={5}>
+            <Flex display={"flex"}>
+              <Spacer />
+              <Button
+                colorScheme="gray"
+                size={"sm"}
+                gap={2}
+                onClick={() => exportToExcel(results)}
+              >
+                <RiFileExcelLine /> CSV
+              </Button>
+            </Flex>
+          </Box>
+        </Box>
+      </Container>
+
+      <AlertDialog
+        motionPreset="slideInBottom"
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isOpen={isOpen}
+        isCentered
+      >
+        <AlertDialogOverlay />
+
+        <AlertDialogContent>
+          <AlertDialogHeader>Apagar registro?</AlertDialogHeader>
+          <AlertDialogCloseButton />
+          <AlertDialogBody>
+            Tem certeza que deseja apagar o registro selecionado?
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <Button colorScheme="red" ml={3} onClick={handleDelete}>
+              Sim
+            </Button>
+            <Button ref={cancelRef} ml={3} onClick={onClose}>
+              Cancelar
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
+  );
+}

@@ -79,6 +79,7 @@ export default function DoacoesRecebidas({ eventoid }) {
   const toast = useToast();
 
   async function fetchData() {
+    setResults([]);
     const response = await getDoacaoEvento(eventoid);
     setResults(response.data);
   }
@@ -101,6 +102,7 @@ export default function DoacoesRecebidas({ eventoid }) {
       .then(() => {
         toast({
           title: "Registro excluído com sucesso",
+          position: "bottom-left",
           status: "success",
           duration: 3000,
           isClosable: true,
@@ -154,6 +156,7 @@ export default function DoacoesRecebidas({ eventoid }) {
                 eventoid={eventoid}
                 isOpen={isModalOpen}
                 onClose={handleModalClose}
+                fetchData={fetchData}
               />
             </Button>
           </HStack>

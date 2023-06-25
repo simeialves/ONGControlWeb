@@ -1,159 +1,172 @@
+//#region
 import {
   Box,
   Button,
-  FormControl,
-  FormLabel,
+  Flex,
+  Heading,
   HStack,
-  Select,
+  Link,
+  Spacer,
+  Table,
+  TableCaption,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
-import "bootstrap/dist/css/bootstrap.min.css";
+
+import { DeleteIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { TIPO_COLABORADOR } from "../../../../../includes/const";
-import { getPessoas } from "../../../../../shared/services/Pessoas";
-import { getTipoColaboradorEventos } from "../../../../../shared/services/TipoColaboradorEvento";
+import { useNavigate } from "react-router-dom";
+import { SpinnerUtil } from "../../../../../pages/Uteis/progress";
 import { api } from "../../../../../shared/services/api";
 
-function ColaboradoresInscritosPage(props) {
-  const { id } = useParams();
-  const navigate = useNavigate();
+import Container from "react-bootstrap/Container";
 
-  const [loading, setLoading] = useState(false);
+import { RiFileExcelLine } from "react-icons/ri";
+import { saveAsExcelFile } from "../../../../../components/ExportCSV";
+import { TIPO_COLABORADOR } from "../../../../../includes/const";
+import { getPessoasEvento } from "../../../../../shared/services/PessoaEvento";
+import { getDateHourNow } from "../../../../Uteis/Uteis";
+import { ModalColaboradorInscrito } from "./ModalColaboradorInscrito";
+//#endregion
+const XLSX = require("xlsx");
 
-  const [inputTipoColaboradorEventoid, setTipoColaboradorEventoid] =
-    useState("");
-  const [inputPessoaid, setPessoaid] = useState("");
-
-  const [tipoDoacaoes, setTipoColaboradorEvento] = useState([]);
-  const [pessoas, setPessoas] = useState([]);
-
-  const Eventoid = props.eventoid.eventoid;
-
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      handleTipoColaboradoresEvento();
-      handlePessoas();
-
-      const response = await api.get(`/doacaoeventos/${id}`);
-
-      setTipoColaboradorEventoid(response.data[0].tipodoacaoid);
-
-      setLoading(false);
-    })();
-  }, [Eventoid]);
-
-  async function handleTipoColaboradoresEvento() {
-    const response = await getTipoColaboradorEventos(Eventoid);
-    setTipoColaboradorEvento(response.data);
-  }
-
-  async function handlePessoas() {
-    const response = await getPessoas("");
-    setPessoas(response.data);
-  }
-
-  const handleSubmit = async () => {
-    if (id != undefined) {
-      return api
-        .post(`/pessoaseventos/`, {
-          pessoaid: inputPessoaid,
-          tipocolaboradoreventoid: inputTipoColaboradorEventoid,
-          eventoid: Eventoid,
-          tipo: TIPO_COLABORADOR,
-          status: 0,
-          senharetirada: 0,
-        })
-        .then(() => {})
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      return api
-        .put(`/pessoaseventos/${id}`, {
-          pessoaid: inputPessoaid,
-          tipocolaboradoreventoid: inputTipoColaboradorEventoid,
-          eventoid: Eventoid,
-          tipo: TIPO_COLABORADOR,
-          status: 0,
-          senharetirada: 0,
-        })
-        .then(() => {
-          navigate("/eventos");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
-
-  return (
-    <>
-      <FormControl display="flex" flexDir="column" gap="1">
-        <HStack spacing={4}>
-          <Box w="100%">
-            <FormLabel htmlFor="tipodoacaoid">Tipo de Colaborador</FormLabel>
-            <Select
-              id="tipodoacaoid"
-              size={"xs"}
-              borderRadius={5}
-              placeholder="Selecione"
-              value={inputTipoColaboradorEventoid}
-              onChange={(event) => {
-                setTipoColaboradorEventoid(event.target.value);
-              }}
-            >
-              {tipoDoacaoes.map((result) => (
-                <option
-                  key={result.tipocolaboradoreventoid}
-                  value={result.tipocolaboradoreventoid}
-                >
-                  {result.descricao}
-                </option>
-              ))}
-            </Select>
-          </Box>
-        </HStack>
-        <HStack spacing={4}>
-          <Box w="100%">
-            <FormLabel htmlFor="pessoaid">Colaborador</FormLabel>
-            <Select
-              id="pessoaid"
-              size={"xs"}
-              borderRadius={5}
-              placeholder="Selecione"
-              value={inputPessoaid}
-              onChange={(event) => {
-                setPessoaid(event.target.value);
-              }}
-            >
-              {pessoas.map((result) => (
-                <option key={result.pessoaid} value={result.pessoaid}>
-                  {result.nome}
-                </option>
-              ))}
-            </Select>
-          </Box>
-        </HStack>
-
-        <HStack marginTop={5} spacing="4" justify={"right"}>
-          <Button
-            w={240}
-            p="6"
-            type="submit"
-            bg="blue.600"
-            color="white"
-            fontWeight="bold"
-            fontSize="x1"
-            _hover={{ bg: "blue.800" }}
-            onClick={handleSubmit}
-          >
-            Salvar
-          </Button>
-        </HStack>
-      </FormControl>
-    </>
+async function exportToExcel(data) {
+  const workbook = XLSX.utils.book_new();
+  const sheetData = data.map((result) => [
+    result.descricao,
+    result.nome,
+    result.documento,
+    result.telefone,
+  ]);
+  const sheet = XLSX.utils.aoa_to_sheet([
+    ["Descricao", "Nome", "Documento", "Telefone"],
+    ...sheetData,
+  ]);
+  XLSX.utils.book_append_sheet(workbook, sheet, "Colaboradores Inscritos");
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  saveAsExcelFile(
+    excelBuffer,
+    "Relatorio_Colaboradores_Inscritos_" + getDateHourNow() + ".xlsx"
   );
 }
 
-export default ColaboradoresInscritosPage;
+export default function ColaboradoresInscritosPage({ eventoid }) {
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    (async () => {
+      const response = await getPessoasEvento(TIPO_COLABORADOR, eventoid);
+      setResults(response.data);
+      setLoading(false);
+    })();
+  }, [eventoid]);
+
+  if (loading) {
+    return <SpinnerUtil />;
+  }
+
+  async function handleDelete(id) {
+    api
+      .delete(`/pessoaseventos/${id}`, {})
+      .then(() => {
+        window.location.reload(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  return (
+    <>
+      <Container fluid="md">
+        <Box shadow={"center"} boxShadow="md" borderRadius={5}>
+          <Box bg="red.800" w="100%" p={4} color="white">
+            <HStack spacing="4" justify={"center"}>
+              <Heading
+                size={{
+                  base: "xs",
+                  md: "md",
+                }}
+              >
+                Colaboradores Inscritos
+              </Heading>
+            </HStack>
+          </Box>
+
+          <HStack spacing="4" justify={"right"}>
+            <Button
+              variant="outline"
+              colorScheme="gray"
+              gap={2}
+              size="sm"
+              marginTop={2}
+              marginBottom={2}
+              marginRight={2}
+            >
+              <ModalColaboradorInscrito eventoid={eventoid} />
+            </Button>
+          </HStack>
+          <TableContainer>
+            <Table variant="simple" size="sm">
+              <TableCaption>Quantidade: {results.length}</TableCaption>
+              <Thead>
+                <Tr>
+                  <Th>Descrição</Th>
+                  <Th>Nome</Th>
+                  <Th>Documento</Th>
+                  <Th>Telefone</Th>
+                  <Th>Ação</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {results.map((result) => (
+                  <Tr>
+                    <Td>{result.descricao}</Td>
+                    <Td>
+                      <Link href={`/pessoas/edit/${result.pessoaid}`}>
+                        {result.nome}
+                      </Link>
+                    </Td>
+                    <Td>{result.documento}</Td>
+                    <Td>{result.telefone}</Td>
+                    <Td>
+                      <Button size={"xs"} bg={"write"}>
+                        <DeleteIcon
+                          color={"red.500"}
+                          boxSize={5}
+                          onClick={(e) =>
+                            handleDelete(result.pessoaeventoid, e)
+                          }
+                        />
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+          <Box padding={5}>
+            <Flex display={"flex"}>
+              <Spacer />
+              <Button
+                colorScheme="gray"
+                size={"sm"}
+                gap={2}
+                onClick={() => exportToExcel(results)}
+              >
+                <RiFileExcelLine /> CSV
+              </Button>
+            </Flex>
+          </Box>
+        </Box>
+      </Container>
+    </>
+  );
+}

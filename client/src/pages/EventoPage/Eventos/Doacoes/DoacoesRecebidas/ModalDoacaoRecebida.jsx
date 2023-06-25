@@ -13,14 +13,17 @@ import React from "react";
 import { AddIcon } from "@chakra-ui/icons";
 import DoacoesRecebidasPage from "./DoacoesRecebidasPage";
 
-export const ModalDoacaoRecebida = (eventoid) => {
+export const ModalDoacaoRecebida = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
 
+  const fetchData = props.fetchData;
+
   const handleCloseModal = () => {
     onClose();
+    fetchData();
   };
 
   return (
@@ -41,10 +44,7 @@ export const ModalDoacaoRecebida = (eventoid) => {
           <ModalHeader>Doações Recebidas</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <DoacoesRecebidasPage
-              eventoid={eventoid}
-              event={handleCloseModal}
-            />
+            <DoacoesRecebidasPage eventoid={props} event={handleCloseModal} />
           </ModalBody>
 
           <ModalFooter></ModalFooter>

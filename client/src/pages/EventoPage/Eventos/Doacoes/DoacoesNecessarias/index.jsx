@@ -1,3 +1,4 @@
+//#region IMPORTS
 import {
   AlertDialog,
   AlertDialogBody,
@@ -24,9 +25,8 @@ import {
 
 import { Box, Heading, HStack } from "@chakra-ui/react";
 
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { api } from "../../../../../shared/services/api";
 import { SpinnerUtil } from "../../../../Uteis/progress";
 
@@ -37,6 +37,7 @@ import { saveAsExcelFile } from "../../../../../components/ExportCSV";
 import { getTipoDoacaoEventos } from "../../../../../shared/services/TipoDoacaoEvento";
 import { getDateHourNow } from "../../../../Uteis/Uteis";
 import { ModalDoacaoNecessaria } from "./ModalDoacaoNecessaria";
+//#endregion
 
 const XLSX = require("xlsx");
 
@@ -76,11 +77,10 @@ export default function DoacoesNecessarias({ eventoid }) {
   const cancelRef = React.useRef();
   const [id, setId] = useState("");
 
-  const navigate = useNavigate();
-
   const toast = useToast();
 
   async function fetchData() {
+    setResults([]);
     const response = await getTipoDoacaoEventos(eventoid);
     setResults(response.data);
   }
@@ -91,10 +91,6 @@ export default function DoacoesNecessarias({ eventoid }) {
 
   if (loading) {
     return <SpinnerUtil />;
-  }
-
-  async function handleEdit(id) {
-    navigate(`/pessoas/edit/${id}`);
   }
 
   async function handleDelete() {
@@ -189,13 +185,13 @@ export default function DoacoesNecessarias({ eventoid }) {
                       {result.quantidaderecebidas - result.quantidaderealizadas}
                     </Td>
                     <Td>
-                      <Button size={"xs"} bg={"write"}>
+                      {/* <Button size={"xs"} bg={"write"}>
                         <EditIcon
                           color={"blue.800"}
                           boxSize={5}
                           onClick={(e) => handleEdit(result.pessoaeventoid, e)}
                         />
-                      </Button>
+                      </Button> */}
                       <Button size={"xs"} bg={"write"}>
                         <DeleteIcon
                           color={"red.500"}

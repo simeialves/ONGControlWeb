@@ -18,16 +18,19 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { AddIcon } from "@chakra-ui/icons";
-import DoacoesNecessariasPage from ".";
+import ColaboradorNecessarioPage from "./ColaboradoresNecessariosPage";
 
-export const ModalColaboradorNecessario = (eventoid) => {
+export const ModalColaboradorNecessario = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
 
+  const fetchData = props.fetchData;
+
   function handleCloseModal() {
     onClose();
+    fetchData();
   }
 
   return (
@@ -48,9 +51,9 @@ export const ModalColaboradorNecessario = (eventoid) => {
           <ModalHeader>Colaboradores</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <DoacoesNecessariasPage
-              eventoid={eventoid}
-              handleCloseModal={handleCloseModal}
+            <ColaboradorNecessarioPage
+              eventoid={props}
+              event={handleCloseModal}
             />
           </ModalBody>
 

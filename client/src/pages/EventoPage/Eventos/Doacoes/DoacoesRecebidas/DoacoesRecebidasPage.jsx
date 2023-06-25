@@ -1,3 +1,4 @@
+//#region IMPORTS
 import {
   Box,
   Button,
@@ -13,15 +14,11 @@ import {
   Select,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { getPessoas } from "../../../../../shared/services/Pessoas";
 import { getTipoDoacaoEventos } from "../../../../../shared/services/TipoDoacaoEvento";
 import { api } from "../../../../../shared/services/api";
-
+//#endregion
 function DoacoesRecebidasPage(props) {
-  const { id } = useParams();
-  const navigate = useNavigate();
-
   const [loading, setLoading] = useState(false);
 
   const [inputTipoDoacaoEventoid, setTipoDoacaoEventoid] = useState("");
@@ -32,7 +29,7 @@ function DoacoesRecebidasPage(props) {
   const [tipoDoacaoes, setTipoDoacoes] = useState([]);
   const [pessoas, setPessoas] = useState([]);
 
-  const Eventoid = props.eventoid.eventoid;
+  const id = props.eventoid.eventoid;
 
   const handleChange = (value) => setQuantidade(value);
 
@@ -49,10 +46,10 @@ function DoacoesRecebidasPage(props) {
 
       setLoading(false);
     })();
-  }, [Eventoid]);
+  }, [id]);
 
   async function handleTipoDoacoes() {
-    const response = await getTipoDoacaoEventos(Eventoid);
+    const response = await getTipoDoacaoEventos(id);
     setTipoDoacoes(response.data);
   }
 
@@ -70,7 +67,9 @@ function DoacoesRecebidasPage(props) {
           datadoacao: inputDataDoacao,
           quantidade: inputQuantidade,
         })
-        .then(() => {})
+        .then(() => {
+          this.window.location.reload(true);
+        })
         .catch((err) => {
           console.log(err);
         });
@@ -82,9 +81,7 @@ function DoacoesRecebidasPage(props) {
           datadoacao: inputDataDoacao,
           quantidade: inputQuantidade,
         })
-        .then(() => {
-          navigate("/eventos");
-        })
+        .then(() => {})
         .catch((err) => {
           console.log(err);
         });

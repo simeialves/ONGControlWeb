@@ -1,3 +1,4 @@
+//#region IMPORTS
 import {
   Box,
   Button,
@@ -13,34 +14,27 @@ import {
 } from "@chakra-ui/react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { STATUS_ATIVO } from "../../../../../includes/const";
 import { getTipoDoacoes } from "../../../../../shared/services/TipoDoacao";
 import { api } from "../../../../../shared/services/api";
-
+//#endregion
 function DoacoesNecessariasPage(props) {
-  const { id } = useParams();
-  const navigate = useNavigate();
-
   const [loading, setLoading] = useState(true);
 
   const [inputTipodoacaoid, setTipoDoacaoid] = useState("");
-  const [inputEventoid, setEventoid] = useState(props.eventoid.eventoid);
   const [inputQuantidade, setQuantidade] = useState("");
 
   const [resultTipoDoacoes, setTipoDoacoes] = useState([]);
 
-  const Eventoid = props.eventoid.eventoid;
+  const id = props.eventoid.eventoid;
 
   const handleChange = (value) => setQuantidade(value);
 
   useEffect(() => {
-    (async () => {
-      setLoading(true);
-      handleTipoDoacoes();
-      setLoading(false);
-    })();
-  }, [Eventoid]);
+    setLoading(true);
+    handleTipoDoacoes();
+    setLoading(false);
+  }, [id]);
 
   async function handleTipoDoacoes() {
     const response = await getTipoDoacoes("", STATUS_ATIVO);
@@ -52,7 +46,7 @@ function DoacoesNecessariasPage(props) {
       return api
         .post(`/tipodoacaoeventos/`, {
           tipodoacaoid: inputTipodoacaoid,
-          eventoid: Eventoid,
+          eventoid: id,
           quantidade: inputQuantidade,
           quantidaderecebidas: 0,
           quantidaderealizadas: 0,
@@ -67,7 +61,7 @@ function DoacoesNecessariasPage(props) {
       return api
         .put(`/tipodoacaoeventos/${id}`, {
           tipodoacaoid: inputTipodoacaoid,
-          eventoid: Eventoid,
+          eventoid: id,
           quantidade: inputQuantidade,
           quantidaderecebidas: 0,
           quantidaderealizadas: 0,
