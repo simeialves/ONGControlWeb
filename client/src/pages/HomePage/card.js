@@ -24,6 +24,7 @@ import {
 } from "../../includes/const";
 import { getEventos } from "../../shared/services/Evento";
 import { formatDate, removeAspas } from "../Uteis/Uteis";
+import SpinnerUtil from "../Uteis/progress";
 
 export const CardEvento = () => {
   const [results, setResults] = useState([]);
@@ -40,7 +41,10 @@ export const CardEvento = () => {
     const response = await getEventos("", STATUS_ATIVO);
     setResults(response.data);
     setLoading(false);
-    console.log(response.data);
+  }
+
+  if (loading) {
+    return <SpinnerUtil />;
   }
 
   return (
