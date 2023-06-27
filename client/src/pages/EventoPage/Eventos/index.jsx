@@ -99,14 +99,6 @@ const MenuEventos = (props) => {
     setLoading(false);
   }
 
-  async function handleNew() {
-    navigate(`/eventos/new`);
-  }
-
-  async function handleEdit(id) {
-    navigate(`/eventos/edit/${id}`);
-  }
-
   async function handleDelete() {
     api
       .delete(`/eventos/${id}`, {})
