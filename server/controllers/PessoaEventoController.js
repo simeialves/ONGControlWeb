@@ -49,7 +49,6 @@ class PessoaEventoController {
   //#region READ
   static getAll = async (req, res) => {
     const { tipo, eventoid, tipocolaboradoreventoid, nome } = req.query;
-    console.log(req.query);
     var query = db
       .knex("pessoaevento")
       .select("*")
