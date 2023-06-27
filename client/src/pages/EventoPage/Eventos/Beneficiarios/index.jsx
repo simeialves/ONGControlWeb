@@ -1,5 +1,12 @@
 //#region IMPORTS
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Button,
   Flex,
   Spacer,
@@ -11,6 +18,8 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 
 import { DeleteIcon, SearchIcon } from "@chakra-ui/icons";
@@ -57,15 +66,23 @@ export default function Beneficiarios({ eventoid }) {
   const [inputNome, setInputNome] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = React.useRef();
+  const [id, setId] = useState("");
+
+  const toast = useToast();
+
   useEffect(() => {
-    (async () => {
-      await fetchData();
-    })();
+    fetchData();
   }, [eventoid]);
 
   async function fetchData() {
-    // const response = await getDoacaoEventoPessoa(eventoid);
-    const response = await getPessoasEvento(TIPO_BENEFICIARIO, eventoid);
+    setResults([]);
+    const response = await getPessoasEvento(
+      TIPO_BENEFICIARIO,
+      eventoid,
+      inputNome
+    );
     setResults(response.data);
   }
 
@@ -73,55 +90,53 @@ export default function Beneficiarios({ eventoid }) {
     return <SpinnerUtil />;
   }
 
-  async function handleEdit(id) {}
-  async function handleDelete(id) {
-    api
+  async function handleDelete() {
+    await api
       .delete(`/pessoaseventos/${id}`, {})
-      .then((result) => {
+      .then(async (result) => {
         api
           .delete(`doacaoeventospessoas/${result.id}`, {})
-          .then(() => {
-            window.location.reload(true);
+          .then(async () => {
+            fetchData();
+            onClose();
           })
           .catch((err) => {
             console.log(err);
           });
+        toast({
+          title: "Registro excluído com sucesso",
+          position: "bottom-left",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        fetchData();
+        onClose();
       })
       .catch((err) => {
         console.log(err);
       });
   }
   async function handleClick() {
-    setLoading(true);
-    setResults([]);
-    const nome = inputNome;
-    api
-      .get(`/pessoas/filter/?nome=${nome}`, {
-        nome: nome,
-      })
-      .then((response) => {
-        setResults(response.data);
-        setMessage(false);
-        setLoading(false);
-        setInputNome("");
-      })
-      .catch(() => {
-        setMessage(true);
-        setLoading(false);
-      });
-  }
-  async function handleClear() {
-    setLoading(true);
-    setInputNome("");
-    const response = await getPessoasEvento(eventoid);
-    setResults(response.data);
-    setLoading(false);
+    fetchData();
   }
 
   async function handleCloseModal() {
     setIsModalOpen(false);
     fetchData();
   }
+
+  async function handleOpenDialog(id) {
+    setId(id);
+    onOpen();
+  }
+
+  function handleKeyPress(event) {
+    if (event.key === "Enter") {
+      fetchData();
+    }
+  }
+
   return (
     <>
       <Container fluid="md">
@@ -138,6 +153,7 @@ export default function Beneficiarios({ eventoid }) {
                 eventoid={eventoid}
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
+                fetchData={fetchData}
               />
             </Button>
           </HStack>
@@ -145,12 +161,14 @@ export default function Beneficiarios({ eventoid }) {
             <Box w="70%">
               <InputGroup>
                 <Input
+                  value={inputNome}
                   onChange={(event) => {
                     setInputNome(event.target.value);
                   }}
                   placeholder="Pesquisar por nome"
                   size="sm"
                   borderRadius={5}
+                  onKeyPress={(event) => handleKeyPress(event)}
                 />
               </InputGroup>
             </Box>
@@ -207,7 +225,7 @@ export default function Beneficiarios({ eventoid }) {
                           color={"red.500"}
                           boxSize={5}
                           onClick={(e) =>
-                            handleDelete(result.pessoaeventoid, e)
+                            handleOpenDialog(result.pessoaeventoid, e)
                           }
                         />
                       </Button>
@@ -230,6 +248,32 @@ export default function Beneficiarios({ eventoid }) {
           </Flex>
         </Box>
       </Container>
+
+      <AlertDialog
+        motionPreset="slideInBottom"
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isOpen={isOpen}
+        isCentered
+      >
+        <AlertDialogOverlay />
+
+        <AlertDialogContent>
+          <AlertDialogHeader>Apagar registro?</AlertDialogHeader>
+          <AlertDialogCloseButton />
+          <AlertDialogBody>
+            Tem certeza que deseja apagar o registro selecionado?
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <Button colorScheme="red" ml={3} onClick={handleDelete}>
+              Sim
+            </Button>
+            <Button ref={cancelRef} ml={3} onClick={onClose}>
+              Cancelar
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

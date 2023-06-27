@@ -13,11 +13,6 @@ import {
   FormLabel,
   HStack,
   Input,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
   Select,
   Tab,
   TabList,
@@ -292,7 +287,7 @@ const ModalEventosPage = (props) => {
                           </Box>
                         </HStack>
 
-                        <HStack spacing={4}>
+                        {/* <HStack spacing={4}>
                           <Box w="80%">
                             <FormLabel htmlFor="formularionivelamento">
                               Formulário Nivelamento
@@ -328,7 +323,7 @@ const ModalEventosPage = (props) => {
                               </NumberInputStepper>
                             </NumberInput>
                           </Box>
-                        </HStack>
+                        </HStack> */}
 
                         <HStack spacing="4" justify={"right"}>
                           <Button

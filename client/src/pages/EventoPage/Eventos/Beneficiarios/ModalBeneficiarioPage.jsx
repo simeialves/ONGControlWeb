@@ -96,7 +96,9 @@ function ModalBeneficiarioPage(props) {
                 quantidade: inputQuantidade,
                 status: STATUS_ATIVO,
               })
-              .then(() => {})
+              .then(() => {
+                props.event();
+              })
               .catch((err) => {
                 console.log(err);
               });
@@ -117,9 +119,6 @@ function ModalBeneficiarioPage(props) {
       setPessoaSelecionada(response.data[0]);
     } else if (passo == PASSO_02) {
       setPasso(PASSO_03);
-      // const response = await getTipoDoacoesById(doacaoEventoId);
-      // setTipoDoacao(response.data[0]);
-
       const response = await getTipoDoacaoEventosById(tipoDoacaoEventoId);
       const tipodoacaoid = response.data[0].tipodoacaoid;
       const tipoDoacao = await getTipoDoacoesById(tipodoacaoid);
@@ -137,7 +136,7 @@ function ModalBeneficiarioPage(props) {
 
   const handleCloseModal = async () => {
     await handleSubmit();
-    props.event();
+    // props.event();
   };
 
   return (

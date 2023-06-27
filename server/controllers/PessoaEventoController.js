@@ -48,7 +48,8 @@ class PessoaEventoController {
 
   //#region READ
   static getAll = async (req, res) => {
-    const { tipo, eventoid, tipocolaboradoreventoid } = req.query;
+    const { tipo, eventoid, tipocolaboradoreventoid, nome } = req.query;
+    console.log(req.query);
     var query = db
       .knex("pessoaevento")
       .select("*")
@@ -71,6 +72,7 @@ class PessoaEventoController {
     } else if (tipo == BENEFICIARIOS) {
       query.where("pessoaevento.tipo", tipo);
     }
+    if (nome) query.whereILike("nome", `%${nome}%`);
 
     if (eventoid != undefined) query.where("pessoaevento.eventoid", eventoid);
     if (tipocolaboradoreventoid != undefined)
