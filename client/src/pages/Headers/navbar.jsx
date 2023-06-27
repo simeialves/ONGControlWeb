@@ -36,9 +36,17 @@ const Navbar = (props) => {
       <Box as="nav" position="fixed" top="0" width="100%" zIndex="1">
         <Flex bg="#611D1D" p={0.5} color="white" paddingLeft={5}>
           <Text as="a" mr={8} href="/">
-            <Text fontSize="sm">LyonControl</Text>
+            <Text fontSize="sm" _hover={{ color: "white" }}>
+              LyonControl
+            </Text>
           </Text>
-          <Text as="a" mr={2} href="/homepage" fontSize="xs">
+          <Text
+            as="a"
+            mr={2}
+            href="/homepage"
+            fontSize="xs"
+            _hover={{ color: "white" }}
+          >
             Home
           </Text>
           <Text
@@ -46,8 +54,7 @@ const Navbar = (props) => {
             mr={2}
             href="/eventos"
             fontSize="xs"
-            textDecoration={"none"}
-            _hover={"red"}
+            _hover={{ color: "white" }}
           >
             Eventos
           </Text>
@@ -56,18 +63,11 @@ const Navbar = (props) => {
             mr={2}
             href="/cadastros"
             fontSize="xs"
-            textDecoration={"none"}
-            _hover={"red"}
+            _hover={{ color: "white" }}
           >
             Cadastros
           </Text>
-          <Text
-            as="a"
-            mr={2}
-            fontSize="xs"
-            textDecoration={"none"}
-            _hover={"red"}
-          >
+          <Text as="a" mr={2} fontSize="xs" _hover={{ color: "white" }}>
             <ModalParams />
           </Text>
           <Spacer />
@@ -77,7 +77,12 @@ const Navbar = (props) => {
           <Text fontSize="xs" mr={2} fontWeight={"bold"}>
             {removeAspas(localStorage.getItem("name"))}
           </Text>
-          <Link mr={2} onClick={() => handleLogout()} fontSize="xs">
+          <Link
+            mr={2}
+            onClick={() => handleLogout()}
+            fontSize="xs"
+            _hover={{ color: "white" }}
+          >
             Sair
           </Link>
         </Flex>
