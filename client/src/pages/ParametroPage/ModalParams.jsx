@@ -31,7 +31,9 @@ export const ModalParams = () => {
 
   return (
     <>
-      <Link onClick={onOpen}>Configurações</Link>
+      <Link onClick={onOpen} _hover={{ color: "white" }}>
+        Configurações
+      </Link>
       <Modal
         initialFocusRef={initialRef}
         finalFocusRef={finalRef}

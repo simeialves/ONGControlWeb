@@ -76,7 +76,7 @@ export default function ColaboradoresInscritosPage({ eventoid }) {
 
   async function fetchData() {
     setResults([]);
-    const response = await getPessoasEvento(TIPO_COLABORADOR, eventoid);
+    const response = await getPessoasEvento(TIPO_COLABORADOR, eventoid, "");
     setResults(response.data);
   }
 
