@@ -47,6 +47,14 @@ app.get("/", (req, res) => {
   return res.status(200).json("Página Inicial do ONGControlWeb - DevOps");
 });
 
+app.get("/ping", (req, res) => {
+  return res.status(200).json("pong");
+});
+
+app.use("/", (req, res) => {
+  return res.status(404).json("Rota não encontrada");
+});
+
 //#region routes
 app.use("/auth", loginRoutes);
 app.use("/usuarios", usuarioRoutes);
