@@ -51,12 +51,6 @@ app.get("/ping", (req, res) => {
   return res.status(200).json("pong");
 });
 
-app.use((req, res, next) => {
-  return res.status(404).json({
-    error: "Not Found",
-  });
-});
-
 //#region routes
 app.use("/auth", loginRoutes);
 app.use("/usuarios", usuarioRoutes);
