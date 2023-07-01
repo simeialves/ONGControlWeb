@@ -50,6 +50,7 @@ class DoacaoEventoPessoaController {
       .knex("doacaoeventopessoa")
       .orderBy("doacaoeventopessoa.doacaoeventopessoaid")
       .select(
+        "doacaoeventopessoa.doacaoeventopessoaid",
         "tipodoacao.descricao as descricao",
         "doacaoeventopessoa.quantidade as quantidade"
       )
