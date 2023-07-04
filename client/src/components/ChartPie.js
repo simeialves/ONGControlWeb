@@ -1,29 +1,16 @@
-import {
-  ArcElement,
-  BarController,
-  BarElement,
-  CategoryScale,
-  Chart,
-  LinearScale,
-  PieController,
-} from "chart.js";
-
+import { CategoryScale, Chart, PieController, Title, Tooltip } from "chart.js";
 import React, { useEffect, useRef } from "react";
 
-const ChartComponentPie = (props) => {
+const ChartPie = (props) => {
   const chartRef = useRef(null);
 
   const doacoesRecebidas = props.doacoesRecebidas;
+  const qtdRecebidas = props.qtdRecebidas;
+  const coresBackGround = props.coresBackGround;
+  const coresHoverBackGround = props.coresHoverBackGround;
 
   useEffect(() => {
-    Chart.register(
-      LinearScale,
-      CategoryScale,
-      BarController,
-      BarElement,
-      PieController,
-      ArcElement
-    );
+    Chart.register(PieController, CategoryScale, Title, Tooltip);
 
     let chartInstance = null;
     const createChart = () => {
@@ -34,14 +21,14 @@ const ChartComponentPie = (props) => {
       }
 
       chartInstance = new Chart(ctx, {
-        type: "bar",
+        type: "pie",
         data: {
-          labels: [doacoesRecebidas],
+          labels: doacoesRecebidas,
           datasets: [
             {
-              data: ["25", "5", "4", "3"],
-              backgroundColor: ["#b22222", "#adb5bd", "#577590"],
-              hoverBackgroundColor: ["#c22222", "#c4c8cc", "#567990"],
+              data: qtdRecebidas,
+              backgroundColor: coresBackGround,
+              hoverBackgroundColor: coresHoverBackGround,
             },
           ],
         },
@@ -54,14 +41,6 @@ const ChartComponentPie = (props) => {
           layout: {
             padding: { right: 50 },
           },
-          legend: {
-            display: true,
-            position: "right",
-            title: {
-              display: true,
-              text: "Legenda",
-            },
-          },
         },
       });
     };
@@ -70,7 +49,7 @@ const ChartComponentPie = (props) => {
 
     return () => {
       if (chartInstance) {
-        chartInstance.destroy(); // Limpar o gráfico ao desmontar o componente
+        chartInstance.destroy();
       }
     };
   }, [doacoesRecebidas]);
@@ -78,4 +57,4 @@ const ChartComponentPie = (props) => {
   return <canvas ref={chartRef}></canvas>;
 };
 
-export default ChartComponentPie;
+export default ChartPie;

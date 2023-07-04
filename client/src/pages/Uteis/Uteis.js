@@ -33,3 +33,25 @@ export function getDateHourNow() {
   const dateNow = new Date();
   return removeCaracter(formatDateNoTime(dateNow));
 }
+
+export function generateRandomRGBAColorSequence(length) {
+  const colors = [];
+  for (let i = 0; i < length; i++) {
+    let r, g, b;
+    do {
+      r = Math.floor(Math.random() * 256);
+      g = Math.floor(Math.random() * 51); // Gera valor entre 0 e 50 para tons de vermelho
+      b = Math.floor(Math.random() * 51); // Gera valor entre 0 e 50 para tons de vermelho
+    } while (isColorTooLight(r, g, b));
+
+    const s = "0.8";
+    const rgbaColor = `rgba(${r}, ${g}, ${b}, ${s})`;
+    colors.push(rgbaColor);
+  }
+  return colors;
+}
+
+const isColorTooLight = (r, g, b) => {
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance > 0.85;
+};
