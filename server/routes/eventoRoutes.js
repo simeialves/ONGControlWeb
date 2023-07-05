@@ -11,6 +11,18 @@ appRoutes.post("/", verifyJWT, EventoController.create);
 //#endregion
 
 //#region READ
+/**
+ * @swagger
+ * /eventos:
+ *   get:
+ *     summary: Retorna todas os eventos.
+ *     tags: [Eventos]
+ *     responses:
+ *       200:
+ *         description: Lista de todos os eventos.
+ *       400:
+ *         description: Erro na requisição.
+ */
 appRoutes.get("/", verifyJWT, EventoController.getAll);
 appRoutes.get("/:id", verifyJWT, EventoController.getById);
 //#endregion
