@@ -1,7 +1,6 @@
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 
-// Define as opções do Swagger
 const options = {
   swaggerDefinition: {
     openapi: "3.0.0",
@@ -12,17 +11,20 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:5000", // Ajuste o URL para o seu servidor
+        url: "http://localhost:5000",
         description: "Servidor de desenvolvimento",
       },
     ],
   },
-  apis: ["./routes/pessoaRoutes.js", "./routes/eventoRoutes.js"],
+  apis: [
+    "./routes/pessoaRoutes.js",
+    "./routes/eventoRoutes.js",
+    "./docs/projeto-docs.js",
+  ],
 };
 
 const swaggerSpec = swaggerJsDoc(options);
 
-// Middleware para servir a interface do Swagger UI
 const serveSwaggerUI = swaggerUi.serve;
 const setupSwaggerUI = swaggerUi.setup(swaggerSpec);
 

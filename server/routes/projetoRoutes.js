@@ -11,7 +11,7 @@ appRoutes.post("/", verifyJWT, ProjetoController.create);
 //#endregion
 
 //#region READ
-appRoutes.get("/", verifyJWT, ProjetoController.getAll);
+appRoutes.get("/", ProjetoController.getAll);
 appRoutes.get("/:id", verifyJWT, ProjetoController.getById);
 appRoutes.get("/filter", verifyJWT, ProjetoController.getByFilter);
 //#endregion
