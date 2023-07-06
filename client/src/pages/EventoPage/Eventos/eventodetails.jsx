@@ -18,8 +18,11 @@ const EventoDetails = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [nome, setNome] = useState("");
-  const [doacoesRecebidas, setDoacoesRecebidas] = useState("");
+  const [doacoes, setDoacoes] = useState("");
   const [qtdRecebidas, setQtdRecebidas] = useState("");
+  const [qtdRealizadas, setQtdRealizadas] = useState("");
+  const [qtdNecessarias, setQtdNecessarias] = useState("");
+  const [saldo, setSaldo] = useState("");
 
   const [colaboradores, setColaboradores] = useState("");
   const [qtdColaboradoresNecessarios, setQtdColaboradoresNecessarios] =
@@ -47,14 +50,21 @@ const EventoDetails = () => {
   async function fetchDoacaoEvento() {
     const response = await getTipoDoacaoEventos(id);
     const doacoesRecebidas = [];
+    const quantidade = [];
     const quantidadeRecebidas = [];
+    const quantidadeRealizadas = [];
+    const saldo = [];
+
+    console.log(response.data);
 
     response.data.forEach((item) => {
       doacoesRecebidas.push(
         item.descricao // + " - " + "Qtd.: " + item.quantidaderecebidas
       );
-
+      quantidade.push(item.quantidade);
       quantidadeRecebidas.push(item.quantidaderecebidas);
+      quantidadeRealizadas.push(item.quantidaderealizadas);
+      saldo.push(item.quantidaderecebidas - item.quantidaderealizadas);
     });
 
     let label = "";
@@ -76,8 +86,11 @@ const EventoDetails = () => {
       listaCoresHoverBackGround.push(item.replace("0.8", "1"));
     });
 
-    setDoacoesRecebidas(doacoesRecebidas);
+    setDoacoes(doacoesRecebidas);
+    setQtdNecessarias(quantidade);
     setQtdRecebidas(quantidadeRecebidas);
+    setQtdRealizadas(quantidadeRealizadas);
+    setSaldo(saldo);
     setBackgroundColor(listaCoresBackGround);
     setHoverBackgroundColor(listaCoresHoverBackGround);
 
@@ -123,7 +136,7 @@ const EventoDetails = () => {
               Doações Recebidas
             </Heading>
             <ChartPie
-              doacoesRecebidas={doacoesRecebidas}
+              doacoes={doacoes}
               qtdRecebidas={qtdRecebidas}
               coresBackGround={coresBackGround}
               coresHoverBackGround={coresHoverBackGround}
@@ -144,8 +157,11 @@ const EventoDetails = () => {
               Comparativo de Doações do Evento
             </Heading>
             <ChartBarVertical
-              doacoesRecebidas={doacoesRecebidas}
+              doacoes={doacoes}
               qtdRecebidas={qtdRecebidas}
+              qtdRealizadas={qtdRealizadas}
+              qtdNecessarias={qtdNecessarias}
+              saldo={saldo}
             />
           </GridItem>
           <GridItem marginBottom={15}>
@@ -153,10 +169,10 @@ const EventoDetails = () => {
               Doações Realizadas x Doações Recebidas
             </Heading>
             <ChartRadar
-              doacoesRecebidas={doacoesRecebidas}
+              doacoes={doacoes}
               qtdRecebidas={qtdRecebidas}
-              coresBackGround={coresBackGround}
-              coresHoverBackGround={coresHoverBackGround}
+              qtdRealizadas={qtdRealizadas}
+              qtdNecessarias={qtdNecessarias}
             />
           </GridItem>
         </Grid>

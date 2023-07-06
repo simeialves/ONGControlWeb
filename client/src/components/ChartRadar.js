@@ -4,10 +4,10 @@ import React, { useEffect, useRef } from "react";
 const ChartRadar = (props) => {
   const chartRef = useRef(null);
 
-  const doacoesRecebidas = props.doacoesRecebidas;
+  const doacoes = props.doacoes;
   const qtdRecebidas = props.qtdRecebidas;
-  const coresBackGround = props.coresBackGround;
-  const coresHoverBackGround = props.coresHoverBackGround;
+  const qtdNecessarias = props.qtdNecessarias;
+  const qtdRealizadas = props.qtdRealizadas;
 
   useEffect(() => {
     Chart.register(PieController, CategoryScale, Title, Tooltip);
@@ -17,18 +17,18 @@ const ChartRadar = (props) => {
       const ctx = chartRef.current.getContext("2d");
 
       const data = {
-        labels: doacoesRecebidas,
+        labels: doacoes,
         datasets: [
           {
-            label: "Doações Realizadas",
-            data: [10, 5, 2, 3],
+            label: "Doações Necessarias",
+            data: qtdNecessarias,
             fill: true,
-            backgroundColor: "rgba(255, 99, 132, 0.2)",
-            borderColor: "rgb(255, 99, 132)",
-            pointBackgroundColor: "rgb(255, 99, 132)",
+            backgroundColor: "rgba(99, 255, 132, 0.2)",
+            borderColor: "rgb(99, 255, 132)",
+            pointBackgroundColor: "rgb(99, 255, 132)",
             pointBorderColor: "#fff",
             pointHoverBackgroundColor: "#fff",
-            pointHoverBorderColor: "rgb(255, 99, 132)",
+            pointHoverBorderColor: "rgb(99, 255, 132)",
           },
           {
             label: "Doações Recebidas",
@@ -40,6 +40,17 @@ const ChartRadar = (props) => {
             pointBorderColor: "#fff",
             pointHoverBackgroundColor: "#fff",
             pointHoverBorderColor: "rgb(54, 162, 235)",
+          },
+          {
+            label: "Doações Realizadas",
+            data: qtdRealizadas,
+            fill: true,
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
+            borderColor: "rgb(255, 99, 132)",
+            pointBackgroundColor: "rgb(255, 99, 132)",
+            pointBorderColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "rgb(255, 99, 132)",
           },
         ],
       };
@@ -70,7 +81,7 @@ const ChartRadar = (props) => {
         chartInstance.destroy();
       }
     };
-  }, [doacoesRecebidas]);
+  }, [doacoes]);
 
   return (
     <canvas ref={chartRef} style={{ width: "100px", height: "100px" }}></canvas>

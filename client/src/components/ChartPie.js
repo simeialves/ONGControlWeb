@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from "react";
 const ChartPie = (props) => {
   const chartRef = useRef(null);
 
-  const doacoesRecebidas = props.doacoesRecebidas;
+  const doacoes = props.doacoes;
   const qtdRecebidas = props.qtdRecebidas;
   const coresBackGround = props.coresBackGround;
   const coresHoverBackGround = props.coresHoverBackGround;
@@ -23,7 +23,7 @@ const ChartPie = (props) => {
       chartInstance = new Chart(ctx, {
         type: "pie",
         data: {
-          labels: doacoesRecebidas,
+          labels: doacoes,
           datasets: [
             {
               data: qtdRecebidas,
@@ -58,7 +58,7 @@ const ChartPie = (props) => {
         chartInstance.destroy();
       }
     };
-  }, [doacoesRecebidas]);
+  }, [doacoes]);
 
   return (
     <canvas ref={chartRef} style={{ width: "100px", height: "100px" }}></canvas>

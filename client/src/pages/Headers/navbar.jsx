@@ -37,7 +37,7 @@ const Navbar = (props) => {
         <Flex bg="#611D1D" p={0.5} color="white" paddingLeft={5}>
           <Text as="a" mr={8} href="/">
             <Text fontSize="sm" _hover={{ color: "white" }}>
-              LyonControl
+              ONGControl
             </Text>
           </Text>
           <Text

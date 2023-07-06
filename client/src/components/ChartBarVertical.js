@@ -13,8 +13,11 @@ import React, { useEffect, useRef } from "react";
 const ChartBarVertical = (props) => {
   const chartRef = useRef(null);
 
-  const doacoesRecebidas = props.doacoesRecebidas;
+  const doacoes = props.doacoes;
   const qtdRecebidas = props.qtdRecebidas;
+  const qtdNecessarias = props.qtdNecessarias;
+  const qtdRealizadas = props.qtdRealizadas;
+  const saldo = props.saldo;
 
   useEffect(() => {
     Chart.register(
@@ -28,6 +31,8 @@ const ChartBarVertical = (props) => {
 
     let chartInstance = null;
     const createChart = () => {
+      console.log(saldo);
+
       const ctx = chartRef.current.getContext("2d");
 
       if (chartInstance) {
@@ -37,12 +42,12 @@ const ChartBarVertical = (props) => {
       chartInstance = new Chart(ctx, {
         type: "bar",
         data: {
-          labels: doacoesRecebidas,
+          labels: doacoes,
           datasets: [
             {
               label: "Necessários",
               backgroundColor: ["#b22222", "#b22222", "#b22222", "#b22222"],
-              data: ["20", "50", "50", "50"],
+              data: qtdNecessarias,
             },
             {
               label: "Recebidos",
@@ -52,12 +57,12 @@ const ChartBarVertical = (props) => {
             {
               label: "Doados",
               backgroundColor: ["#4d68eb", "#4d68eb", "#4d68eb", "#4d68eb"],
-              data: ["0", "0", "0", "2"],
+              data: qtdRealizadas,
             },
             {
               label: "Saldo",
               backgroundColor: ["#0b8a39", "#0b8a39", "#0b8a39", "#0b8a39"],
-              data: ["3", "5", "4", "23"],
+              data: saldo,
             },
           ],
         },
@@ -117,7 +122,7 @@ const ChartBarVertical = (props) => {
         chartInstance.destroy();
       }
     };
-  }, [doacoesRecebidas]);
+  }, [doacoes]);
 
   return <canvas ref={chartRef}></canvas>;
 };
