@@ -15,7 +15,6 @@ const ChartBarVertical = (props) => {
 
   const doacoesRecebidas = props.doacoesRecebidas;
   const qtdRecebidas = props.qtdRecebidas;
-  console.log(doacoesRecebidas, qtdRecebidas);
 
   useEffect(() => {
     Chart.register(
@@ -38,47 +37,76 @@ const ChartBarVertical = (props) => {
       chartInstance = new Chart(ctx, {
         type: "bar",
         data: {
-          labels: ["Comparativo entre doações"],
+          labels: [
+            "Caixa de Sorvete",
+            "Descartáveis",
+            "Pipoca",
+            "Cesta Básica",
+          ],
           datasets: [
             {
               label: "Necessários",
-              backgroundColor: ["rgba(255, 99, 132, 1)"],
-              borderColor: ["rgba(255, 99, 132, 0.8)"],
-              data: ["1"],
+              backgroundColor: ["#b22222", "#b22222", "#b22222", "#b22222"],
+              data: ["20", "50", "50", "50"],
             },
             {
               label: "Recebidos",
-              backgroundColor: ["rgba(54, 162, 235, 1)"],
-              borderColor: ["rgba(54, 162, 235, 0.8)"],
-              data: ["2"],
+              backgroundColor: ["#adb5bd", "#adb5bd", "#adb5bd", "#adb5bd"],
+              data: ["3", "5", "4", "25"],
             },
             {
               label: "Doados",
-              backgroundColor: ["rgba(255, 206, 86, 1)"],
-              borderColor: ["rgba(255, 206, 86, 0.8)"],
-              data: ["3"],
+              backgroundColor: ["#4d68eb", "#4d68eb", "#4d68eb", "#4d68eb"],
+              data: ["0", "0", "0", "2"],
             },
             {
               label: "Saldo",
-              backgroundColor: ["rgba(75, 192, 192, 1)"],
-              borderColor: ["rgba(75, 192, 192, 0.8)"],
-              data: ["4"],
+              backgroundColor: ["#0b8a39", "#0b8a39", "#0b8a39", "#0b8a39"],
+              data: ["3", "5", "4", "23"],
             },
           ],
         },
         options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-              grid: {
-                display: false,
-              },
+          legend: {
+            display: true,
+            position: "bottom",
+          },
+          responsive: true,
+          aspectRatio: 1.5,
+          plugins: {
+            legend: {
+              display: true,
+              position: "bottom",
+              align: "start",
+              padding: 10,
             },
+          },
+          scales: {
             x: {
               grid: {
                 display: false,
               },
             },
+            y: {
+              grid: {
+                display: false,
+              },
+            },
+            xAxes: [
+              {
+                gridLines: { display: false },
+                display: true,
+                scaleLabel: { display: false, labelString: "" },
+                maxBarThickness: 35,
+              },
+            ],
+            yAxes: [
+              {
+                gridLines: { display: false },
+                display: true,
+                scaleLabel: { display: true, labelString: "Quantidade" },
+              },
+            ],
           },
           layout: {
             padding: { right: 50 },

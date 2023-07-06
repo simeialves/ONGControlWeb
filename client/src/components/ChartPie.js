@@ -34,10 +34,16 @@ const ChartPie = (props) => {
         },
         options: {
           responsive: true,
-          legend: {
-            display: true,
-            position: "right",
+          aspectRatio: 1.5,
+          plugins: {
+            legend: {
+              display: true,
+              position: "right",
+              align: "start",
+              padding: 10,
+            },
           },
+
           layout: {
             padding: { right: 50 },
           },
@@ -54,7 +60,9 @@ const ChartPie = (props) => {
     };
   }, [doacoesRecebidas]);
 
-  return <canvas ref={chartRef}></canvas>;
+  return (
+    <canvas ref={chartRef} style={{ width: "100px", height: "100px" }}></canvas>
+  );
 };
 
 export default ChartPie;

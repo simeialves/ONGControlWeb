@@ -5,9 +5,9 @@ import React, { useEffect, useRef } from "react";
 const ChartBarHorizontal = (props) => {
   const chartRef = useRef(null);
 
-  const doacoesRecebidas = props.doacoesRecebidas;
-  const qtdRecebidas = props.qtdRecebidas;
-  console.log(doacoesRecebidas, qtdRecebidas);
+  const colaboradores = props.colaboradores;
+  const qtdColaboradoresNecessarios = props.qtdColaboradoresNecessarios;
+  const qtdColaboradoresInscritos = props.qtdColaboradoresInscritos;
 
   useEffect(() => {
     const ctx = chartRef.current.getContext("2d");
@@ -15,31 +15,31 @@ const ChartBarHorizontal = (props) => {
     let chartInstance = new Chart(ctx, {
       type: "bar",
       data: {
-        labels: ["Professor de Violão", "Professor de Inglês", "3", "4", "5"],
+        labels: colaboradores,
         datasets: [
           {
             label: "Necessários",
             backgroundColor: ["rgba(255, 99, 132, 1)"],
             hoverBackgroundColor: ["rgba(255, 99, 132, 0.8)"],
-            data: [1, 2, 3, 4, 5],
+            data: qtdColaboradoresNecessarios,
           },
           {
             label: "Inscritos",
             backgroundColor: ["rgba(75, 192, 192, 1)"],
             hoverBackgroundColor: ["rgba(75, 192, 192, 0.8)"],
-            data: [2, 3, 4, 5, 6],
+            data: qtdColaboradoresInscritos,
           },
         ],
       },
       options: {
         indexAxis: "y",
         responsive: true,
+        aspectRatio: 1.5,
         plugins: {
           legend: {
             display: true,
             position: "bottom",
             align: "start",
-            padding: 10,
           },
         },
         scales: {
@@ -48,22 +48,14 @@ const ChartBarHorizontal = (props) => {
               display: false,
             },
             title: {
-              display: false,
+              display: true,
             },
           },
           y: {
             grid: {
-              display: false,
-            },
-            title: {
               display: true,
-              text: "Colaboradores",
             },
-            maxBarThickness: 35,
           },
-        },
-        layout: {
-          padding: { right: 50 },
         },
       },
     });
@@ -71,7 +63,7 @@ const ChartBarHorizontal = (props) => {
     return () => {
       chartInstance.destroy();
     };
-  }, []);
+  }, [colaboradores]);
 
   return <canvas ref={chartRef}></canvas>;
 };

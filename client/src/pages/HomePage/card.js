@@ -56,7 +56,7 @@ export const CardEvento = () => {
       </Heading>
       {/* <Container gap={4} width={"100%"}> */}
       <VStack gap={1}>
-        <Grid templateColumns={{ sm: "1fr", md: "repeat(3, 1fr)" }} gap={6}>
+        <Grid templateColumns={{ sm: "1fr", md: "repeat(2, 1fr)" }} gap={6}>
           {results.map((result) => (
             <GridItem>
               <Card

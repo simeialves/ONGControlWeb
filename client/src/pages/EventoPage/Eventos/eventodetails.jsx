@@ -1,10 +1,12 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Grid, GridItem, Heading, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ChartBarHorizontal from "../../../components/ChartBarHorizontal";
 import ChartBarVertical from "../../../components/ChartBarVertical";
 import ChartPie from "../../../components/ChartPie";
+import ChartRadar from "../../../components/ChartRadar";
 import { getEventoById } from "../../../shared/services/Evento";
+import { getTipoColaboradorEventos } from "../../../shared/services/TipoColaboradorEvento";
 import { getTipoDoacaoEventos } from "../../../shared/services/TipoDoacaoEvento";
 import { Footer } from "../../Footer";
 import Headers from "../../Headers";
@@ -18,11 +20,19 @@ const EventoDetails = () => {
   const [nome, setNome] = useState("");
   const [doacoesRecebidas, setDoacoesRecebidas] = useState("");
   const [qtdRecebidas, setQtdRecebidas] = useState("");
+
+  const [colaboradores, setColaboradores] = useState("");
+  const [qtdColaboradoresNecessarios, setQtdColaboradoresNecessarios] =
+    useState("");
+  const [qtdColaboradoresInscritos, setQtdColaboradoresInscritos] =
+    useState("");
+
   const [coresBackGround, setBackgroundColor] = useState([]);
   const [coresHoverBackGround, setHoverBackgroundColor] = useState([]);
 
   useEffect(() => {
     fetchData();
+    fetchColaboradores();
     fetchDoacaoEvento();
   }, []);
 
@@ -41,7 +51,7 @@ const EventoDetails = () => {
 
     response.data.forEach((item) => {
       doacoesRecebidas.push(
-        item.descricao + " - " + "Qtd.: " + item.quantidaderecebidas
+        item.descricao // + " - " + "Qtd.: " + item.quantidaderecebidas
       );
 
       quantidadeRecebidas.push(item.quantidaderecebidas);
@@ -74,45 +84,83 @@ const EventoDetails = () => {
     setLoading(false);
   }
 
+  async function fetchColaboradores() {
+    const response = await getTipoColaboradorEventos(id);
+
+    const descricaoColaboradores = [];
+    const qtdColaboradoresNecessarios = [];
+    const qtdColaboradoresInscritos = [];
+
+    response.data.forEach((item) => {
+      descricaoColaboradores.push(item.descricao);
+      qtdColaboradoresNecessarios.push(item.quantidade);
+      qtdColaboradoresInscritos.push(item.quantidadeinscritos);
+    });
+
+    setColaboradores(descricaoColaboradores);
+    setQtdColaboradoresNecessarios(qtdColaboradoresNecessarios);
+    setQtdColaboradoresInscritos(qtdColaboradoresInscritos);
+  }
+
   return (
     <>
       <Headers />
 
-      <Box padding={20} gap={2}>
-        <Heading as="h3" size="lg" padding={5}>
-          {nome}
-        </Heading>
-        <Flex justify="center" width="100%">
-          <Box width="20%" margin={10}>
+      <Heading as="h3" size="lg" paddingTop={20} paddingLeft={5}>
+        {nome}
+      </Heading>
+      <VStack marginBottom={50}>
+        <Grid
+          templateColumns={{
+            sm: "1fr",
+            md: "repeat(1, 2fr)",
+            xl: "repeat(2, 1fr)",
+          }}
+          gap={6}
+        >
+          <GridItem>
+            <Heading as="h3" size="lg" padding={5}>
+              Doações Recebidas
+            </Heading>
             <ChartPie
               doacoesRecebidas={doacoesRecebidas}
               qtdRecebidas={qtdRecebidas}
               coresBackGround={coresBackGround}
               coresHoverBackGround={coresHoverBackGround}
             />
-          </Box>
-          <Box width="40%" margin={10}>
+          </GridItem>
+          <GridItem>
+            <Heading as="h3" size="lg" padding={5}>
+              Colaboradores no Evento
+            </Heading>
+            <ChartBarHorizontal
+              colaboradores={colaboradores}
+              qtdColaboradoresNecessarios={qtdColaboradoresNecessarios}
+              qtdColaboradoresInscritos={qtdColaboradoresInscritos}
+            />
+          </GridItem>
+          <GridItem marginBottom={15}>
+            <Heading as="h3" size="lg" padding={5}>
+              Comparativo de Doações do Evento
+            </Heading>
             <ChartBarVertical
               doacoesRecebidas={doacoesRecebidas}
               qtdRecebidas={qtdRecebidas}
             />
-          </Box>
-        </Flex>
-        <Flex justify="center" width="100%">
-          <Box width="40%" margin={10}>
-            <ChartBarHorizontal
+          </GridItem>
+          <GridItem marginBottom={15}>
+            <Heading as="h3" size="lg" padding={5}>
+              Doações Realizadas x Doações Recebidas
+            </Heading>
+            <ChartRadar
               doacoesRecebidas={doacoesRecebidas}
               qtdRecebidas={qtdRecebidas}
+              coresBackGround={coresBackGround}
+              coresHoverBackGround={coresHoverBackGround}
             />
-          </Box>
-          <Box width="20%" margin={10}>
-            <ChartPie
-              doacoesRecebidas={doacoesRecebidas}
-              qtdRecebidas={qtdRecebidas}
-            />
-          </Box>
-        </Flex>
-      </Box>
+          </GridItem>
+        </Grid>
+      </VStack>
       <Footer />
     </>
   );
