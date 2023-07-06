@@ -37,12 +37,7 @@ const ChartBarVertical = (props) => {
       chartInstance = new Chart(ctx, {
         type: "bar",
         data: {
-          labels: [
-            "Caixa de Sorvete",
-            "Descartáveis",
-            "Pipoca",
-            "Cesta Básica",
-          ],
+          labels: doacoesRecebidas,
           datasets: [
             {
               label: "Necessários",
@@ -52,7 +47,7 @@ const ChartBarVertical = (props) => {
             {
               label: "Recebidos",
               backgroundColor: ["#adb5bd", "#adb5bd", "#adb5bd", "#adb5bd"],
-              data: ["3", "5", "4", "25"],
+              data: qtdRecebidas,
             },
             {
               label: "Doados",
