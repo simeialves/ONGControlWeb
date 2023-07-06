@@ -23,7 +23,7 @@ import {
 
 import { RiFileExcelLine } from "react-icons/ri";
 
-import { AddIcon, DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
+import { DeleteIcon, SearchIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../shared/services/api";
@@ -39,6 +39,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { saveAsExcelFile } from "../../../components/ExportCSV";
 import { Footer } from "../../Footer";
 import { getDateHourNow } from "../../Uteis/Uteis";
+import { ModalPessoa } from "./ModalPessoa";
 
 const XLSX = require("xlsx");
 
@@ -133,16 +134,8 @@ const MenuPessoa = () => {
       <Box paddingTop={150} paddingBottom={5}>
         <Container fluid="md">
           <HStack spacing="4" justify={"right"}>
-            <Button
-              id="btnNovo"
-              variant="outline"
-              colorScheme="gray"
-              gap={2}
-              onClick={handleNew}
-              size="sm"
-              marginBottom={2}
-            >
-              <AddIcon /> Nova
+            <Button>
+              <ModalPessoa event={fetchData} />
             </Button>
           </HStack>
           <HStack>
@@ -196,11 +189,9 @@ const MenuPessoa = () => {
                     <Td>{result.telefone}</Td>
                     <Td>
                       <Button size={"xs"} bg={"write"}>
-                        <EditIcon
-                          name="btnEditar"
-                          color={"blue.800"}
-                          boxSize={5}
-                          onClick={(e) => handleEdit(result.pessoaid, e)}
+                        <ModalPessoa
+                          event={fetchData}
+                          props={result.pessoaid}
                         />
                       </Button>
                       <Button size={"xs"} bg={"write"} name="btnDelete">

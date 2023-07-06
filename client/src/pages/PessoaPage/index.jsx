@@ -24,7 +24,7 @@ import {
 
 import { RiFileExcelLine } from "react-icons/ri";
 
-import { AddIcon, DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../shared/services/api";
@@ -38,6 +38,7 @@ import Container from "react-bootstrap/Container";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import { saveAsExcelFile } from "../../components/ExportCSV";
+import { ModalPessoa } from "../CadastroPage/Pessoa/ModalPessoa";
 import { Footer } from "../Footer";
 import { getDateHourNow } from "../Uteis/Uteis";
 
@@ -134,7 +135,7 @@ const Pessoa = () => {
       <Box paddingTop={100} paddingBottom={5}>
         <Container fluid="md">
           <HStack spacing="4" justify={"right"}>
-            <Button
+            {/* <Button
               id="btnNovo"
               variant="outline"
               colorScheme="gray"
@@ -144,6 +145,9 @@ const Pessoa = () => {
               marginBottom={2}
             >
               <AddIcon /> Nova
+            </Button> */}
+            <Button>
+              <ModalPessoa event={fetchData} />
             </Button>
           </HStack>
           <HStack>
