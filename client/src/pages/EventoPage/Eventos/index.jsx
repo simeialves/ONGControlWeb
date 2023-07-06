@@ -225,7 +225,7 @@ const MenuEventos = (props) => {
               gap={2}
               onClick={() => exportToExcel(results)}
             >
-              <RiFileExcelLine /> CSV
+              <RiFileExcelLine /> Excel
             </Button>
           </Flex>
         </Container>

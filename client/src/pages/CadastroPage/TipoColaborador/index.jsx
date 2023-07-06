@@ -9,7 +9,6 @@ import {
   Button,
   Checkbox,
   Flex,
-  Link,
   Spacer,
   Stack,
   Table,
@@ -23,7 +22,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { AddIcon, DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
+import { DeleteIcon, SearchIcon } from "@chakra-ui/icons";
 
 import {
   Box,
@@ -47,6 +46,7 @@ import { saveAsExcelFile } from "../../../components/ExportCSV";
 import { STATUS_ATIVO } from "../../../includes/const";
 import { Footer } from "../../Footer";
 import { getDateHourNow } from "../../Uteis/Uteis";
+import { ModalTipoColaborador } from "./ModalTipoColaborador";
 
 const XLSX = require("xlsx");
 
@@ -95,20 +95,12 @@ const MenuTipoColaborador = () => {
     setLoading(false);
   }
 
-  async function handleNew() {
-    navigate(`/tipocolaboradores/new`);
-  }
-
-  async function handleEdit(id) {
-    navigate(`/tipocolaboradores/edit/${id}`);
-  }
-
   async function handleDelete() {
     api
       .delete(`/tipocolaboradores/${id}`, {})
       .then(() => {
-        navigate("/tipocolaboradores");
-        window.location.reload(false);
+        onClose();
+        fetchData();
       })
       .catch((err) => {
         console.log(err);
@@ -132,16 +124,11 @@ const MenuTipoColaborador = () => {
       <Box paddingTop={150} paddingBottom={5}>
         <Container fluid="md">
           <HStack spacing="4" justify={"right"}>
-            <Button
-              variant="outline"
-              colorScheme="gray"
-              gap={2}
-              onClick={handleNew}
-              size="sm"
-              marginBottom={2}
-            >
-              <AddIcon /> Nova
-            </Button>
+            <HStack spacing="4" justify={"right"}>
+              <Button>
+                <ModalTipoColaborador event={fetchData} />
+              </Button>
+            </HStack>
           </HStack>
           <HStack>
             <Box w="70%">
@@ -198,13 +185,7 @@ const MenuTipoColaborador = () => {
               <Tbody>
                 {results.map((result) => (
                   <Tr>
-                    <Td>
-                      <Link
-                        href={`/tipocolaboradores/edit/${result.tipocolaboradorid}`}
-                      >
-                        {result.descricao}
-                      </Link>
-                    </Td>
+                    <Td>{result.descricao}</Td>
                     <Td>
                       <Checkbox
                         isChecked={result.ativo == STATUS_ATIVO ? true : false}
@@ -213,12 +194,9 @@ const MenuTipoColaborador = () => {
                     </Td>
                     <Td>
                       <Button size={"xs"} bg={"write"}>
-                        <EditIcon
-                          color={"blue.800"}
-                          boxSize={5}
-                          onClick={(e) =>
-                            handleEdit(result.tipocolaboradorid, e)
-                          }
+                        <ModalTipoColaborador
+                          event={fetchData}
+                          props={result.tipocolaboradorid}
                         />
                       </Button>
                       <Button size={"xs"} bg={"write"}>
@@ -244,7 +222,7 @@ const MenuTipoColaborador = () => {
               gap={2}
               onClick={() => exportToExcel(results)}
             >
-              <RiFileExcelLine /> CSV
+              <RiFileExcelLine /> Excel
             </Button>
           </Flex>
         </Container>

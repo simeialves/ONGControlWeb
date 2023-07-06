@@ -188,12 +188,6 @@ const MenuLocalEventos = (props) => {
                     <Td>{result.cidade}</Td>
                     <Td>
                       <Button size={"xs"} bg={"write"}>
-                        {/* <EditIcon
-                          color={"blue.800"}
-                          boxSize={5}
-                          onClick={(e) => handleEdit(result.localeventoid, e)}
-                        /> */}
-
                         <ModalLocalEventos
                           event={fetchData}
                           props={result.localeventoid}
@@ -222,7 +216,7 @@ const MenuLocalEventos = (props) => {
               gap={2}
               onClick={() => exportToExcel(results)}
             >
-              <RiFileExcelLine /> CSV
+              <RiFileExcelLine /> Excel
             </Button>
           </Flex>
         </Container>

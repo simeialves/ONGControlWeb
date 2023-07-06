@@ -8,7 +8,6 @@ import {
   AlertDialogOverlay,
   Button,
   Flex,
-  Link,
   Spacer,
   Table,
   TableCaption,
@@ -192,11 +191,7 @@ const MenuPessoa = () => {
               <Tbody>
                 {results.map((result) => (
                   <Tr key={result.pessoaid}>
-                    <Td>
-                      <Link href={`/pessoas/edit/${result.pessoaid}`}>
-                        {result.nome}
-                      </Link>
-                    </Td>
+                    <Td>{result.nome}</Td>
                     <Td>{result.documento}</Td>
                     <Td>{result.telefone}</Td>
                     <Td>
@@ -229,7 +224,7 @@ const MenuPessoa = () => {
               gap={2}
               onClick={() => exportToExcel(results)}
             >
-              <RiFileExcelLine /> CSV
+              <RiFileExcelLine /> Excel
             </Button>
           </Flex>
         </Container>

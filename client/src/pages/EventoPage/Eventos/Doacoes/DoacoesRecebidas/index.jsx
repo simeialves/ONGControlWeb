@@ -209,7 +209,7 @@ export default function DoacoesRecebidas({ eventoid }) {
                 gap={2}
                 onClick={() => exportToExcel(results)}
               >
-                <RiFileExcelLine /> CSV
+                <RiFileExcelLine /> Excel
               </Button>
             </Flex>
           </Box>

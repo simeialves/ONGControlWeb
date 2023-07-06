@@ -204,11 +204,7 @@ export default function Beneficiarios({ eventoid }) {
               <Tbody>
                 {results.map((result) => (
                   <Tr>
-                    <Td>
-                      <a href={`/pessoas/edit/${result.pessoaid}`}>
-                        {result.nome}
-                      </a>
-                    </Td>
+                    <Td>{result.nome}</Td>
                     <Td>{result.documento}</Td>
                     <Td>{result.email}</Td>
                     <Td>{result.senharetirada}</Td>
@@ -243,7 +239,7 @@ export default function Beneficiarios({ eventoid }) {
               gap={2}
               onClick={() => exportToExcel(results)}
             >
-              <RiFileExcelLine /> CSV
+              <RiFileExcelLine /> Excel
             </Button>
           </Flex>
         </Box>

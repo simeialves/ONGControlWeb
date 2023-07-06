@@ -191,7 +191,7 @@ export default function ColaboradoresNecessariosPage({ eventoid }) {
                 gap={2}
                 onClick={() => exportToExcel(results)}
               >
-                <RiFileExcelLine /> CSV
+                <RiFileExcelLine /> Excel
               </Button>
             </Flex>
           </Box>

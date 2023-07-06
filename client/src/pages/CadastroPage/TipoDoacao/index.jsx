@@ -9,7 +9,6 @@ import {
   Button,
   Checkbox,
   Flex,
-  Link,
   Spacer,
   Stack,
   Table,
@@ -197,11 +196,7 @@ const MenuTipoDoacao = () => {
               <Tbody>
                 {results.map((result) => (
                   <Tr>
-                    <Td>
-                      <Link href={`/tipodoacoes/edit/${result.tipodoacaoid}`}>
-                        {result.descricao}
-                      </Link>
-                    </Td>
+                    <Td>{result.descricao}</Td>
                     <Td>
                       <Checkbox
                         isChecked={result.ativo == STATUS_ATIVO ? true : false}
@@ -239,7 +234,7 @@ const MenuTipoDoacao = () => {
               gap={2}
               onClick={() => exportToExcel(results)}
             >
-              <RiFileExcelLine /> CSV
+              <RiFileExcelLine /> Excel
             </Button>
           </Flex>
         </Container>

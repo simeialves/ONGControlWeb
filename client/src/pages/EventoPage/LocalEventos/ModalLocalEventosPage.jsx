@@ -1,6 +1,5 @@
 //#region Imports
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { api, getCEP } from "../../../shared/services/api";
 
 import {
@@ -19,7 +18,6 @@ import SpinnerUtil from "../../Uteis/progress";
 
 const ModalLocalEventosPage = (props) => {
   const [id] = useState(props.props);
-  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
 
@@ -256,6 +254,7 @@ const ModalLocalEventosPage = (props) => {
                     />
                   </Box>
                 </HStack>
+
                 <HStack spacing={4}>
                   <Box w="100%">
                     <FormLabel htmlFor="uf">Link</FormLabel>
@@ -270,6 +269,7 @@ const ModalLocalEventosPage = (props) => {
                     />
                   </Box>
                 </HStack>
+
                 <HStack spacing="4" justify={"right"}>
                   <Button
                     w={240}
