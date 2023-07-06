@@ -32,6 +32,8 @@
     "pm2": "^5.2.2",
     "react-bootstrap": "^2.6.0",
     "react-router-dom": "^6.4.4",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.3",
     "yarn": "^1.22.19"
   },
   "devDependencies": {

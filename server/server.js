@@ -25,6 +25,8 @@ const parametrosRoutes = require("./routes/parametroRoutes");
 const projetoRoutes = require("./routes/projetoRoutes");
 const app = express();
 
+const swagger = require("./swagger.js");
+
 const envpath =
   process.env.NODE_ENV === undefined
     ? ".env.development"
@@ -52,6 +54,8 @@ app.get("/ping", (req, res) => {
 });
 
 //#region routes
+app.use("/api-docs", swagger.serveSwaggerUI, swagger.setupSwaggerUI);
+
 app.use("/auth", loginRoutes);
 app.use("/usuarios", usuarioRoutes);
 
@@ -78,7 +82,7 @@ app.use("/projetos", projetoRoutes);
 //#region Outros
 let port = process.env.PORT || 3000;
 app.listen(port, function () {
-  console.log(`Servidor rodando na porta ${port}`);
+  console.log(`Servidor rodando no endereço http://localhost:${port}/`);
 });
 //#endregion
 

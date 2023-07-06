@@ -18,7 +18,21 @@ appRoutes.post("/", verifyJWT, PessoaController.create);
 //#endregion
 
 //#region READ
-appRoutes.get("/", PessoaController.getAll);
+/**
+ * @swagger
+ * /pessoas:
+ *   get:
+ *     summary: Retorna todas as pessoas.
+ *     tags: [Pessoas]
+ *     responses:
+ *       200:
+ *         description: Lista de todas as pessoas.
+ *       400:
+ *         description: Erro na requisição.
+ *       401:
+ *          description: Necessário um token de autenticação.
+ */
+appRoutes.get("/", verifyJWT, PessoaController.getAll);
 appRoutes.get("/:id", verifyJWT, PessoaController.getById);
 //#endregion
 
