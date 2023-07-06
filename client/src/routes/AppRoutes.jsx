@@ -21,24 +21,6 @@ import ParametroPage from "../pages/ParametroPage";
 
 import CadastroPage from "../pages/CadastroPage";
 
-import PessoaPage from "../pages/PessoaPage";
-import {
-  default as EditPessoaPage,
-  default as NewPessoaPage,
-} from "../pages/PessoaPage/details";
-
-import TipoColaboradorPage from "../pages/TipoColaboradorPage";
-import {
-  default as EditTipoColaboradorPage,
-  default as NewTipoColaboradorPage,
-} from "../pages/TipoColaboradorPage/details";
-
-import TipoDoacaoPage from "../pages/TipoDoacaoPage";
-import {
-  default as EditTipoDoacaoPage,
-  default as NewTipoDoacaoPage,
-} from "../pages/TipoDoacaoPage/details";
-
 import UsuarioPage from "../pages/UsuarioPage";
 import EditUsuarioPage from "../pages/UsuarioPage/edit";
 import NewUsuarioPage from "../pages/UsuarioPage/new";
@@ -101,91 +83,10 @@ const AppRouters = () => {
           />
           <Route
             exact
-            path="/pessoas"
-            element={
-              <Private>
-                <PessoaPage />
-              </Private>
-            }
-          />
-          <Route
-            exact
-            path="/pessoas/new"
-            element={
-              <Private>
-                <NewPessoaPage />
-              </Private>
-            }
-          />
-          <Route
-            exact
-            path="/pessoas/edit/:id"
-            element={
-              <Private>
-                <EditPessoaPage />
-              </Private>
-            }
-          />
-          <Route
-            exact
             path="/parametros"
             element={
               <Private>
                 <ParametroPage />
-              </Private>
-            }
-          />
-          <Route
-            exact
-            path="/tipodoacoes"
-            element={
-              <Private>
-                <TipoDoacaoPage />
-              </Private>
-            }
-          />
-          <Route
-            exact
-            path="/tipodoacoes/new"
-            element={
-              <Private>
-                <NewTipoDoacaoPage />
-              </Private>
-            }
-          />
-          <Route
-            exact
-            path="/tipodoacoes/edit/:id"
-            element={
-              <Private>
-                <EditTipoDoacaoPage />
-              </Private>
-            }
-          />
-          <Route
-            exact
-            path="/tipocolaboradores"
-            element={
-              <Private>
-                <TipoColaboradorPage />
-              </Private>
-            }
-          />
-          <Route
-            exact
-            path="/tipocolaboradores/new"
-            element={
-              <Private>
-                <NewTipoColaboradorPage />
-              </Private>
-            }
-          />
-          <Route
-            exact
-            path="/tipocolaboradores/edit/:id"
-            element={
-              <Private>
-                <EditTipoColaboradorPage />
               </Private>
             }
           />

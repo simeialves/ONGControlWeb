@@ -22,7 +22,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { AddIcon, DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
+import { DeleteIcon, SearchIcon } from "@chakra-ui/icons";
 
 import {
   Box,
@@ -33,7 +33,6 @@ import {
   RadioGroup,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { api } from "../../../shared/services/api";
 import Headers from "../../Headers";
 import SpinnerUtil from "../../Uteis/progress";
@@ -45,6 +44,7 @@ import { STATUS_ATIVO } from "../../../includes/const";
 import { getTipoDoacoes } from "../../../shared/services/TipoDoacao";
 import { Footer } from "../../Footer";
 import { getDateHourNow } from "../../Uteis/Uteis";
+import { ModalTipoDoacao } from "./ModalTipoDoacao";
 
 const XLSX = require("xlsx");
 
@@ -69,15 +69,12 @@ async function exportToExcel(data) {
 const MenuTipoDoacao = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(false);
   const [inputDescricao, setInputDescricao] = useState("");
   const [inputAtivo, setInputAtivo] = useState(STATUS_ATIVO);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
   const [id, setId] = useState("");
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
@@ -94,20 +91,12 @@ const MenuTipoDoacao = () => {
     setLoading(false);
   }
 
-  async function handleNew() {
-    navigate(`/tipodoacoes/new`);
-  }
-
-  async function handleEdit(id) {
-    navigate(`/tipodoacoes/edit/${id}`);
-  }
-
   async function handleDelete() {
     api
       .delete(`/tipodoacoes/${id}`, {})
       .then(() => {
-        navigate("/tipodoacoes");
-        window.location.reload(false);
+        onClose();
+        fetchData();
       })
       .catch((err) => {
         console.log(err);
@@ -131,15 +120,8 @@ const MenuTipoDoacao = () => {
       <Box paddingTop={150} paddingBottom={5}>
         <Container fluid="md">
           <HStack spacing="4" justify={"right"}>
-            <Button
-              variant="outline"
-              colorScheme="gray"
-              gap={2}
-              onClick={handleNew}
-              size="sm"
-              marginBottom={2}
-            >
-              <AddIcon /> Nova
+            <Button>
+              <ModalTipoDoacao event={fetchData} />
             </Button>
           </HStack>
           <HStack>
@@ -205,10 +187,9 @@ const MenuTipoDoacao = () => {
                     </Td>
                     <Td>
                       <Button size={"xs"} bg={"write"}>
-                        <EditIcon
-                          color={"blue.800"}
-                          boxSize={5}
-                          onClick={(e) => handleEdit(result.tipodoacaoid, e)}
+                        <ModalTipoDoacao
+                          event={fetchData}
+                          props={result.tipodoacaoid}
                         />
                       </Button>
                       <Button size={"xs"} bg={"write"}>
